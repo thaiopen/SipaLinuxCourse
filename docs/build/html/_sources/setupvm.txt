@@ -12,6 +12,9 @@ Clone VM
 Geting clone vm with virt-tools
 *******************************
 
+Install
+-------
+
 สร้าง Centos 7 vm ด้วย virt manager มีขึ้นตอนดังนี้
 
 #.  เปิด virt-manager เลือกเมนู File > New Virtual Machine
@@ -90,9 +93,159 @@ Geting clone vm with virt-tools
 
 เมื่อเรียบร้อยให้กด Begin Installation
 
+19. กำหนด password ให้แก่ user root พร้อมกับการสร้าง user อีกคนเพื่อใช้งาน ในตัวอย่างนี้ user คนที่สองมีชื่อ ว่า admin โดยสามารถตั้งชื่อเป็น  อะไรก็ได้ ตามที่ต้องการ
+
+.. image::  images/vm022.png
+
+กำหนด root password
+
+.. image::  images/vm023.png
+
+กำหนด admin user 
+
+.. image::  images/vm024.png
+
+รอจนเสร็จสิ้นกระบวนการ แล้วกด  reboot
+
+.. image::  images/vm027.png
+
+.. image::  images/vm028.png
+
+.. image::  images/vm029.png
+
+Clone process
+-------------
+ขี้นตอนการ clone โดยการทำงานบน KVM host หรือ Management node (โหนดที่ติดตั้ง kvm ไม่ใช่สั่งใน vm)::
+
+	[root@localhost networks]# virsh list
+	 Id    Name                           State
+	----------------------------------------------------
+	 5     base-centos7                   running
 
 
+	[root@localhost networks]# virsh suspend  base-centos7
+	Domain base-centos7 suspended
 
+	[root@localhost networks]# virsh list
+	 Id    Name                           State
+	----------------------------------------------------
+	 5     base-centos7                   paused
+
+	[root@localhost networks]# virt-clone --original base-centos7 --name clone-centos7 --file /var/lib/libvirt/images/clone-centos7.qcow2 
+	WARNING  Setting the graphics device port to autoport, in order to avoid conflicting.
+	Allocating 'clone-centos7.qcow2'                                                                                                        |  40 GB  00:00:05     
+
+	Clone 'clone-centos7' created successfully.
+
+
+===========  ============================================  ==================
+Option       value                                         Descrition
+--original   base-centos7                                  base vm name
+--name       clone-centos7                                 clone vm name
+--file       /var/lib/libvirt/images/clone-centos7.qcow2   clone image name
+===========  ============================================  ==================
+
+ถึงแม้ว่าจะclone สำเร็จ แต่มีการ warning ว่า มี conflicting เนื่องจาก clone นั้นจะทำให้ mac address ของ network card ซ้ำกันดังนั้นต้อง ล้าง 
+::
+
+	[root@localhost networks]# virsh list --all
+	 Id    Name                           State
+	----------------------------------------------------
+	 5     base-centos7                   paused
+	 -     clone-centos7                  shut off
+
+	[root@localhost networks]# virt-sysprep -d clone-centos7
+	[   0.0] Examining the guest ...
+	[  21.2] Performing "abrt-data" ...
+	[  21.2] Performing "bash-history" ...
+	[  21.2] Performing "blkid-tab" ...
+	[  21.2] Performing "crash-data" ...
+	[  21.2] Performing "cron-spool" ...
+	[  21.2] Performing "dhcp-client-state" ...
+	[  21.2] Performing "dhcp-server-state" ...
+	[  21.2] Performing "dovecot-data" ...
+	[  21.2] Performing "logfiles" ...
+	[  21.3] Performing "machine-id" ...
+	[  21.3] Performing "mail-spool" ...
+	[  21.3] Performing "net-hostname" ...
+	[  21.3] Performing "net-hwaddr" ...
+	[  21.3] Performing "pacct-log" ...
+	[  21.3] Performing "package-manager-cache" ...
+	[  21.3] Performing "pam-data" ...
+	[  21.3] Performing "puppet-data-log" ...
+	[  21.3] Performing "rh-subscription-manager" ...
+	[  21.3] Performing "rhn-systemid" ...
+	[  21.3] Performing "rpm-db" ...
+	[  21.3] Performing "samba-db-log" ...
+	[  21.3] Performing "script" ...
+	[  21.3] Performing "smolt-uuid" ...
+	[  21.3] Performing "ssh-hostkeys" ...
+	[  21.3] Performing "ssh-userdir" ...
+	[  21.3] Performing "sssd-db-log" ...
+	[  21.3] Performing "tmp-files" ...
+	[  21.3] Performing "udev-persistent-net" ...
+	[  21.3] Performing "utmp" ...
+	[  21.3] Performing "yum-uuid" ...
+	[  21.3] Performing "customize" ...
+	[  21.3] Setting a random seed
+	[  21.8] Performing "lvm-uuids" ...
+
+set password::
+
+	[root@localhost networks]# virt-sysprep -d clone-centos7  --hostname clone-centos7 --root-password password:123456
+	[   0.0] Examining the guest ...
+	[   2.9] Performing "abrt-data" ...
+	[   2.9] Performing "bash-history" ...
+	[   2.9] Performing "blkid-tab" ...
+	[   2.9] Performing "crash-data" ...
+	[   3.0] Performing "cron-spool" ...
+	[   3.0] Performing "dhcp-client-state" ...
+	[   3.0] Performing "dhcp-server-state" ...
+	[   3.0] Performing "dovecot-data" ...
+	[   3.0] Performing "logfiles" ...
+	[   3.0] Performing "machine-id" ...
+	[   3.0] Performing "mail-spool" ...
+	[   3.0] Performing "net-hostname" ...
+	[   3.0] Performing "net-hwaddr" ...
+	[   3.0] Performing "pacct-log" ...
+	[   3.0] Performing "package-manager-cache" ...
+	[   3.0] Performing "pam-data" ...
+	[   3.0] Performing "puppet-data-log" ...
+	[   3.0] Performing "rh-subscription-manager" ...
+	[   3.0] Performing "rhn-systemid" ...
+	[   3.0] Performing "rpm-db" ...
+	[   3.0] Performing "samba-db-log" ...
+	[   3.0] Performing "script" ...
+	[   3.0] Performing "smolt-uuid" ...
+	[   3.0] Performing "ssh-hostkeys" ...
+	[   3.0] Performing "ssh-userdir" ...
+	[   3.0] Performing "sssd-db-log" ...
+	[   3.0] Performing "tmp-files" ...
+	[   3.0] Performing "udev-persistent-net" ...
+	[   3.0] Performing "utmp" ...
+	[   3.0] Performing "yum-uuid" ...
+	[   3.0] Performing "customize" ...
+	[   3.0] Setting a random seed
+	[   3.0] Setting the hostname: clone-centos7
+	[   3.0] Setting passwords
+	[   4.9] Performing "lvm-uuids" ...
+
+Start vm::
+
+	[root@localhost networks]# virsh start  clone-centos7
+	Domain clone-centos7 started
+
+	[root@localhost networks]# virsh list
+	 Id    Name                           State
+	----------------------------------------------------
+	 5     base-centos7                   paused
+	 8     clone-centos7                  running
+
+	[root@localhost networks]# virt-viewer 8
+
+.. image::  images/vm030.png
+
+ให้ทดสอบ การ login ด้วย root  และ password  ใหม่ โดยให้กด ``not listed`` ที่ เพื่อเปลี่ยนเป็น root user แทน   admin
 
 Install Virtualization System
 *****************************
@@ -121,13 +274,61 @@ Install Virtualization System
    # add user ``admin`` to libvirt group
    useradd -a -G libvirt admin
 
-.. code-block:: bash
-   :linenos:
 
-   # ubuntu
-   apt-get install qemu-kvm libvirt-bin bridge-utils virt-manager
-  
-   # add user to group
-   adduser <user> libvirtd
+Network Virtualization
+**********************
+Libvirt network
+---------------
+เมื่อทำการติดตั้ง libvirt และ  เริ่มต้นการทำงานแล้วนั้นจะ มีการสร้าง Linux bridge มีชื่อว่า virbr0 โดยทดสอบโดยการใช้คำสั่ง ip a โดยมี ip 192.168.122.1 ทำหน้าเป็น Gateway ให้ Vm เพื่อ  ออกสู่ internet โดยถือว่าเป็น Default bridge และทำหน้าที่เปรียบเสมือน network switch มีการทำงานในลักษณะ NAT  
+สามารถตรวจสอบ ไปยัง เมนู  Edit > Connection Detail จะแสดงผลดังรู
 
-   adduser admin libvirtd
+.. image::  images/vm025.png
+
+ตรวจสอบด้วยคำสั่ง ip a::
+
+	ip a
+
+	4: virbr0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+		link/ether 52:54:00:c1:9f:ed brd ff:ff:ff:ff:ff:ff
+		inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
+		   valid_lft forever preferred_lft forever
+	5: virbr0-nic: <BROADCAST,MULTICAST> mtu 1500 qdisc fq_codel master virbr0 state DOWN group default qlen 1000
+		link/ether 52:54:00:c1:9f:ed brd ff:ff:ff:ff:ff:ff
+
+	8: vnet0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel master virbr0 state UNKNOWN group default qlen 1000
+    link/ether fe:54:00:fe:a1:f2 brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::fc54:ff:fefe:a1f2/64 scope link 
+       valid_lft forever preferred_lft forever
+
+เมื่อ มีการสร้าง VM ขึ้นมา VM ที่สร้างขึ้นจะกูกสร้างมาเกาะบน Bridge ดังกล่าวนี้ โดย  KVM จะสร้าง Port (vnet0) ไว้รองรับ การเชื่อมต่อ จาก vif (virtual interface - eth0) จาก vm
+
+.. image::  images/vm026.png
+
+
+Network XML
+-----------
+การกำหนดรายละเอียด ของ config จะอยู่ใน format xml::
+
+	cd /etc/libvirt/qemu/networks
+
+	cat default.xml
+
+	<network>
+	  <name>default</name>
+	  <uuid>88ec8022-2026-461b-bf66-7daaf33c8fc5</uuid>
+	  <forward mode='nat'/>
+	  <bridge name='virbr0' stp='on' delay='0'/>
+	  <mac address='52:54:00:c1:9f:ed'/>
+	  <ip address='192.168.122.1' netmask='255.255.255.0'>
+		<dhcp>
+		  <range start='192.168.122.2' end='192.168.122.254'/>
+		</dhcp>
+	  </ip>
+	</network>
+
+
+.. note:: การต้องเปลี่ยน ip default สามารถทำได้ โดยการแก้ไข file xml นี้
+
+
+
+
