@@ -83,8 +83,17 @@
                 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">SetupVM for Testing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#clone-vm">Clone VM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#geting-clone-vm-with-virt-tools">Geting clone vm with virt-tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geting-clone-vm-with-virt-tools">Geting clone vm with virt-tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#install">Install</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clone-process">Clone process</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#install-virtualization-system">Install Virtualization System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#network-virtualization">Network Virtualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#libvirt-network">Libvirt network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#network-xml">Network XML</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -144,6 +153,8 @@
 </ul>
 <div class="section" id="geting-clone-vm-with-virt-tools">
 <h3>Geting clone vm with virt-tools<a class="headerlink" href="#geting-clone-vm-with-virt-tools" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="install">
+<h4>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h4>
 <p>สร้าง Centos 7 vm ด้วย virt manager มีขึ้นตอนดังนี้</p>
 <ol class="arabic simple">
 <li>เปิด virt-manager เลือกเมนู File &gt; New Virtual Machine</li>
@@ -218,6 +229,168 @@
 <p>หากต้องการที่จะ กำหนด ip แบบ manual โดยค่า Default จะกำหนดเป็น DHCP</p>
 <img alt="_images/vm020.png" src="_images/vm020.png" />
 <p>เมื่อเรียบร้อยให้กด Begin Installation</p>
+<ol class="arabic simple" start="19">
+<li>กำหนด password ให้แก่ user root พร้อมกับการสร้าง user อีกคนเพื่อใช้งาน ในตัวอย่างนี้ user คนที่สองมีชื่อ ว่า admin โดยสามารถตั้งชื่อเป็น  อะไรก็ได้ ตามที่ต้องการ</li>
+</ol>
+<img alt="_images/vm022.png" src="_images/vm022.png" />
+<p>กำหนด root password</p>
+<img alt="_images/vm023.png" src="_images/vm023.png" />
+<p>กำหนด admin user</p>
+<img alt="_images/vm024.png" src="_images/vm024.png" />
+<p>รอจนเสร็จสิ้นกระบวนการ แล้วกด  reboot</p>
+<img alt="_images/vm027.png" src="_images/vm027.png" />
+<img alt="_images/vm028.png" src="_images/vm028.png" />
+<img alt="_images/vm029.png" src="_images/vm029.png" />
+</div>
+<div class="section" id="clone-process">
+<h4>Clone process<a class="headerlink" href="#clone-process" title="Permalink to this headline">¶</a></h4>
+<p>ขี้นตอนการ clone โดยการทำงานบน KVM host หรือ Management node (โหนดที่ติดตั้ง kvm ไม่ใช่สั่งใน vm):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virsh list</span>
+ <span class="n">Id</span>    <span class="n">Name</span>                           <span class="n">State</span>
+<span class="o">----------------------------------------------------</span>
+ <span class="mi">5</span>     <span class="n">base</span><span class="o">-</span><span class="n">centos7</span>                   <span class="n">running</span>
+
+
+<span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virsh suspend  base-centos7</span>
+<span class="n">Domain</span> <span class="n">base</span><span class="o">-</span><span class="n">centos7</span> <span class="n">suspended</span>
+
+<span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virsh list</span>
+ <span class="n">Id</span>    <span class="n">Name</span>                           <span class="n">State</span>
+<span class="o">----------------------------------------------------</span>
+ <span class="mi">5</span>     <span class="n">base</span><span class="o">-</span><span class="n">centos7</span>                   <span class="n">paused</span>
+
+<span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virt-clone --original base-centos7 --name clone-centos7 --file /var/lib/libvirt/images/clone-centos7.qcow2</span>
+<span class="n">WARNING</span>  <span class="n">Setting</span> <span class="n">the</span> <span class="n">graphics</span> <span class="n">device</span> <span class="n">port</span> <span class="n">to</span> <span class="n">autoport</span><span class="p">,</span> <span class="ow">in</span> <span class="n">order</span> <span class="n">to</span> <span class="n">avoid</span> <span class="n">conflicting</span><span class="o">.</span>
+<span class="n">Allocating</span> <span class="s1">&#39;clone-centos7.qcow2&#39;</span>                                                                                                        <span class="o">|</span>  <span class="mi">40</span> <span class="n">GB</span>  <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">05</span>
+
+<span class="n">Clone</span> <span class="s1">&#39;clone-centos7&#39;</span> <span class="n">created</span> <span class="n">successfully</span><span class="o">.</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="60%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Option</td>
+<td>value</td>
+<td>Descrition</td>
+</tr>
+<tr class="row-even"><td>&#8211;original</td>
+<td>base-centos7</td>
+<td>base vm name</td>
+</tr>
+<tr class="row-odd"><td>&#8211;name</td>
+<td>clone-centos7</td>
+<td>clone vm name</td>
+</tr>
+<tr class="row-even"><td>&#8211;file</td>
+<td>/var/lib/libvirt/images/clone-centos7.qcow2</td>
+<td>clone image name</td>
+</tr>
+</tbody>
+</table>
+<p>ถึงแม้ว่าจะclone สำเร็จ แต่มีการ warning ว่า มี conflicting เนื่องจาก clone นั้นจะทำให้ mac address ของ network card ซ้ำกันดังนั้นต้อง ล้าง</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virsh list --all</span>
+ <span class="n">Id</span>    <span class="n">Name</span>                           <span class="n">State</span>
+<span class="o">----------------------------------------------------</span>
+ <span class="mi">5</span>     <span class="n">base</span><span class="o">-</span><span class="n">centos7</span>                   <span class="n">paused</span>
+ <span class="o">-</span>     <span class="n">clone</span><span class="o">-</span><span class="n">centos7</span>                  <span class="n">shut</span> <span class="n">off</span>
+
+<span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virt-sysprep -d clone-centos7</span>
+<span class="p">[</span>   <span class="mf">0.0</span><span class="p">]</span> <span class="n">Examining</span> <span class="n">the</span> <span class="n">guest</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.2</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;abrt-data&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.2</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;bash-history&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.2</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;blkid-tab&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.2</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;crash-data&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.2</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;cron-spool&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.2</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;dhcp-client-state&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.2</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;dhcp-server-state&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.2</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;dovecot-data&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.2</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;logfiles&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;machine-id&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;mail-spool&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;net-hostname&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;net-hwaddr&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;pacct-log&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;package-manager-cache&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;pam-data&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;puppet-data-log&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;rh-subscription-manager&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;rhn-systemid&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;rpm-db&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;samba-db-log&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;script&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;smolt-uuid&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;ssh-hostkeys&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;ssh-userdir&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;sssd-db-log&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;tmp-files&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;udev-persistent-net&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;utmp&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;yum-uuid&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;customize&quot;</span> <span class="o">...</span>
+<span class="p">[</span>  <span class="mf">21.3</span><span class="p">]</span> <span class="n">Setting</span> <span class="n">a</span> <span class="n">random</span> <span class="n">seed</span>
+<span class="p">[</span>  <span class="mf">21.8</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;lvm-uuids&quot;</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>set password:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virt-sysprep -d clone-centos7  --hostname clone-centos7 --root-password password:123456</span>
+<span class="p">[</span>   <span class="mf">0.0</span><span class="p">]</span> <span class="n">Examining</span> <span class="n">the</span> <span class="n">guest</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">2.9</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;abrt-data&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">2.9</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;bash-history&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">2.9</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;blkid-tab&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">2.9</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;crash-data&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;cron-spool&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;dhcp-client-state&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;dhcp-server-state&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;dovecot-data&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;logfiles&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;machine-id&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;mail-spool&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;net-hostname&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;net-hwaddr&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;pacct-log&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;package-manager-cache&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;pam-data&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;puppet-data-log&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;rh-subscription-manager&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;rhn-systemid&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;rpm-db&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;samba-db-log&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;script&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;smolt-uuid&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;ssh-hostkeys&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;ssh-userdir&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;sssd-db-log&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;tmp-files&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;udev-persistent-net&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;utmp&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;yum-uuid&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;customize&quot;</span> <span class="o">...</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Setting</span> <span class="n">a</span> <span class="n">random</span> <span class="n">seed</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Setting</span> <span class="n">the</span> <span class="n">hostname</span><span class="p">:</span> <span class="n">clone</span><span class="o">-</span><span class="n">centos7</span>
+<span class="p">[</span>   <span class="mf">3.0</span><span class="p">]</span> <span class="n">Setting</span> <span class="n">passwords</span>
+<span class="p">[</span>   <span class="mf">4.9</span><span class="p">]</span> <span class="n">Performing</span> <span class="s2">&quot;lvm-uuids&quot;</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Start vm:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virsh start  clone-centos7</span>
+<span class="n">Domain</span> <span class="n">clone</span><span class="o">-</span><span class="n">centos7</span> <span class="n">started</span>
+
+<span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virsh list</span>
+ <span class="n">Id</span>    <span class="n">Name</span>                           <span class="n">State</span>
+<span class="o">----------------------------------------------------</span>
+ <span class="mi">5</span>     <span class="n">base</span><span class="o">-</span><span class="n">centos7</span>                   <span class="n">paused</span>
+ <span class="mi">8</span>     <span class="n">clone</span><span class="o">-</span><span class="n">centos7</span>                  <span class="n">running</span>
+
+<span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="n">networks</span><span class="p">]</span><span class="c1"># virt-viewer 8</span>
+</pre></div>
+</div>
+<img alt="_images/vm030.png" src="_images/vm030.png" />
+<p>ให้ทดสอบ การ login ด้วย root  และ password  ใหม่ โดยให้กด <code class="docutils literal"><span class="pre">not</span> <span class="pre">listed</span></code> ที่ เพื่อเปลี่ยนเป็น root user แทน   admin</p>
+</div>
 </div>
 <div class="section" id="install-virtualization-system">
 <h3>Install Virtualization System<a class="headerlink" href="#install-virtualization-system" title="Permalink to this headline">¶</a></h3>
@@ -254,21 +427,59 @@ systemctl <span class="nb">enable</span> libvirtd
 useradd -a -G libvirt admin
 </pre></div>
 </td></tr></table></div>
-<div class="highlight-bash"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># ubuntu</span>
-apt-get install qemu-kvm libvirt-bin bridge-utils virt-manager
+</div>
+<div class="section" id="network-virtualization">
+<h3>Network Virtualization<a class="headerlink" href="#network-virtualization" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="libvirt-network">
+<h4>Libvirt network<a class="headerlink" href="#libvirt-network" title="Permalink to this headline">¶</a></h4>
+<p>เมื่อทำการติดตั้ง libvirt และ  เริ่มต้นการทำงานแล้วนั้นจะ มีการสร้าง Linux bridge มีชื่อว่า virbr0 โดยทดสอบโดยการใช้คำสั่ง ip a โดยมี ip 192.168.122.1 ทำหน้าเป็น Gateway ให้ Vm เพื่อ  ออกสู่ internet โดยถือว่าเป็น Default bridge และทำหน้าที่เปรียบเสมือน network switch มีการทำงานในลักษณะ NAT
+สามารถตรวจสอบ ไปยัง เมนู  Edit &gt; Connection Detail จะแสดงผลดังรู</p>
+<img alt="_images/vm025.png" src="_images/vm025.png" />
+<p>ตรวจสอบด้วยคำสั่ง ip a:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ip</span> <span class="n">a</span>
 
-<span class="c1"># add user to group</span>
-adduser &lt;user&gt; libvirtd
+    <span class="mi">4</span><span class="p">:</span> <span class="n">virbr0</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">BROADCAST</span><span class="p">,</span><span class="n">MULTICAST</span><span class="p">,</span><span class="n">UP</span><span class="p">,</span><span class="n">LOWER_UP</span><span class="o">&gt;</span> <span class="n">mtu</span> <span class="mi">1500</span> <span class="n">qdisc</span> <span class="n">noqueue</span> <span class="n">state</span> <span class="n">UP</span> <span class="n">group</span> <span class="n">default</span> <span class="n">qlen</span> <span class="mi">1000</span>
+            <span class="n">link</span><span class="o">/</span><span class="n">ether</span> <span class="mi">52</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="n">c1</span><span class="p">:</span><span class="mi">9</span><span class="n">f</span><span class="p">:</span><span class="n">ed</span> <span class="n">brd</span> <span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span>
+            <span class="n">inet</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">122.1</span><span class="o">/</span><span class="mi">24</span> <span class="n">brd</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">122.255</span> <span class="n">scope</span> <span class="k">global</span> <span class="n">virbr0</span>
+               <span class="n">valid_lft</span> <span class="n">forever</span> <span class="n">preferred_lft</span> <span class="n">forever</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="n">virbr0</span><span class="o">-</span><span class="n">nic</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">BROADCAST</span><span class="p">,</span><span class="n">MULTICAST</span><span class="o">&gt;</span> <span class="n">mtu</span> <span class="mi">1500</span> <span class="n">qdisc</span> <span class="n">fq_codel</span> <span class="n">master</span> <span class="n">virbr0</span> <span class="n">state</span> <span class="n">DOWN</span> <span class="n">group</span> <span class="n">default</span> <span class="n">qlen</span> <span class="mi">1000</span>
+            <span class="n">link</span><span class="o">/</span><span class="n">ether</span> <span class="mi">52</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="n">c1</span><span class="p">:</span><span class="mi">9</span><span class="n">f</span><span class="p">:</span><span class="n">ed</span> <span class="n">brd</span> <span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span>
 
-adduser admin libvirtd
+    <span class="mi">8</span><span class="p">:</span> <span class="n">vnet0</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">BROADCAST</span><span class="p">,</span><span class="n">MULTICAST</span><span class="p">,</span><span class="n">UP</span><span class="p">,</span><span class="n">LOWER_UP</span><span class="o">&gt;</span> <span class="n">mtu</span> <span class="mi">1500</span> <span class="n">qdisc</span> <span class="n">fq_codel</span> <span class="n">master</span> <span class="n">virbr0</span> <span class="n">state</span> <span class="n">UNKNOWN</span> <span class="n">group</span> <span class="n">default</span> <span class="n">qlen</span> <span class="mi">1000</span>
+<span class="n">link</span><span class="o">/</span><span class="n">ether</span> <span class="n">fe</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="n">fe</span><span class="p">:</span><span class="n">a1</span><span class="p">:</span><span class="n">f2</span> <span class="n">brd</span> <span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span>
+<span class="n">inet6</span> <span class="n">fe80</span><span class="p">::</span><span class="n">fc54</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">fefe</span><span class="p">:</span><span class="n">a1f2</span><span class="o">/</span><span class="mi">64</span> <span class="n">scope</span> <span class="n">link</span>
+   <span class="n">valid_lft</span> <span class="n">forever</span> <span class="n">preferred_lft</span> <span class="n">forever</span>
 </pre></div>
-</td></tr></table></div>
+</div>
+<p>เมื่อ มีการสร้าง VM ขึ้นมา VM ที่สร้างขึ้นจะกูกสร้างมาเกาะบน Bridge ดังกล่าวนี้ โดย  KVM จะสร้าง Port (vnet0) ไว้รองรับ การเชื่อมต่อ จาก vif (virtual interface - eth0) จาก vm</p>
+<img alt="_images/vm026.png" src="_images/vm026.png" />
+</div>
+<div class="section" id="network-xml">
+<h4>Network XML<a class="headerlink" href="#network-xml" title="Permalink to this headline">¶</a></h4>
+<p>การกำหนดรายละเอียด ของ config จะอยู่ใน format xml:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">libvirt</span><span class="o">/</span><span class="n">qemu</span><span class="o">/</span><span class="n">networks</span>
+
+<span class="n">cat</span> <span class="n">default</span><span class="o">.</span><span class="n">xml</span>
+
+<span class="o">&lt;</span><span class="n">network</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">default</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">uuid</span><span class="o">&gt;</span><span class="mi">88</span><span class="n">ec8022</span><span class="o">-</span><span class="mi">2026</span><span class="o">-</span><span class="mi">461</span><span class="n">b</span><span class="o">-</span><span class="n">bf66</span><span class="o">-</span><span class="mi">7</span><span class="n">daaf33c8fc5</span><span class="o">&lt;/</span><span class="n">uuid</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">forward</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;nat&#39;</span><span class="o">/&gt;</span>
+  <span class="o">&lt;</span><span class="n">bridge</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;virbr0&#39;</span> <span class="n">stp</span><span class="o">=</span><span class="s1">&#39;on&#39;</span> <span class="n">delay</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="o">/&gt;</span>
+  <span class="o">&lt;</span><span class="n">mac</span> <span class="n">address</span><span class="o">=</span><span class="s1">&#39;52:54:00:c1:9f:ed&#39;</span><span class="o">/&gt;</span>
+  <span class="o">&lt;</span><span class="n">ip</span> <span class="n">address</span><span class="o">=</span><span class="s1">&#39;192.168.122.1&#39;</span> <span class="n">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.255.0&#39;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">dhcp</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nb">range</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;192.168.122.2&#39;</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;192.168.122.254&#39;</span><span class="o">/&gt;</span>
+        <span class="o">&lt;/</span><span class="n">dhcp</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">ip</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">network</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">การต้องเปลี่ยน ip default สามารถทำได้ โดยการแก้ไข file xml นี้</p>
+</div>
+</div>
 </div>
 </div>
 </div>
