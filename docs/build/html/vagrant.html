@@ -215,47 +215,40 @@ $ vagrant up --provider libvirt
 <p>เพิ่มเติม vagrantfile ด้านล่าง</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: ruby -*-</span>
 <span class="c1"># vi: set ft=ruby :</span>
+
+<span class="n">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="n">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;centos/7&quot;</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">server1</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.10&quot;</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;server1.example.com&quot;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+        <span class="n">end</span>
+  <span class="n">end</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">server2</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.11&quot;</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;server2.example.com&quot;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+        <span class="n">end</span>
+  <span class="n">end</span>
+
+<span class="n">end</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>Vagrant.configure(&#8220;2&#8221;) do <a href="#id1"><span class="problematic" id="id2">|config|</span></a></dt>
-<dd><p class="first">config.vm.box = &#8220;centos/7&#8221;
-config.vm.define :server1 do <a href="#id3"><span class="problematic" id="id4">|node|</span></a></p>
-<blockquote>
-<div><p>node.vm.network :private_network, :ip =&gt; &#8220;10.0.0.10&#8221;
-node.vm.provider :libvirt do <a href="#id5"><span class="problematic" id="id6">|domain|</span></a></p>
-<blockquote>
-<div>domain.uri = &#8216;qemu+unix:///system&#8217;
-domain.driver = &#8216;kvm&#8217;
-domain.host = &#8220;server1.example.com&#8221;
-domain.memory = 2048
-domain.cpus = 2
-domain.nested = true
-domain.volume_cache = &#8216;none&#8217;
-domain.storage :file, :size =&gt; &#8216;20G&#8217;
-domain.storage :file, :size =&gt; &#8216;20G&#8217;
-domain.storage :file, :size =&gt; &#8216;20G&#8217;</div></blockquote>
-<p>end</p>
-</div></blockquote>
-<p>end
-config.vm.define :server2 do <a href="#id7"><span class="problematic" id="id8">|node|</span></a></p>
-<blockquote>
-<div><p>node.vm.network :private_network, :ip =&gt; &#8220;10.0.0.11&#8221;
-node.vm.provider :libvirt do <a href="#id9"><span class="problematic" id="id10">|domain|</span></a></p>
-<blockquote>
-<div>domain.uri = &#8216;qemu+unix:///system&#8217;
-domain.driver = &#8216;kvm&#8217;
-domain.host = &#8220;server2.example.com&#8221;
-domain.memory = 2048
-domain.cpus = 2
-domain.nested = true
-domain.volume_cache = &#8216;none&#8217;</div></blockquote>
-<p>end</p>
-</div></blockquote>
-<p class="last">end</p>
-</dd>
-</dl>
-<p>end</p>
 <img alt="_images/vagrant004.png" src="_images/vagrant004.png" />
 <p>กดเลือก double click lab1_server1  (lab1 ชื่อ  project directory และ server1 เป็น ชื่อ VM)</p>
 <img alt="_images/vagrant005.png" src="_images/vagrant005.png" />
@@ -266,11 +259,15 @@ domain.volume_cache = &#8216;none&#8217;</div></blockquote>
 <h4>Connect to VM<a class="headerlink" href="#connect-to-vm" title="Permalink to this headline">¶</a></h4>
 <p>สามารถเชื่อมผ่าน virsh</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>[lab1]$ sudo virsh list
+ Id    Name                           State
+----------------------------------------------------
+ 1     lab1_server2                   running
+ 2     lab1_server1                   running
+
+
+[lab1]$ sudo virt-viewer lab1_server1
 </pre></div>
 </div>
-<blockquote>
-<div>Id    Name                           State</div></blockquote>
-<p>[lab1]$ sudo virt-viewer lab1_server1</p>
 <p>ให้ใช้ username vagrant และ password vagrant แล้วจึงค่อยเปลี่ยนเป็น root ด้วยคำสั่ง  <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">su</span> <span class="pre">-</span></code></p>
 <img alt="_images/vagrant008.png" src="_images/vagrant008.png" />
 </div>
@@ -279,17 +276,16 @@ domain.volume_cache = &#8216;none&#8217;</div></blockquote>
 <h3>Create Bridge<a class="headerlink" href="#create-bridge" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="persistent-bridge-configure">
 <h4>persistent bridge configure<a class="headerlink" href="#persistent-bridge-configure" title="Permalink to this headline">¶</a></h4>
-<p>::
-sudo su -
-mv /etc/sysconfig/network-scripts/ifcfg-enp3s0 /root</p>
-<p>ip a
-2: enp3s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000</p>
-<blockquote>
-<div><p>link/ether 54:ee:75:8a:86:09 brd ff:ff:ff:ff:ff:ff
-inet 192.168.1.69/24 brd 192.168.1.255 scope global dynamic enp3s0</p>
-<blockquote>
-<div>valid_lft 72724sec preferred_lft 72724sec</div></blockquote>
-</div></blockquote>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">mv</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">network</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">ifcfg</span><span class="o">-</span><span class="n">enp3s0</span> <span class="o">/</span><span class="n">root</span>
+
+<span class="n">ip</span> <span class="n">a</span>
+<span class="mi">2</span><span class="p">:</span> <span class="n">enp3s0</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">BROADCAST</span><span class="p">,</span><span class="n">MULTICAST</span><span class="p">,</span><span class="n">UP</span><span class="p">,</span><span class="n">LOWER_UP</span><span class="o">&gt;</span> <span class="n">mtu</span> <span class="mi">1500</span> <span class="n">qdisc</span> <span class="n">fq_codel</span> <span class="n">state</span> <span class="n">UP</span> <span class="n">group</span> <span class="n">default</span> <span class="n">qlen</span> <span class="mi">1000</span>
+        <span class="n">link</span><span class="o">/</span><span class="n">ether</span> <span class="mi">54</span><span class="p">:</span><span class="n">ee</span><span class="p">:</span><span class="mi">75</span><span class="p">:</span><span class="mi">8</span><span class="n">a</span><span class="p">:</span><span class="mi">86</span><span class="p">:</span><span class="mi">09</span> <span class="n">brd</span> <span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span><span class="p">:</span><span class="n">ff</span>
+        <span class="n">inet</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.69</span><span class="o">/</span><span class="mi">24</span> <span class="n">brd</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.255</span> <span class="n">scope</span> <span class="k">global</span> <span class="n">dynamic</span> <span class="n">enp3s0</span>
+           <span class="n">valid_lft</span> <span class="mi">72724</span><span class="n">sec</span> <span class="n">preferred_lft</span> <span class="mi">72724</span><span class="n">sec</span>
+</pre></div>
+</div>
 <p>สร้าง config file ตาม template ด้านล่าง โดยใช้ข้อมูลจากด้านบน</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">network</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">ifcfg</span><span class="o">-</span><span class="n">enp3s0</span>
 
@@ -372,13 +368,17 @@ inet 192.168.1.69/24 brd 192.168.1.255 scope global dynamic enp3s0</p>
 </pre></div>
 </div>
 <p>ทดสอบการสร้าง vm</p>
-<dl class="docutils">
-<dt>virt-install </dt>
-<dd><blockquote class="first">
-<div>&#8211;network bridge:br0  </div></blockquote>
-<p class="last">&#8211;name vm1 &#8211;ram=1024 &#8211;vcpus=1  &#8211;disk path=/var/lib/libvirt/images/vm1.img,size=10 &#8211;graphics none &#8211;location=http://mirror1.ku.ac.th/centos/7.2.1511/os/x86_64/ &#8211;extra-args=&#8221;console=tty0 console=ttyS0,115200&#8221;</p>
-</dd>
-</dl>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">virt</span><span class="o">-</span><span class="n">install</span> \
+        <span class="o">--</span><span class="n">network</span> <span class="n">bridge</span><span class="p">:</span><span class="n">br0</span>  \
+        <span class="o">--</span><span class="n">name</span> <span class="n">vm1</span> \
+        <span class="o">--</span><span class="n">ram</span><span class="o">=</span><span class="mi">1024</span> \
+        <span class="o">--</span><span class="n">vcpus</span><span class="o">=</span><span class="mi">1</span>  \
+        <span class="o">--</span><span class="n">disk</span> <span class="n">path</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">libvirt</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">vm1</span><span class="o">.</span><span class="n">img</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span> \
+        <span class="o">--</span><span class="n">graphics</span> <span class="n">none</span> \
+        <span class="o">--</span><span class="n">location</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">mirror1</span><span class="o">.</span><span class="n">ku</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">th</span><span class="o">/</span><span class="n">centos</span><span class="o">/</span><span class="mf">7.2</span><span class="o">.</span><span class="mi">1511</span><span class="o">/</span><span class="n">os</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span> \
+        <span class="o">--</span><span class="n">extra</span><span class="o">-</span><span class="n">args</span><span class="o">=</span><span class="s2">&quot;console=tty0 console=ttyS0,115200&quot;</span>
+</pre></div>
+</div>
 <img alt="_images/vagrant008.png" src="_images/vagrant008.png" />
 <img alt="_images/vagrant009.png" src="_images/vagrant009.png" />
 </div>

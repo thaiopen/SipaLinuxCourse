@@ -80,40 +80,40 @@ vagrantfile
 เพิ่มเติม vagrantfile ด้านล่าง
 ::
 
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
+	# -*- mode: ruby -*-
+	# vi: set ft=ruby :
 
-Vagrant.configure("2") do |config|
-  config.vm.box = "centos/7"
-  config.vm.define :server1 do |node|
-    node.vm.network :private_network, :ip => "10.0.0.10"
-    node.vm.provider :libvirt do |domain|
-      domain.uri = 'qemu+unix:///system'
-      domain.driver = 'kvm'
-      domain.host = "server1.example.com"
-      domain.memory = 2048
-      domain.cpus = 2
-      domain.nested = true
-      domain.volume_cache = 'none'
-      domain.storage :file, :size => '20G'
-      domain.storage :file, :size => '20G'
-      domain.storage :file, :size => '20G'
-    end
-  end
-  config.vm.define :server2 do |node|
-    node.vm.network :private_network, :ip => "10.0.0.11"
-    node.vm.provider :libvirt do |domain|
-      domain.uri = 'qemu+unix:///system'
-      domain.driver = 'kvm'
-      domain.host = "server2.example.com"
-      domain.memory = 2048
-      domain.cpus = 2
-      domain.nested = true
-      domain.volume_cache = 'none'
-    end
-  end
+	Vagrant.configure("2") do |config|
+	  config.vm.box = "centos/7"
+	  config.vm.define :server1 do |node|
+		node.vm.network :private_network, :ip => "10.0.0.10"
+		node.vm.provider :libvirt do |domain|
+		  domain.uri = 'qemu+unix:///system'
+		  domain.driver = 'kvm'
+		  domain.host = "server1.example.com"
+		  domain.memory = 2048
+		  domain.cpus = 2
+		  domain.nested = true
+		  domain.volume_cache = 'none'
+		  domain.storage :file, :size => '20G'
+		  domain.storage :file, :size => '20G'
+		  domain.storage :file, :size => '20G'
+		end
+	  end
+	  config.vm.define :server2 do |node|
+		node.vm.network :private_network, :ip => "10.0.0.11"
+		node.vm.provider :libvirt do |domain|
+		  domain.uri = 'qemu+unix:///system'
+		  domain.driver = 'kvm'
+		  domain.host = "server2.example.com"
+		  domain.memory = 2048
+		  domain.cpus = 2
+		  domain.nested = true
+		  domain.volume_cache = 'none'
+		end
+	  end
 
-end
+	end
 
 .. image:: images/vagrant004.png
 
@@ -131,14 +131,14 @@ Connect to VM
 สามารถเชื่อมผ่าน virsh
 ::
 
-[lab1]$ sudo virsh list
- Id    Name                           State
-----------------------------------------------------
- 1     lab1_server2                   running
- 2     lab1_server1                   running
+	[lab1]$ sudo virsh list
+	 Id    Name                           State
+	----------------------------------------------------
+	 1     lab1_server2                   running
+	 2     lab1_server1                   running
 
 
-[lab1]$ sudo virt-viewer lab1_server1
+	[lab1]$ sudo virt-viewer lab1_server1
 
 ให้ใช้ username vagrant และ password vagrant แล้วจึงค่อยเปลี่ยนเป็น root ด้วยคำสั่ง  ``sudo su -``
 
@@ -150,14 +150,15 @@ Create Bridge
 persistent bridge configure
 ---------------------------
 ::
-sudo su -
-mv /etc/sysconfig/network-scripts/ifcfg-enp3s0 /root
 
-ip a
-2: enp3s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 54:ee:75:8a:86:09 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.1.69/24 brd 192.168.1.255 scope global dynamic enp3s0
-       valid_lft 72724sec preferred_lft 72724sec
+	sudo su -
+	mv /etc/sysconfig/network-scripts/ifcfg-enp3s0 /root
+
+	ip a
+	2: enp3s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+		link/ether 54:ee:75:8a:86:09 brd ff:ff:ff:ff:ff:ff
+		inet 192.168.1.69/24 brd 192.168.1.255 scope global dynamic enp3s0
+		   valid_lft 72724sec preferred_lft 72724sec
 
 สร้าง config file ตาม template ด้านล่าง โดยใช้ข้อมูลจากด้านบน
 ::
@@ -251,15 +252,15 @@ error เกิดจากยังไม่ได้โหลด kernel module
 ทดสอบการสร้าง vm
 ::
 
-virt-install \
-  	--network bridge:br0  \
-    --name vm1 \
-    --ram=1024 \
-    --vcpus=1  \
-    --disk path=/var/lib/libvirt/images/vm1.img,size=10 \
-    --graphics none \
-    --location=http://mirror1.ku.ac.th/centos/7.2.1511/os/x86_64/ \
-    --extra-args="console=tty0 console=ttyS0,115200"
+	virt-install \
+	  	--network bridge:br0  \
+		--name vm1 \
+		--ram=1024 \
+		--vcpus=1  \
+		--disk path=/var/lib/libvirt/images/vm1.img,size=10 \
+		--graphics none \
+		--location=http://mirror1.ku.ac.th/centos/7.2.1511/os/x86_64/ \
+		--extra-args="console=tty0 console=ttyS0,115200"
 
 .. image:: images/vagrant008.png
 
