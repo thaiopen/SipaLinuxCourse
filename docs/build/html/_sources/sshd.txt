@@ -63,6 +63,6 @@ copy public key  ไปยัง targetserver (จับคู่แลก ip)
 restart
 ::
 
-systemctl restart sshd
+	systemctl restart sshd
 
 
