@@ -14,6 +14,119 @@ Basic Command
 *************
 nmcli & ip command
 ------------------
+รูปแบบคำสั่ง ip::
+
+
+ip OBJECT COMMAND
+ip [options] OBJECT COMMAND
+ip OBJECT help
+
+.. image:: images/ip002.png
+
+*. แสดงข้อมูลทุก network interface
+::
+
+	ip a
+	--หรือ--
+	ip addr
+
+.. image:: images/ip002.png
+
+*. แสดงผล ipv4 ipv6
+::
+
+	### Only show TCP/IP IPv4  ##
+	ip -4 a
+	 
+	### Only show TCP/IP IPv6  ###
+	ip -6 a
+
+*. แสดงผลบาง interface
+::
+
+### Only show eth0 interface ###
+ip a show eth0
+ip a list eth0
+ip a show dev eth0
+ 
+### Only show running interfaces ###
+ip link ls up
+
+*. กำหนด ip ให้แก่ interface 
+::
+
+	### syntax 
+	ip a add {ip_addr/mask} dev {interface}
+
+	### ตัวอย่าง กำหนด ip 192.168.1.200 ให้แก่ interface eth0
+	ip a add 192.168.1.200/255.255.255.0 dev eth0
+
+*. ลบ ip จาก interface
+::
+
+	### syntax
+	ip a del {ipv6_addr_OR_ipv4_addr} dev {interface}
+
+	### ตัวอย่าง
+	ip a del 192.168.1.200/24 dev eth0
+
+*. เปลี่ยน สถานะของ Dev (interface)
+::
+
+	### Syntax
+	ip link set dev {DEVICE} {up|down}
+	### ตัวอย่าง
+
+	ip link set dev eth1 up
+	ip link set dev eth1 down
+
+*. เปลี่ยนค่า MTU
+::
+
+	### syntax
+	ip link set mtu {NUMBER} dev {DEVICE}
+
+	### ตัวอย่าง
+	ip link set mtu 9000 dev eth0
+	ip a list eth0
+
+.. image:: images/ip004.png
+
+#. แสดงค่า neighbour/apr cache
+::
+
+ip n show
+ip neigh show
+
+(result)
+192.168.89.123 dev wlp2s0 lladdr 08:5b:0e:a0:d1:0e STALE
+192.168.50.95 dev enp3s0 lladdr 78:48:59:16:41:21 REACHABLE
+192.168.89.254 dev wlp2s0 lladdr 00:1a:1e:24:aa:10 STALE
+
+ความหมาย
+	* STALE – The neighbour is valid, but is probably already unreachable, so the kernel will try to check it at the first transmission
+	* DELAY – A packet has been sent to the stale neighbour and the kernel is waiting for confirmation.
+	* REACHABLE – The neighbour is valid and apparently reachable.
+
+
+#. แสดง routing table
+::
+    ### syntax
+	ip r
+	ip r list
+	ip r list [options]
+	ip route
+	(result)
+	default via 192.168.50.95 dev enp3s0  proto static  metric 100 
+	default via 192.168.89.123 dev wlp2s0  proto static  metric 600 
+	192.168.1.0/24 dev br0  proto kernel  scope link  src 192.168.1.69  metric 425 linkdown 
+	192.168.50.0/24 dev enp3s0  proto kernel  scope link  src 192.168.50.168  metric 100 
+	192.168.89.0/24 dev wlp2s0  proto kernel  scope link  src 192.168.89.94  metric 600 
+	192.168.122.0/24 dev virbr0  proto kernel  scope link  src 192.168.122.1 linkdown 
+
+	### แสดง route ระบุ subnet
+	ip r list 192.168.50.0/24
+	192.168.50.0/24 dev enp3s0  proto kernel  scope link  src 192.168.50.168  metric 100 
 
 ติดตั้ง nmtui::
 

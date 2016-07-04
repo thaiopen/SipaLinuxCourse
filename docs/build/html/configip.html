@@ -154,6 +154,105 @@
 <h3>Basic Command<a class="headerlink" href="#basic-command" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="nmcli-ip-command">
 <h4>nmcli &amp; ip command<a class="headerlink" href="#nmcli-ip-command" title="Permalink to this headline">¶</a></h4>
+<p>รูปแบบคำสั่ง ip:</p>
+<p>ip OBJECT COMMAND
+ip [options] OBJECT COMMAND
+ip OBJECT help</p>
+<img alt="_images/ip002.png" src="_images/ip002.png" />
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a>. แสดงข้อมูลทุก network interface</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">a</span>
+<span class="o">--</span><span class="n">หรือ</span><span class="o">--</span>
+<span class="n">ip</span> <span class="n">addr</span>
+</pre></div>
+</div>
+<img alt="_images/ip002.png" src="_images/ip002.png" />
+<p><a href="#id3"><span class="problematic" id="id4">*</span></a>. แสดงผล ipv4 ipv6</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">### Only show TCP/IP IPv4  ##</span>
+<span class="n">ip</span> <span class="o">-</span><span class="mi">4</span> <span class="n">a</span>
+
+<span class="c1">### Only show TCP/IP IPv6  ###</span>
+<span class="n">ip</span> <span class="o">-</span><span class="mi">6</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p><a href="#id5"><span class="problematic" id="id6">*</span></a>. แสดงผลบาง interface</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">### Only show eth0 interface ###</span>
+</pre></div>
+</div>
+<p>ip a show eth0
+ip a list eth0
+ip a show dev eth0</p>
+<p>### Only show running interfaces ###
+ip link ls up</p>
+<p><a href="#id7"><span class="problematic" id="id8">*</span></a>. กำหนด ip ให้แก่ interface</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">### syntax</span>
+<span class="n">ip</span> <span class="n">a</span> <span class="n">add</span> <span class="p">{</span><span class="n">ip_addr</span><span class="o">/</span><span class="n">mask</span><span class="p">}</span> <span class="n">dev</span> <span class="p">{</span><span class="n">interface</span><span class="p">}</span>
+
+<span class="c1">### ตัวอย่าง กำหนด ip 192.168.1.200 ให้แก่ interface eth0</span>
+<span class="n">ip</span> <span class="n">a</span> <span class="n">add</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.200</span><span class="o">/</span><span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span> <span class="n">dev</span> <span class="n">eth0</span>
+</pre></div>
+</div>
+<p><a href="#id9"><span class="problematic" id="id10">*</span></a>. ลบ ip จาก interface</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">### syntax</span>
+<span class="n">ip</span> <span class="n">a</span> <span class="k">del</span> <span class="p">{</span><span class="n">ipv6_addr_OR_ipv4_addr</span><span class="p">}</span> <span class="n">dev</span> <span class="p">{</span><span class="n">interface</span><span class="p">}</span>
+
+<span class="c1">### ตัวอย่าง</span>
+<span class="n">ip</span> <span class="n">a</span> <span class="k">del</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.200</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">eth0</span>
+</pre></div>
+</div>
+<p><a href="#id11"><span class="problematic" id="id12">*</span></a>. เปลี่ยน สถานะของ Dev (interface)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">### Syntax</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="p">{</span><span class="n">DEVICE</span><span class="p">}</span> <span class="p">{</span><span class="n">up</span><span class="o">|</span><span class="n">down</span><span class="p">}</span>
+<span class="c1">### ตัวอย่าง</span>
+
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">eth1</span> <span class="n">up</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">eth1</span> <span class="n">down</span>
+</pre></div>
+</div>
+<p><a href="#id13"><span class="problematic" id="id14">*</span></a>. เปลี่ยนค่า MTU</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">### syntax</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">mtu</span> <span class="p">{</span><span class="n">NUMBER</span><span class="p">}</span> <span class="n">dev</span> <span class="p">{</span><span class="n">DEVICE</span><span class="p">}</span>
+
+<span class="c1">### ตัวอย่าง</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">mtu</span> <span class="mi">9000</span> <span class="n">dev</span> <span class="n">eth0</span>
+<span class="n">ip</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">eth0</span>
+</pre></div>
+</div>
+<img alt="_images/ip004.png" src="_images/ip004.png" />
+<p>#. แสดงค่า neighbour/apr cache</p>
+<p>ip n show
+ip neigh show</p>
+<p>(result)
+192.168.89.123 dev wlp2s0 lladdr 08:5b:0e:a0:d1:0e STALE
+192.168.50.95 dev enp3s0 lladdr 78:48:59:16:41:21 REACHABLE
+192.168.89.254 dev wlp2s0 lladdr 00:1a:1e:24:aa:10 STALE</p>
+<dl class="docutils">
+<dt>ความหมาย</dt>
+<dd><ul class="first last simple">
+<li>STALE – The neighbour is valid, but is probably already unreachable, so the kernel will try to check it at the first transmission</li>
+<li>DELAY – A packet has been sent to the stale neighbour and the kernel is waiting for confirmation.</li>
+<li>REACHABLE – The neighbour is valid and apparently reachable.</li>
+</ul>
+</dd>
+</dl>
+<p>#. แสดง routing table</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">### syntax</span>
+    <span class="n">ip</span> <span class="n">r</span>
+    <span class="n">ip</span> <span class="n">r</span> <span class="nb">list</span>
+    <span class="n">ip</span> <span class="n">r</span> <span class="nb">list</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span>
+    <span class="n">ip</span> <span class="n">route</span>
+    <span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">default</span> <span class="n">via</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">50.95</span> <span class="n">dev</span> <span class="n">enp3s0</span>  <span class="n">proto</span> <span class="n">static</span>  <span class="n">metric</span> <span class="mi">100</span>
+    <span class="n">default</span> <span class="n">via</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">89.123</span> <span class="n">dev</span> <span class="n">wlp2s0</span>  <span class="n">proto</span> <span class="n">static</span>  <span class="n">metric</span> <span class="mi">600</span>
+    <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">br0</span>  <span class="n">proto</span> <span class="n">kernel</span>  <span class="n">scope</span> <span class="n">link</span>  <span class="n">src</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.69</span>  <span class="n">metric</span> <span class="mi">425</span> <span class="n">linkdown</span>
+    <span class="mf">192.168</span><span class="o">.</span><span class="mf">50.0</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">enp3s0</span>  <span class="n">proto</span> <span class="n">kernel</span>  <span class="n">scope</span> <span class="n">link</span>  <span class="n">src</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">50.168</span>  <span class="n">metric</span> <span class="mi">100</span>
+    <span class="mf">192.168</span><span class="o">.</span><span class="mf">89.0</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">wlp2s0</span>  <span class="n">proto</span> <span class="n">kernel</span>  <span class="n">scope</span> <span class="n">link</span>  <span class="n">src</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">89.94</span>  <span class="n">metric</span> <span class="mi">600</span>
+    <span class="mf">192.168</span><span class="o">.</span><span class="mf">122.0</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">virbr0</span>  <span class="n">proto</span> <span class="n">kernel</span>  <span class="n">scope</span> <span class="n">link</span>  <span class="n">src</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">122.1</span> <span class="n">linkdown</span>
+
+    <span class="c1">### แสดง route ระบุ subnet</span>
+    <span class="n">ip</span> <span class="n">r</span> <span class="nb">list</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">50.0</span><span class="o">/</span><span class="mi">24</span>
+    <span class="mf">192.168</span><span class="o">.</span><span class="mf">50.0</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">enp3s0</span>  <span class="n">proto</span> <span class="n">kernel</span>  <span class="n">scope</span> <span class="n">link</span>  <span class="n">src</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">50.168</span>  <span class="n">metric</span> <span class="mi">100</span>
+</pre></div>
+</div>
 <p>ติดตั้ง nmtui:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># dnf install NetworkManager-tui</span>
     <span class="p">(</span><span class="n">result</span><span class="p">)</span>
