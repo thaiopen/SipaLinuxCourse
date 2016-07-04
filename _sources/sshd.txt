@@ -22,16 +22,16 @@ install
 --------------------
 ::
 
-vim  /etc/ssh/sshd_config  
+	vim  /etc/ssh/sshd_config  
 
-19:#ListenAddress 0.0.0.0
-49:PermitRootLogin yes
-55:#PubkeyAuthentication yes
-79:PasswordAuthentication yes
+	19:#ListenAddress 0.0.0.0
+	49:PermitRootLogin yes
+	55:#PubkeyAuthentication yes
+	79:PasswordAuthentication yes
 
 
-systemctl reload sshd
-systemctl status sshd
+	systemctl reload sshd
+	systemctl status sshd
 
 Keyauthen
 ---------

@@ -162,13 +162,18 @@
 </div>
 <div class="section" id="etc-ssh-sshd-config">
 <h4>/etc/ssh/sshd_config<a class="headerlink" href="#etc-ssh-sshd-config" title="Permalink to this headline">¶</a></h4>
-<p>vim  /etc/ssh/sshd_config</p>
-<p>19:#ListenAddress 0.0.0.0
-49:PermitRootLogin yes
-55:#PubkeyAuthentication yes
-79:PasswordAuthentication yes</p>
-<p>systemctl reload sshd
-systemctl status sshd</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vim</span>  <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ssh</span><span class="o">/</span><span class="n">sshd_config</span>
+
+<span class="mi">19</span><span class="p">:</span><span class="c1">#ListenAddress 0.0.0.0</span>
+<span class="mi">49</span><span class="p">:</span><span class="n">PermitRootLogin</span> <span class="n">yes</span>
+<span class="mi">55</span><span class="p">:</span><span class="c1">#PubkeyAuthentication yes</span>
+<span class="mi">79</span><span class="p">:</span><span class="n">PasswordAuthentication</span> <span class="n">yes</span>
+
+
+<span class="n">systemctl</span> <span class="n">reload</span> <span class="n">sshd</span>
+<span class="n">systemctl</span> <span class="n">status</span> <span class="n">sshd</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="keyauthen">
 <h4>Keyauthen<a class="headerlink" href="#keyauthen" title="Permalink to this headline">¶</a></h4>
