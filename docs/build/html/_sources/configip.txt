@@ -17,9 +17,9 @@ nmcli & ip command
 รูปแบบคำสั่ง ip::
 
 
-ip OBJECT COMMAND
-ip [options] OBJECT COMMAND
-ip OBJECT help
+	ip OBJECT COMMAND
+	ip [options] OBJECT COMMAND
+	ip OBJECT help
 
 .. image:: images/ip002.png
 
@@ -44,13 +44,13 @@ ip OBJECT help
 *. แสดงผลบาง interface
 ::
 
-### Only show eth0 interface ###
-ip a show eth0
-ip a list eth0
-ip a show dev eth0
+	### Only show eth0 interface ###
+	ip a show eth0
+	ip a list eth0
+	ip a show dev eth0
  
-### Only show running interfaces ###
-ip link ls up
+	### Only show running interfaces ###
+	ip link ls up
 
 *. กำหนด ip ให้แก่ interface 
 ::
@@ -95,13 +95,13 @@ ip link ls up
 #. แสดงค่า neighbour/apr cache
 ::
 
-ip n show
-ip neigh show
+	ip n show
+	ip neigh show
 
-(result)
-192.168.89.123 dev wlp2s0 lladdr 08:5b:0e:a0:d1:0e STALE
-192.168.50.95 dev enp3s0 lladdr 78:48:59:16:41:21 REACHABLE
-192.168.89.254 dev wlp2s0 lladdr 00:1a:1e:24:aa:10 STALE
+	(result)
+	192.168.89.123 dev wlp2s0 lladdr 08:5b:0e:a0:d1:0e STALE
+	192.168.50.95 dev enp3s0 lladdr 78:48:59:16:41:21 REACHABLE
+	192.168.89.254 dev wlp2s0 lladdr 00:1a:1e:24:aa:10 STALE
 
 ความหมาย
 	* STALE – The neighbour is valid, but is probably already unreachable, so the kernel will try to check it at the first transmission

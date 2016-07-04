@@ -155,9 +155,11 @@
 <div class="section" id="nmcli-ip-command">
 <h4>nmcli &amp; ip command<a class="headerlink" href="#nmcli-ip-command" title="Permalink to this headline">¶</a></h4>
 <p>รูปแบบคำสั่ง ip:</p>
-<p>ip OBJECT COMMAND
-ip [options] OBJECT COMMAND
-ip OBJECT help</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">OBJECT</span> <span class="n">COMMAND</span>
+<span class="n">ip</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">OBJECT</span> <span class="n">COMMAND</span>
+<span class="n">ip</span> <span class="n">OBJECT</span> <span class="n">help</span>
+</pre></div>
+</div>
 <img alt="_images/ip002.png" src="_images/ip002.png" />
 <p><a href="#id1"><span class="problematic" id="id2">*</span></a>. แสดงข้อมูลทุก network interface</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">a</span>
@@ -176,13 +178,14 @@ ip OBJECT help</p>
 </div>
 <p><a href="#id5"><span class="problematic" id="id6">*</span></a>. แสดงผลบาง interface</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">### Only show eth0 interface ###</span>
+<span class="n">ip</span> <span class="n">a</span> <span class="n">show</span> <span class="n">eth0</span>
+<span class="n">ip</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">eth0</span>
+<span class="n">ip</span> <span class="n">a</span> <span class="n">show</span> <span class="n">dev</span> <span class="n">eth0</span>
+
+<span class="c1">### Only show running interfaces ###</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="n">ls</span> <span class="n">up</span>
 </pre></div>
 </div>
-<p>ip a show eth0
-ip a list eth0
-ip a show dev eth0</p>
-<p>### Only show running interfaces ###
-ip link ls up</p>
 <p><a href="#id7"><span class="problematic" id="id8">*</span></a>. กำหนด ip ให้แก่ interface</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">### syntax</span>
 <span class="n">ip</span> <span class="n">a</span> <span class="n">add</span> <span class="p">{</span><span class="n">ip_addr</span><span class="o">/</span><span class="n">mask</span><span class="p">}</span> <span class="n">dev</span> <span class="p">{</span><span class="n">interface</span><span class="p">}</span>
@@ -219,12 +222,15 @@ ip link ls up</p>
 </div>
 <img alt="_images/ip004.png" src="_images/ip004.png" />
 <p>#. แสดงค่า neighbour/apr cache</p>
-<p>ip n show
-ip neigh show</p>
-<p>(result)
-192.168.89.123 dev wlp2s0 lladdr 08:5b:0e:a0:d1:0e STALE
-192.168.50.95 dev enp3s0 lladdr 78:48:59:16:41:21 REACHABLE
-192.168.89.254 dev wlp2s0 lladdr 00:1a:1e:24:aa:10 STALE</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">n</span> <span class="n">show</span>
+<span class="n">ip</span> <span class="n">neigh</span> <span class="n">show</span>
+
+<span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="mf">192.168</span><span class="o">.</span><span class="mf">89.123</span> <span class="n">dev</span> <span class="n">wlp2s0</span> <span class="n">lladdr</span> <span class="mi">08</span><span class="p">:</span><span class="mi">5</span><span class="n">b</span><span class="p">:</span><span class="mi">0</span><span class="n">e</span><span class="p">:</span><span class="n">a0</span><span class="p">:</span><span class="n">d1</span><span class="p">:</span><span class="mi">0</span><span class="n">e</span> <span class="n">STALE</span>
+<span class="mf">192.168</span><span class="o">.</span><span class="mf">50.95</span> <span class="n">dev</span> <span class="n">enp3s0</span> <span class="n">lladdr</span> <span class="mi">78</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mi">16</span><span class="p">:</span><span class="mi">41</span><span class="p">:</span><span class="mi">21</span> <span class="n">REACHABLE</span>
+<span class="mf">192.168</span><span class="o">.</span><span class="mf">89.254</span> <span class="n">dev</span> <span class="n">wlp2s0</span> <span class="n">lladdr</span> <span class="mi">00</span><span class="p">:</span><span class="mi">1</span><span class="n">a</span><span class="p">:</span><span class="mi">1</span><span class="n">e</span><span class="p">:</span><span class="mi">24</span><span class="p">:</span><span class="n">aa</span><span class="p">:</span><span class="mi">10</span> <span class="n">STALE</span>
+</pre></div>
+</div>
 <dl class="docutils">
 <dt>ความหมาย</dt>
 <dd><ul class="first last simple">
