@@ -14,6 +14,7 @@ Contents:
    systemd
    configip
    firewall
+   sshd
    setupvm
    vagrant
 
