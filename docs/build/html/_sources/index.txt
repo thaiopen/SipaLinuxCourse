@@ -20,7 +20,7 @@ Contents:
    bridgekvm
    ovs
    team
-   
+   lvm
 
 
 Indices and tables

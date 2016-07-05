@@ -1,0 +1,59 @@
+========================
+Openstack with Packstack
+========================
+
+packstack
+=========
+
+vagrant
+-------
+สร้าง directory ชื่อ openstack และภายในมี Vagrantfile ดังนี้
+::
+
+	# -*- mode: ruby -*-
+	# vi: set ft=ruby :
+
+	Vagrant.configure("2") do |config|
+	  config.vm.box = "centos/7"
+	  config.vm.define :controller do |node|
+		    node.vm.network :private_network, :ip => "10.0.0.10"
+		    node.vm.network :private_network, :ip => "20.0.0.10"
+		    node.vm.provider :libvirt do |domain|
+		      domain.uri = 'qemu+unix:///system'
+		      domain.driver = 'kvm'
+		      domain.host = "server1.example.com"
+		      domain.memory = 8192
+		      domain.cpus = 4
+		      domain.nested = true
+		      domain.volume_cache = 'none'
+		      domain.storage :file, :size => '20G'
+		    end
+	  end
+	  config.vm.define :compute do |node|
+		    node.vm.network :private_network, :ip => "10.0.0.11"
+		    node.vm.network :private_network, :ip => "20.0.0.11"
+		    node.vm.provider :libvirt do |domain|
+		      domain.uri = 'qemu+unix:///system'
+		      domain.driver = 'kvm'
+		      domain.host = "server2.example.com"
+		      domain.memory = 4096
+		      domain.cpus = 2
+		      domain.nested = true
+		      domain.volume_cache = 'none'
+		    end
+	  end
+	end
+
+เข้าไปยัง controller
+::
+
+	vagrant ssh controller
+    sudo su -
+    sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
+    setenforce 0
+    
+    yum install -y epel
+    yum install -y centos-release-openstack-mitaka
+	yum update -y
+    yum install -y openstack-packstack
+    packstack --gen-answer-file  answerfile001.txt
