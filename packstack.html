@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Openstack with Packstack &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Openstack with Packstack</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/packstack.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="openstack-with-packstack">
+<h1>Openstack with Packstack<a class="headerlink" href="#openstack-with-packstack" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="packstack">
+<h2>packstack<a class="headerlink" href="#packstack" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="vagrant">
+<h3>vagrant<a class="headerlink" href="#vagrant" title="Permalink to this headline">¶</a></h3>
+<p>สร้าง directory ชื่อ openstack และภายในมี Vagrantfile ดังนี้</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: ruby -*-</span>
+<span class="c1"># vi: set ft=ruby :</span>
+
+<span class="n">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="n">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;centos/7&quot;</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">controller</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.10&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;20.0.0.10&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;server1.example.com&quot;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">8192</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">4</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+            <span class="n">end</span>
+  <span class="n">end</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">compute</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.11&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;20.0.0.11&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;server2.example.com&quot;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">4096</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+            <span class="n">end</span>
+  <span class="n">end</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+<p>เข้าไปยัง controller</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="n">s</span><span class="o">/</span><span class="n">SELINUX</span><span class="o">=</span><span class="n">enforcing</span><span class="o">/</span><span class="n">SELINUX</span><span class="o">=</span><span class="n">disabled</span><span class="o">/</span><span class="n">g</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">selinux</span><span class="o">/</span><span class="n">config</span>
+<span class="n">setenforce</span> <span class="mi">0</span>
+
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">epel</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">centos</span><span class="o">-</span><span class="n">release</span><span class="o">-</span><span class="n">openstack</span><span class="o">-</span><span class="n">mitaka</span>
+    <span class="n">yum</span> <span class="n">update</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">openstack</span><span class="o">-</span><span class="n">packstack</span>
+<span class="n">packstack</span> <span class="o">--</span><span class="n">gen</span><span class="o">-</span><span class="n">answer</span><span class="o">-</span><span class="n">file</span>  <span class="n">answerfile001</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
