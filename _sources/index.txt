@@ -18,8 +18,9 @@ Contents:
    setupvm
    vagrant
    bridgekvm
-   team.rst
    ovs
+   team
+   
 
 
 Indices and tables
