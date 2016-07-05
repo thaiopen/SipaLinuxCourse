@@ -30,7 +30,8 @@
   
 
   
-    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/> 
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="prev" title="Linux LVM partition" href="lvm.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -79,7 +80,7 @@
           
             
             
-                <ul>
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
 <li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
@@ -90,6 +91,13 @@
 <li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Openstack with Packstack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#packstack">packstack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vagrant">vagrant</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -141,51 +149,59 @@
 <div class="section" id="vagrant">
 <h3>vagrant<a class="headerlink" href="#vagrant" title="Permalink to this headline">¶</a></h3>
 <p>สร้าง directory ชื่อ openstack และภายในมี Vagrantfile ดังนี้</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: ruby -*-</span>
-<span class="c1"># vi: set ft=ruby :</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span># -*- mode: ruby -*-
+# vi: set ft=ruby :
 
-<span class="n">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="n">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;centos/7&quot;</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">controller</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.10&quot;</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;20.0.0.10&quot;</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;server1.example.com&quot;</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">8192</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">4</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
-            <span class="n">end</span>
-  <span class="n">end</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">compute</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.11&quot;</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;20.0.0.11&quot;</span>
-            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;server2.example.com&quot;</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">4096</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
-              <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
-            <span class="n">end</span>
-  <span class="n">end</span>
-<span class="n">end</span>
+$script = &lt;&lt;SCRIPT
+echo &quot;run provisioning...&quot;
+echo &#39;root:password&#39; | sudo chpasswd
+sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
+yum install -y epel
+yum install -y centos-release-openstack-mitaka
+yum update -y
+yum install -y openstack-packstack
+SCRIPT
+
+Vagrant.configure(&quot;2&quot;) do |config|
+  config.vm.box = &quot;centos/7&quot;
+  config.vm.define :controller do |node|
+            node.vm.network :private_network, :ip =&gt; &quot;10.0.0.10&quot;
+            node.vm.network :private_network, :ip =&gt; &quot;20.0.0.10&quot;
+            node.vm.provider :libvirt do |domain|
+              domain.uri = &#39;qemu+unix:///system&#39;
+              domain.driver = &#39;kvm&#39;
+              domain.host = &quot;server1.example.com&quot;
+              domain.memory = 8192
+              domain.cpus = 4
+              domain.nested = true
+              domain.volume_cache = &#39;none&#39;
+              domain.storage :file, :size =&gt; &#39;20G&#39;
+            end
+    node.vm.provision &quot;shell&quot;, inline: $script
+  end
+  config.vm.define :compute do |node|
+            node.vm.network :private_network, :ip =&gt; &quot;10.0.0.11&quot;
+            node.vm.network :private_network, :ip =&gt; &quot;20.0.0.11&quot;
+            node.vm.provider :libvirt do |domain|
+              domain.uri = &#39;qemu+unix:///system&#39;
+              domain.driver = &#39;kvm&#39;
+              domain.host = &quot;server2.example.com&quot;
+              domain.memory = 4096
+              domain.cpus = 2
+              domain.nested = true
+              domain.volume_cache = &#39;none&#39;
+            end
+    node.vm.provision &quot;shell&quot;, inline: $script
+  end
+end
 </pre></div>
 </div>
 <p>เข้าไปยัง controller</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
-<span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="n">s</span><span class="o">/</span><span class="n">SELINUX</span><span class="o">=</span><span class="n">enforcing</span><span class="o">/</span><span class="n">SELINUX</span><span class="o">=</span><span class="n">disabled</span><span class="o">/</span><span class="n">g</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">selinux</span><span class="o">/</span><span class="n">config</span>
-<span class="n">setenforce</span> <span class="mi">0</span>
-
-<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">epel</span>
-<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">centos</span><span class="o">-</span><span class="n">release</span><span class="o">-</span><span class="n">openstack</span><span class="o">-</span><span class="n">mitaka</span>
-    <span class="n">yum</span> <span class="n">update</span> <span class="o">-</span><span class="n">y</span>
-<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">openstack</span><span class="o">-</span><span class="n">packstack</span>
+<span class="n">fdisk</span> <span class="o">-</span><span class="n">l</span>
+<span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span>
+<span class="n">vgcreate</span> <span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span>
 <span class="n">packstack</span> <span class="o">--</span><span class="n">gen</span><span class="o">-</span><span class="n">answer</span><span class="o">-</span><span class="n">file</span>  <span class="n">answerfile001</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
@@ -197,6 +213,13 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="lvm.html" class="btn btn-neutral" title="Linux LVM partition" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
