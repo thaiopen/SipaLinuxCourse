@@ -101,6 +101,11 @@ Disk prepare for cinder
     CONFIG_HORIZON_SSL=y
     CONFIG_PROVISION_DEMO=n
 
+Run
+---
+::
+
+    packstack --answer-file answerfile001.txt
 
 
 	
