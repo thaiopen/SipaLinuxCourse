@@ -110,3 +110,7 @@ Run
 
 .. image:: images/openstack-two-machine-two-nic.png
     
+
+ผลการ Run
+
+.. image:: images/openstack001.png
