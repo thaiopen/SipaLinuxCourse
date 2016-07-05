@@ -61,6 +61,18 @@ vagrant
 
 	vagrant ssh controller
     sudo su -
+    //set selinux to disable
+    getenforce
+    sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
+    --or--
+    vi /etc/selinux/config
+
+    setenforce 0
+
+Disk prepare for cinder
+-----------------------
+::
+
     fdisk -l
     pvcreate /dev/vdb
     vgcreate cinder-volumes /dev/vdb
