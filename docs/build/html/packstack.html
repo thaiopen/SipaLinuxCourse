@@ -228,6 +228,17 @@ end
 <span class="n">CONFIG_LBAAS_INSTALL</span><span class="o">=</span><span class="n">y</span>
 <span class="n">CONFIG_NEUTRON_METERING_AGENT_INSTALL</span><span class="o">=</span><span class="n">y</span>
 <span class="n">CONFIG_NEUTRON_FWAAS</span><span class="o">=</span><span class="n">y</span>
+
+<span class="n">CONFIG_NEUTRON_ML2_TYPE_DRIVERS</span><span class="o">=</span><span class="n">vlan</span>
+<span class="n">CONFIG_NEUTRON_ML2_TENANT_NETWORK_TYPES</span><span class="o">=</span><span class="n">vlan</span>
+<span class="n">CONFIG_NEUTRON_ML2_VLAN_RANGES</span><span class="o">=</span><span class="n">physnet1</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="mi">1000</span>
+
+<span class="n">CONFIG_NEUTRON_OVS_BRIDGE_MAPPINGS</span><span class="o">=</span><span class="n">physnet1</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span>
+<span class="n">CONFIG_NEUTRON_OVS_BRIDGE_IFACES</span><span class="o">=</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span><span class="p">:</span><span class="n">eth2</span>
+
+<span class="n">CONFIG_HEAT_CFN_INSTALL</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_HORIZON_SSL</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_PROVISION_DEMO</span><span class="o">=</span><span class="n">n</span>
 </pre></div>
 </div>
 </div>
