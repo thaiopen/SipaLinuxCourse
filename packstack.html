@@ -216,6 +216,18 @@ end
 <span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span>
 <span class="n">vgcreate</span> <span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span>
 <span class="n">packstack</span> <span class="o">--</span><span class="n">gen</span><span class="o">-</span><span class="n">answer</span><span class="o">-</span><span class="n">file</span>  <span class="n">answerfile001</span><span class="o">.</span><span class="n">txt</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">i</span><span class="o">.</span><span class="n">orig</span> <span class="n">s</span><span class="o">/</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">121.158</span><span class="o">/</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.10</span><span class="o">/</span><span class="n">g</span>  <span class="n">answerfile001</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="n">s</span><span class="o">/</span><span class="n">CONFIG_HEAT_INSTALL</span><span class="o">=</span><span class="n">n</span><span class="o">/</span><span class="n">CONFIG_HEAT_INSTALL</span><span class="o">=</span><span class="n">y</span><span class="o">/</span><span class="n">g</span> <span class="n">answerfile001</span><span class="o">.</span><span class="n">txt</span>
+
+    <span class="o">--</span><span class="n">ตัวอย่าง</span><span class="o">--</span>
+<span class="n">grep</span> <span class="o">-</span><span class="n">n</span> <span class="n">ADMIN_PW</span>  <span class="n">answerfile001</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">vim</span>  <span class="n">answerfile001</span><span class="o">.</span><span class="n">txt</span> <span class="o">+</span><span class="p">(</span><span class="n">line</span> <span class="n">no</span><span class="p">)</span>
+
+<span class="n">CONFIG_KEYSTONE_ADMIN_PW</span><span class="o">=</span><span class="n">passwd</span>
+<span class="n">CONFIG_LBAAS_INSTALL</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_NEUTRON_METERING_AGENT_INSTALL</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_NEUTRON_FWAAS</span><span class="o">=</span><span class="n">y</span>
 </pre></div>
 </div>
 </div>
