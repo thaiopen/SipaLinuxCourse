@@ -73,6 +73,7 @@ edit network config
     # vim ifcfg-enp3s0
 
 	DEVICE=enp3s0
+        NAME=enp3s0
 	HWADDR=54:ee:75:8a:86:09
 	ONBOOT=yes
 	DEVICETYPE=ovs
