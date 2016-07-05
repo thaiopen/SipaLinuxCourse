@@ -108,6 +108,5 @@ Run
     packstack --answer-file answerfile001.txt
 
 
-	
-
+.. image:: images/openstack-two-machine-two-nic.png
     
