@@ -10,7 +10,7 @@ pvcreate,vgcreate,lvcreate
 **************************
 :: 
 	
-	vagrant server 1
+	vagrant ssh server1
     sudo su -
     fdisk -l
 
