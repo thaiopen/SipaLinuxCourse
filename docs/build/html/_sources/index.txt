@@ -17,6 +17,9 @@ Contents:
    sshd
    setupvm
    vagrant
+   bridgekvm
+   team.rst
+   ovs
 
 
 Indices and tables
