@@ -77,5 +77,31 @@ Disk prepare for cinder
     pvcreate /dev/vdb
     vgcreate cinder-volumes /dev/vdb
     packstack --gen-answer-file  answerfile001.txt
+  
+    sed -i.orig s/192.168.121.158/10.0.0.10/g  answerfile001.txt
+    sed -i s/CONFIG_HEAT_INSTALL=n/CONFIG_HEAT_INSTALL=y/g answerfile001.txt
+    
+	--ตัวอย่าง--
+    grep -n ADMIN_PW  answerfile001.txt
+    vim  answerfile001.txt +(line no)
+    
+    CONFIG_KEYSTONE_ADMIN_PW=passwd
+    CONFIG_LBAAS_INSTALL=y
+    CONFIG_NEUTRON_METERING_AGENT_INSTALL=y
+    CONFIG_NEUTRON_FWAAS=y
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 
     
