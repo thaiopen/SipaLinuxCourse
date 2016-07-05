@@ -155,7 +155,7 @@
 $script = &lt;&lt;SCRIPT
 echo &quot;run provisioning...&quot;
 echo &#39;root:password&#39; | sudo chpasswd
-sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
+sudo sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
 yum install -y epel-release
 yum install -y centos-release-openstack-mitaka
 yum update -y

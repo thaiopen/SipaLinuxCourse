@@ -16,7 +16,7 @@ vagrant
 	$script = <<SCRIPT
 	echo "run provisioning..."
 	echo 'root:password' | sudo chpasswd
-	sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
+	sudo sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
 	yum install -y epel-release
 	yum install -y centos-release-openstack-mitaka
 	yum update -y
