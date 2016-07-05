@@ -2,9 +2,10 @@
 Network Teaming & Bridge
 ========================
 
-
 Teaming
 ===========
+
+.. image:: images/team001.png
 
 vagrant
 -------

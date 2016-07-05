@@ -66,6 +66,8 @@ create bridge
 		        Interface "enp3s0"
 		ovs_version: "2.5.0"
 
+.. image:: images/ovs002.png
+
 edit network config
 ::
 
