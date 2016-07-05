@@ -13,6 +13,16 @@ vagrant
 	# -*- mode: ruby -*-
 	# vi: set ft=ruby :
 
+	$script = <<SCRIPT
+	echo "run provisioning..."
+	echo 'root:password' | sudo chpasswd
+	sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
+	yum install -y epel 
+	yum install -y centos-release-openstack-mitaka
+	yum update -y
+	yum install -y openstack-packstack
+	SCRIPT
+
 	Vagrant.configure("2") do |config|
 	  config.vm.box = "centos/7"
 	  config.vm.define :controller do |node|
@@ -28,6 +38,7 @@ vagrant
 		      domain.volume_cache = 'none'
 		      domain.storage :file, :size => '20G'
 		    end
+            node.vm.provision "shell", inline: $script 
 	  end
 	  config.vm.define :compute do |node|
 		    node.vm.network :private_network, :ip => "10.0.0.11"
@@ -41,6 +52,7 @@ vagrant
 		      domain.nested = true
 		      domain.volume_cache = 'none'
 		    end
+            node.vm.provision "shell", inline: $script 
 	  end
 	end
 
@@ -49,11 +61,9 @@ vagrant
 
 	vagrant ssh controller
     sudo su -
-    sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
-    setenforce 0
-    
-    yum install -y epel
-    yum install -y centos-release-openstack-mitaka
-	yum update -y
-    yum install -y openstack-packstack
+    fdisk -l
+    pvcreate /dev/vdb
+    vgcreate cinder-volumes /dev/vdb
     packstack --gen-answer-file  answerfile001.txt
+
+    

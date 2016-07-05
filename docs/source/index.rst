@@ -21,6 +21,7 @@ Contents:
    ovs
    team
    lvm
+   packstack
 
 
 Indices and tables
