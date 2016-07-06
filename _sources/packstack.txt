@@ -101,6 +101,8 @@ Disk prepare for cinder
     CONFIG_HORIZON_SSL=y
     CONFIG_PROVISION_DEMO=n
 
+Download complete file :download:`answerfile001.txt <./answerfile001.txt>`.
+
 Run
 ---
 ::
@@ -194,6 +196,28 @@ upload image
 	source keystonerc_admin
     curl http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img | glance \
          image-create --name='cirros image' --visibility=public --container-format=bare --disk-format=qcow2
+
+	+------------------+--------------------------------------+
+	| Property         | Value                                |
+	+------------------+--------------------------------------+
+	| checksum         | ee1eca47dc88f4879d8a229cc70a07c6     |
+	| container_format | bare                                 |
+	| created_at       | 2016-07-06T06:30:13Z                 |
+	| disk_format      | qcow2                                |
+	| id               | 52835f4d-90fc-4dfd-85bd-d56a4c886ed7 |
+	| min_disk         | 0                                    |
+	| min_ram          | 0                                    |
+	| name             | cirros image                         |
+	| owner            | 4b2f4b8359614a2d930802d428cef551     |
+	| protected        | False                                |
+	| size             | 13287936                             |
+	| status           | active                               |
+	| tags             | []                                   |
+	| updated_at       | 2016-07-06T06:30:42Z                 |
+	| virtual_size     | None                                 |
+	| visibility       | public                               |
+	+------------------+--------------------------------------+
+
 
 centos7 image::
 
