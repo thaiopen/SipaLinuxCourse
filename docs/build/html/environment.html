@@ -94,7 +94,24 @@
 <li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Lab Environment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lab Environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#automate-setup">Automate setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#security">Security</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#script-generate-script">script generate script</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ntp-network-time-protocol">NTP Network Time Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#on-controller-node">On Controller node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#on-other-node">On other node</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#openstack-packages">OpenStack packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mysql-on-controller">Mysql on Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-mariadb-on-controller">install mariadb on controller</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -243,6 +260,8 @@
 <span class="n">end</span>
 </pre></div>
 </div>
+<div class="section" id="automate-setup">
+<h2>Automate setup<a class="headerlink" href="#automate-setup" title="Permalink to this headline">¶</a></h2>
 <p>Download complete file <a class="reference download internal" href="_downloads/Vagrantfile-lab1" download=""><code class="xref download docutils literal"><span class="pre">Vagrantfile-lab1</span></code></a>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>mkdir openstack2
 vagrant plugin install vagrant-scp
@@ -279,44 +298,140 @@ TEST
 node=&quot;controller network compute1 compute2 block1 object1&quot;
 echo $node
 
+//transfer file to vagrant
 for n in $node; do vagrant scp hosts $n:/home/vagrant/;done
 for n in $node; do vagrant scp isconnect.sh $n:/home/vagrant/;done
 
+//test connectivity
 for n in $node; do vagrant ssh $n -c &quot;bash /home/vagrant/isconnect.sh&quot;; done
+
+// set time zone
+for n in $node; do vagrant ssh $n -c &quot;sudo timedatectl set-timezone Asia/Bangkok&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo timedatectl&quot;; done
+
+//start network, stop NetworkManager
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl start network&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl enable network&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl disable NetworkManager&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl stop NetworkManager&quot;; done
 </pre></div>
 </div>
+</div>
+<div class="section" id="security">
+<h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
+<p>สร้าง password ด้วยคำสั่ง <code class="docutils literal"><span class="pre">openssl</span> <span class="pre">rand</span> <span class="pre">-hex</span> <span class="pre">10</span></code></p>
+<table border="1" class="docutils" id="id1">
+<caption><span class="caption-text"><strong>Passwords</strong></span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Password name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Database password (no variable used)</td>
+<td>Root password for the database</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ADMIN_PASS</span></code></td>
+<td>Password of user <code class="docutils literal"><span class="pre">admin</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">CEILOMETER_DBPASS</span></code></td>
+<td>Database password for the Telemetry service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">CEILOMETER_PASS</span></code></td>
+<td>Password of Telemetry service user <code class="docutils literal"><span class="pre">ceilometer</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">CINDER_DBPASS</span></code></td>
+<td>Database password for the Block Storage service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">CINDER_PASS</span></code></td>
+<td>Password of Block Storage service user <code class="docutils literal"><span class="pre">cinder</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">DASH_DBPASS</span></code></td>
+<td>Database password for the dashboard</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">DEMO_PASS</span></code></td>
+<td>Password of user <code class="docutils literal"><span class="pre">demo</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">GLANCE_DBPASS</span></code></td>
+<td>Database password for Image service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">GLANCE_PASS</span></code></td>
+<td>Password of Image service user <code class="docutils literal"><span class="pre">glance</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">HEAT_DBPASS</span></code></td>
+<td>Database password for the Orchestration service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">HEAT_DOMAIN_PASS</span></code></td>
+<td>Password of Orchestration domain</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">HEAT_PASS</span></code></td>
+<td>Password of Orchestration service user <code class="docutils literal"><span class="pre">heat</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">KEYSTONE_DBPASS</span></code></td>
+<td>Database password of Identity service</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">NEUTRON_DBPASS</span></code></td>
+<td>Database password for the Networking service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">NEUTRON_PASS</span></code></td>
+<td>Password of Networking service user <code class="docutils literal"><span class="pre">neutron</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">NOVA_DBPASS</span></code></td>
+<td>Database password for Compute service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">NOVA_PASS</span></code></td>
+<td>Password of Compute service user <code class="docutils literal"><span class="pre">nova</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">RABBIT_PASS</span></code></td>
+<td>Password of user guest of RabbitMQ</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">SWIFT_PASS</span></code></td>
+<td>Password of Object Storage service user <code class="docutils literal"><span class="pre">swift</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="script-generate-script">
+<h3>script generate script<a class="headerlink" href="#script-generate-script" title="Permalink to this headline">¶</a></h3>
+<p>Download complete file <a class="reference download internal" href="_downloads/gen_pass.sh" download=""><code class="xref download docutils literal"><span class="pre">gen_pass.sh</span></code></a>:</p>
+</div>
+</div>
+<div class="section" id="ntp-network-time-protocol">
+<h2>NTP Network Time Protocol<a class="headerlink" href="#ntp-network-time-protocol" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="on-controller-node">
+<h3>On Controller node<a class="headerlink" href="#on-controller-node" title="Permalink to this headline">¶</a></h3>
 <p>ติดตั้ง package ที่ controller และโหนดอื่น แต่มีรายละเอียดของ <code class="docutils literal"><span class="pre">/etc/chrony.conf</span></code> โดยให้เครื่อง controller node
 ชี้ตรงไปยัง ntp server ส่วนเครื่องอื่นให้ชี้มาที่เครื่อง controller ติดตั้ง package ชื่อว่า chrony เพื่อต้องการ  sync เวลาให้กับทุกๆโหนด
 โดยสามารถที่จะเข้าไปยัง เครื่อง controller ได้จากเครื่อง host โดยการใช้คำสั่ง <code class="docutils literal"><span class="pre">vagrant</span> <span class="pre">ssh</span> <span class="pre">controller</span></code>
 โดยผ่านทาง secure shell ได้โดยตรง</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>for n in $node; do vagrant ssh $n -c &quot;sudo yum install chrony -y&quot;; done
 vagrant ssh controller
-
 sudo su -
-timedatectl
-
 vi /etc/chrony.conf
 </pre></div>
 </div>
 <p>เพิ่ม รายชื่อ ของ ntp server</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#line3</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#line3-6</span>
 <span class="n">server</span> <span class="mf">0.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
 <span class="n">server</span> <span class="mf">1.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
 <span class="n">server</span> <span class="mf">2.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
 <span class="n">server</span> <span class="mf">3.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
 
-  <span class="c1">#เปลี่ยนเป็็น</span>
+ <span class="c1">#เปลี่ยนเป็็น</span>
 
 <span class="n">server</span> <span class="mf">1.</span><span class="n">th</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
 <span class="n">server</span> <span class="mf">0.</span><span class="n">asia</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
 <span class="n">server</span> <span class="mf">2.</span><span class="n">asia</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
 
-  <span class="c1">#อนุญาติให้ client เข้ามา sync</span>
+ <span class="c1">#อนุญาติให้ client เข้ามา sync</span>
 <span class="c1">#line21</span>
 <span class="n">allow</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">24</span>
 
-  <span class="c1">#ให้ restart service chrony.conf</span>
-<span class="n">systemctl</span> <span class="nb">list</span><span class="o">-</span><span class="n">unit</span><span class="o">-</span><span class="n">files</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">chrony</span>
+ <span class="c1">#ให้ restart service chrony.conf</span>
+
 <span class="n">systemctl</span> <span class="n">start</span> <span class="n">chronyd</span><span class="o">.</span><span class="n">service</span>
 <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">chronyd</span><span class="o">.</span><span class="n">service</span>
 <span class="n">chronyc</span> <span class="n">sources</span>
@@ -324,8 +439,75 @@ vi /etc/chrony.conf
 
 <span class="n">exit</span>
 <span class="n">exit</span>
-  <span class="c1">#กลับออกไป ที่ host</span>
+ <span class="c1">#กลับออกไป ที่ host</span>
 </pre></div>
+</div>
+<img alt="_images/environment001.png" src="_images/environment001.png" />
+</div>
+<div class="section" id="on-other-node">
+<h3>On other node<a class="headerlink" href="#on-other-node" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>node=&quot;network compute1 compute2 block1 object1&quot;
+echo $node
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl start chronyd; sudo systemctl enable chronyd&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo sed -i.bak &#39;3,6d&#39; /etc/chrony.conf&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo sed -i.bak &#39;3i server 10.0.0.21 iburst&#39; /etc/chrony.conf&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo chronyc sources&quot;; done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="openstack-packages">
+<h2>OpenStack packages<a class="headerlink" href="#openstack-packages" title="Permalink to this headline">¶</a></h2>
+<p>แต่ละ distribution ก็มี packages สำหรรับการติดตั้ง openstack การติดตั้งควรติดตั้ง package จาก repo ที่ล่าสุด และต้อง update ให้เรียบร้อย
+* Centos 7 มี extra repo เพื่อติดต้ง openstack สามารถติดตั้ง โดย  <code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">centos-release-openstack-mitaka</span></code></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>node=&quot;controller network compute1 compute2 block1 object1&quot;
+for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y centos-release-openstack-mitaka&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo yum upgrade -y&quot;; done
+
+for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y python-openstackclient &quot;; done
+
+//automatically manage security policies for OpenStack services
+for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y python-selinux&quot;; done
+</pre></div>
+</div>
+</div>
+<div class="section" id="mysql-on-controller">
+<h2>Mysql on Controller<a class="headerlink" href="#mysql-on-controller" title="Permalink to this headline">¶</a></h2>
+<p>เกือบทุก openstack service มีการใช้งาน sql database เพิ่อเก็บข้อมูล โดยทั่วไป database จะถูกติดตั้ง บน controller node
+การติดตั้ง database จะขึ้นกับแต่ละ distro สามารถเลือกติดตั้งได้ทั้ง  Mariadb(Mysql) หรือ PostgresSQL</p>
+<div class="section" id="install-mariadb-on-controller">
+<h3>install mariadb on controller<a class="headerlink" href="#install-mariadb-on-controller" title="Permalink to this headline">¶</a></h3>
+<p>#. install package</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="n">mariadb</span> <span class="n">mariadb</span><span class="o">-</span><span class="n">server</span> <span class="n">python2</span><span class="o">-</span><span class="n">PyMySQL</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="n">crudini</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="n">wget</span>
+</pre></div>
+</div>
+<p>#. create and edit /etc/my.cnf.d/openstack.cnf</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mysqld</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">bind</span><span class="o">-</span><span class="n">address</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.11</span>
+
+<span class="p">[</span><span class="n">mysqld</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">default</span><span class="o">-</span><span class="n">storage</span><span class="o">-</span><span class="n">engine</span> <span class="o">=</span> <span class="n">innodb</span>
+<span class="n">innodb_file_per_table</span>
+<span class="n">max_connections</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="n">collation</span><span class="o">-</span><span class="n">server</span> <span class="o">=</span> <span class="n">utf8_general_ci</span>
+<span class="n">character</span><span class="o">-</span><span class="nb">set</span><span class="o">-</span><span class="n">server</span> <span class="o">=</span> <span class="n">utf8</span>
+</pre></div>
+</div>
+<p>#. Finalize install</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">enable</span> <span class="n">mariadb</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">mariadb</span><span class="o">.</span><span class="n">service</span>
+
+
+<span class="n">mysql_secure_installation</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
