@@ -287,7 +287,7 @@ for n in $node; do vagrant ssh $n -c &quot;bash /home/vagrant/isconnect.sh&quot;
 </div>
 <p>ติดตั้ง package ที่ controller และโหนดอื่น แต่มีรายละเอียดของ <code class="docutils literal"><span class="pre">/etc/chrony.conf</span></code> โดยให้เครื่อง controller node
 ชี้ตรงไปยัง ntp server ส่วนเครื่องอื่นให้ชี้มาที่เครื่อง controller</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>  #ติดตั้ง package ชื่อว่า chrony เพื่อต้องการ  sync เวลาให้กับทุกๆโหนด โดยสามารถที่จะเข้าไปยัง เครื่อง controller ได้จากเครื่อง host โดยการใช้คำสั่ง ``vagrant ssh controller`` โดยผ่านทาง secure shell ได้โดยตรง
+<div class="highlight-default"><div class="highlight"><pre><span></span>#ติดตั้ง package ชื่อว่า chrony เพื่อต้องการ  sync เวลาให้กับทุกๆโหนด โดยสามารถที่จะเข้าไปยัง เครื่อง controller ได้จากเครื่อง host โดยการใช้คำสั่ง ``vagrant ssh controller`` โดยผ่านทาง secure shell ได้โดยตรง
 
 for n in $node; do vagrant ssh $n -c &quot;sudo yum install chrony -y&quot;; done
 vagrant ssh controller
