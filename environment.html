@@ -245,8 +245,11 @@
 </div>
 <p>Download complete file <a class="reference download internal" href="_downloads/Vagrantfile-lab1" download=""><code class="xref download docutils literal"><span class="pre">Vagrantfile-lab1</span></code></a>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>mkdir openstack2
+vagrant plugin install vagrant-scp
+sudo systemctl start firewalld
+
 wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/Vagrantfile-lab1
-wget
+
 mv Vagrantfile-lab1 Vagrantfile
 
 vagrant plugin install vagrant-scp
@@ -274,11 +277,54 @@ ping -c 2 object1
 TEST
 
 node=&quot;controller network compute1 compute2 block1 object1&quot;
+echo $node
 
 for n in $node; do vagrant scp hosts $n:/home/vagrant/;done
 for n in $node; do vagrant scp isconnect.sh $n:/home/vagrant/;done
 
 for n in $node; do vagrant ssh $n -c &quot;bash /home/vagrant/isconnect.sh&quot;; done
+</pre></div>
+</div>
+<p>ติดตั้ง package ที่ controller และโหนดอื่น แต่มีรายละเอียดของ <code class="docutils literal"><span class="pre">/etc/chrony.conf</span></code> โดยให้เครื่อง controller node
+ชี้ตรงไปยัง ntp server ส่วนเครื่องอื่นให้ชี้มาที่เครื่อง controller</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>  #ติดตั้ง package ชื่อว่า chrony เพื่อต้องการ  sync เวลาให้กับทุกๆโหนด โดยสามารถที่จะเข้าไปยัง เครื่อง controller ได้จากเครื่อง host โดยการใช้คำสั่ง ``vagrant ssh controller`` โดยผ่านทาง secure shell ได้โดยตรง
+
+for n in $node; do vagrant ssh $n -c &quot;sudo yum install chrony -y&quot;; done
+vagrant ssh controller
+
+sudo su -
+timedatectl
+
+vi /etc/chrony.conf
+</pre></div>
+</div>
+<p>เพิ่ม รายชื่อ ของ ntp server</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#line3</span>
+<span class="n">server</span> <span class="mf">0.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">1.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">2.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">3.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+
+  <span class="c1">#เปลี่ยนเป็็น</span>
+
+<span class="n">server</span> <span class="mf">1.</span><span class="n">th</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">0.</span><span class="n">asia</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">2.</span><span class="n">asia</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+
+  <span class="c1">#อนุญาติให้ client เข้ามา sync</span>
+<span class="c1">#line21</span>
+<span class="n">allow</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">24</span>
+
+  <span class="c1">#ให้ restart service chrony.conf</span>
+<span class="n">systemctl</span> <span class="nb">list</span><span class="o">-</span><span class="n">unit</span><span class="o">-</span><span class="n">files</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">chrony</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">chronyd</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">chronyd</span><span class="o">.</span><span class="n">service</span>
+<span class="n">chronyc</span> <span class="n">sources</span>
+<span class="n">chronyc</span> <span class="n">tracking</span>
+
+<span class="n">exit</span>
+<span class="n">exit</span>
+  <span class="c1">#กลับออกไป ที่ host</span>
 </pre></div>
 </div>
 </div>
