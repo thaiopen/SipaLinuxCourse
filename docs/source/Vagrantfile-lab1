@@ -5,39 +5,39 @@ boxes = [
     {
         :name => "controller",
         :mgmt_ip => "10.0.0.11",
-        :hostname => "controller",
+        :hostname => "controller.example.com",
     },
     {
         :name => "network",
         :mgmt_ip => "10.0.0.21",
         :tunnel_ip => "10.0.1.21",
-        :hostname => "neutron",
+        :hostname => "network.example.com",
     },
     {
         :name => "compute1",
         :mgmt_ip => "10.0.0.31",
         :tunnel_ip => "10.0.1.31",
         :data_ip => "10.0.2.31",
-        :hostname => "compute1",
+        :hostname => "compute1.example.com",
     },
     {
         :name => "compute2",
         :mgmt_ip => "10.0.0.32",
         :tunnel_ip => "10.0.1.32",
         :data_ip => "10.0.2.32",
-        :hostname => "compute2",
+        :hostname => "compute2.example.com",
     },
     {
         :name => "block1",
         :mgmt_ip => "10.0.0.41",
         :data_ip => "10.0.2.41",
-        :hostname => "block",
+        :hostname => "block1.example.com",
     },
     {
         :name => "object1",
         :mgmt_ip => "10.0.0.51",
         :data_ip => "10.0.2.51",
-        :hostname => "object1",
+        :hostname => "object1.example.com",
     },
 
 ]
