@@ -43,7 +43,7 @@ step 1 Prepare
 
     Press 'w' to save and exit 
     
-ทำซ้ำ กับ /dev/vdc  /dev/vdd  หลังจากทำเสร็จแล้วให้สั่งคำสั่ง ``partprob`` เพื่อบอกให้ kernel รับทราบการเปลี่ยนแปลงของ partition::
+.. note:: ทำซ้ำ กับ ``/dev/vdc``  ``/dev/vdd``  หลังจากทำเสร็จแล้วให้สั่งคำสั่ง ``partprobe`` เพื่อบอกให้ kernel รับทราบการเปลี่ยนแปลงของ partition::
 
 	partprobe
 
@@ -217,18 +217,18 @@ install
 start service
 ::
 
-systemctl start iscsi
-systemctl enable iscsi
-(server1 eth0ip = 192.168.121.144)
-iscsiadm --mode discovery --type sendtargets --portal 192.168.121.144
-192.168.121.144:3260,1 iqn.2016-07.com.example.server1:t1
-(นำค่าที่ได้ target name ที่ได้ ``iqn.2016-07.com.example.server1:t1`` มา ใช้)
+	systemctl start iscsi
+	systemctl enable iscsi
+	(server1 eth0ip = 192.168.121.144)
+	iscsiadm --mode discovery --type sendtargets --portal 192.168.121.144
+	192.168.121.144:3260,1 iqn.2016-07.com.example.server1:t1
+	(นำค่าที่ได้ target name ที่ได้ ``iqn.2016-07.com.example.server1:t1`` มา ใช้)
 
-iscsiadm --mode node --targetname iqn.2016-07.com.example.server1:t1 --portal 192.168.121.144 --login
+	iscsiadm --mode node --targetname iqn.2016-07.com.example.server1:t1 --portal 192.168.121.144 --login
 
-(result)
-Logging in to [iface: default, target: iqn.2016-07.com.example.server1:t1, portal: 192.168.121.144,3260] (multiple)
-Login to [iface: default, target: iqn.2016-07.com.example.server1:t1, portal: 192.168.121.144,3260] successful.
+	(result)
+	Logging in to [iface: default, target: iqn.2016-07.com.example.server1:t1, portal: 192.168.121.144,3260] (multiple)
+	Login to [iface: default, target: iqn.2016-07.com.example.server1:t1, portal: 192.168.121.144,3260] successful.
 
 verify
 ------
