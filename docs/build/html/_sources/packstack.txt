@@ -114,3 +114,82 @@ Run
 ผลการ Run
 
 .. image:: images/openstack001.png
+
+
+Network Config
+--------------
+backup::
+
+	cp /etc/sysconfig/network-scripts/ifcfg-eth1  /root
+	cp /etc/sysconfig/network-scripts/ifcfg-eth1  /etc/sysconfig/network-scripts/ifcfg-br-ex
+	cd /etc/sysconfig/network-scripts/
+
+edit::
+
+vi ifcfg-eth1
+
+	ONBOOT=yes
+	DEVICE=eth1
+	HWADDR=52:54:00:95:c4:b4
+	TYPE=OVSPort
+	DEVICETYPE=ovs
+	OVS_BRIDGE=br-ex
+
+	vi ifcfg-br-ex
+
+	DEVICE=br-ex
+	BOOTPROTO=static
+	ONBOOT=yes
+	TYPE=OVSBridge
+	DEVICETYPE=ovs
+	USERCTL=yes
+	PEERDNS=yes
+	IPV6INIT=no
+	IPADDR=10.0.0.10
+	NETMASK=255.255.255.0
+	GATEWAY=192.168.121.1
+	DNS1=8.8.8.8
+
+restart::
+
+	systemctl restart network
+	ovs-vsctl show
+	(show result  br-ex <--> eth1
+	4b34f849-95d8-4651-bbae-40e05d088012
+		Bridge br-ex
+		    Port "eth1"
+		        Interface "eth1"
+		    Port br-ex
+		        Interface br-ex
+		            type: internal
+
+
+	ip a s eth1
+	(eth1 no ip)
+	3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast master ovs-system state UP qlen 1000
+		link/ether 52:54:00:95:c4:b4 brd ff:ff:ff:ff:ff:ff
+		inet6 fe80::5054:ff:fe95:c4b4/64 scope link 
+		   valid_lft forever preferred_lft forever
+
+	ip a s br-ex
+	(br-ex have ip)
+	12: br-ex: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN 
+		link/ether ce:d5:be:2d:03:40 brd ff:ff:ff:ff:ff:ff
+		inet 10.0.0.10/24 brd 10.0.0.255 scope global br-ex
+		   valid_lft forever preferred_lft forever
+		inet6 fe80::ccd5:beff:fe2d:340/64 scope link 
+		   valid_lft forever preferred_lft forever
+
+sethostname::
+
+	hostnamectl set-hostname controller.example.com
+
+
+
+upload image
+------------
+::
+    (packstack จะสร้าง ไฟล์ keystonerc_admin ใช้สำหรับการ login ทาง commandline)
+	source keystonerc_admin
+    curl http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img | glance \
+         image-create --name='cirros image' --visibility=public --container-format=bare --disk-format=qcow2
