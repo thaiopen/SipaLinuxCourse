@@ -197,9 +197,10 @@
 <span class="n">Press</span> <span class="s1">&#39;w&#39;</span> <span class="n">to</span> <span class="n">save</span> <span class="ow">and</span> <span class="n">exit</span>
 </pre></div>
 </div>
-<p>ทำซ้ำ กับ /dev/vdc  /dev/vdd  หลังจากทำเสร็จแล้วให้สั่งคำสั่ง <code class="docutils literal"><span class="pre">partprob</span></code> เพื่อบอกให้ kernel รับทราบการเปลี่ยนแปลงของ partition:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">partprobe</span>
-</pre></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>ทำซ้ำ กับ <code class="docutils literal"><span class="pre">/dev/vdc</span></code>  <code class="docutils literal"><span class="pre">/dev/vdd</span></code>  หลังจากทำเสร็จแล้วให้สั่งคำสั่ง <code class="docutils literal"><span class="pre">partprobe</span></code> เพื่อบอกให้ kernel รับทราบการเปลี่ยนแปลงของ partition:</p>
+<p class="last">partprobe</p>
 </div>
 </div>
 <div class="section" id="step-2-prepare">
@@ -365,16 +366,20 @@ install
 </pre></div>
 </div>
 <p>start service</p>
-<p>systemctl start iscsi
+<div class="highlight-default"><div class="highlight"><pre><span></span>systemctl start iscsi
 systemctl enable iscsi
 (server1 eth0ip = 192.168.121.144)
-iscsiadm &#8211;mode discovery &#8211;type sendtargets &#8211;portal 192.168.121.144
+iscsiadm --mode discovery --type sendtargets --portal 192.168.121.144
 192.168.121.144:3260,1 iqn.2016-07.com.example.server1:t1
-(นำค่าที่ได้ target name ที่ได้ <code class="docutils literal"><span class="pre">iqn.2016-07.com.example.server1:t1</span></code> มา ใช้)</p>
-<p>iscsiadm &#8211;mode node &#8211;targetname iqn.2016-07.com.example.server1:t1 &#8211;portal 192.168.121.144 &#8211;login</p>
-<p>(result)
+(นำค่าที่ได้ target name ที่ได้ ``iqn.2016-07.com.example.server1:t1`` มา ใช้)
+
+iscsiadm --mode node --targetname iqn.2016-07.com.example.server1:t1 --portal 192.168.121.144 --login
+
+(result)
 Logging in to [iface: default, target: iqn.2016-07.com.example.server1:t1, portal: 192.168.121.144,3260] (multiple)
-Login to [iface: default, target: iqn.2016-07.com.example.server1:t1, portal: 192.168.121.144,3260] successful.</p>
+Login to [iface: default, target: iqn.2016-07.com.example.server1:t1, portal: 192.168.121.144,3260] successful.
+</pre></div>
+</div>
 <div class="section" id="verify">
 <h4>verify<a class="headerlink" href="#verify" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">lsblk</span> <span class="o">--</span><span class="n">scsi</span>
