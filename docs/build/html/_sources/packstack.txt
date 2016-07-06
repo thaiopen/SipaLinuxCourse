@@ -126,7 +126,7 @@ backup::
 
 edit::
 
-vi ifcfg-eth1
+    vi ifcfg-eth1
 
 	ONBOOT=yes
 	DEVICE=eth1
