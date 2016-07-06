@@ -23,7 +23,8 @@ Contents:
    lvm
    iscsi
    packstack
-   
+   openstack-intro
+   environment
 
 
 Indices and tables
