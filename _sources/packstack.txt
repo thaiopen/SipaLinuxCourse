@@ -194,3 +194,8 @@ upload image
 	source keystonerc_admin
     curl http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img | glance \
          image-create --name='cirros image' --visibility=public --container-format=bare --disk-format=qcow2
+
+centos7 image::
+
+	curl http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1606.qcow2 | glance image-create --name='centos7 image' --visibility=public --container-format=bare --disk-format=qcow2
+
