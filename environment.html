@@ -142,35 +142,47 @@
   <div class="section" id="lab-environment">
 <h1>Lab Environment<a class="headerlink" href="#lab-environment" title="Permalink to this headline">¶</a></h1>
 <p>การสร้าง lab environment จะใช้ vagrant ข้างล่างนี้</p>
+<img alt="_images/installguidearch-neutron-networks.png" src="_images/installguidearch-neutron-networks.png" />
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -x- mode: ruby -x-</span>
 <span class="c1"># vi: set ft=ruby :</span>
 
 <span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;controller&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.21&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.11&quot;</span><span class="p">,</span>
         <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;controller&quot;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;neutron&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.22&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">tunnel_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.1.22&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">vlan_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.22&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;network&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.21&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">tunnel_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.1.21&quot;</span><span class="p">,</span>
         <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;neutron&quot;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;compute1&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.23&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">tunnel_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.1.23&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">vlan_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.23&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.31&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">tunnel_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.1.31&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">data_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.31&quot;</span><span class="p">,</span>
         <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;compute1&quot;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;compute2&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.24&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">tunnel_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.1.24&quot;</span><span class="p">,</span>
-        <span class="p">:</span><span class="n">vlan_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.24&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.32&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">tunnel_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.1.32&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">data_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.32&quot;</span><span class="p">,</span>
         <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;compute2&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;block1&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.41&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">data_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.41&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;block&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;object1&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.51&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">data_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.51&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;object1&quot;</span><span class="p">,</span>
     <span class="p">},</span>
 
 <span class="p">]</span>
@@ -184,12 +196,25 @@
       <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="p">:</span><span class="n">shell</span><span class="p">,</span> <span class="p">:</span><span class="n">inline</span> <span class="o">=&gt;</span> <span class="s2">&quot;echo root:password  | chpasswd&quot;</span>
       <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">mgmt_ip</span><span class="p">]</span>
 
-      <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;compute1&#39;</span>  <span class="o">||</span>  <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;compute2&#39;</span> <span class="o">||</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;neutron&#39;</span> 
+      <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;network&#39;</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">mgmt_ip</span><span class="p">]</span>
          <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">tunnel_ip</span><span class="p">]</span>
-         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">vlan_ip</span><span class="p">]</span>
+      <span class="n">end</span>
+
+      <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;compute1&#39;</span>  <span class="o">||</span>  <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;compute2&#39;</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">mgmt_ip</span><span class="p">]</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">tunnel_ip</span><span class="p">]</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">data_ip</span><span class="p">]</span>
+      <span class="n">end</span>
+
+      <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;block1&#39;</span> <span class="o">||</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;object1&#39;</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">mgmt_ip</span><span class="p">]</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">data_ip</span><span class="p">]</span>
       <span class="n">end</span>
 
       <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">lv</span><span class="o">|</span>
+        <span class="n">lv</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+        <span class="n">lv</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
         <span class="n">lv</span><span class="o">.</span><span class="n">storage_pool_name</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
         <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;controller&#39;</span>  
           <span class="n">lv</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
@@ -200,10 +225,18 @@
           <span class="n">lv</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">4096</span>
           <span class="n">lv</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">4</span>
         <span class="n">end</span>
-        <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;neutron&#39;</span>  
+        <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;network&#39;</span>  
           <span class="n">lv</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
-          <span class="n">lv</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">end</span>
+	<span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;block1&#39;</span> <span class="o">||</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;object1&#39;</span>
+	  <span class="n">lv</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">1</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+        <span class="n">end</span>
+         
       <span class="n">end</span>
     <span class="n">end</span>
   <span class="n">end</span>
@@ -211,7 +244,9 @@
 </pre></div>
 </div>
 <p>Download complete file <a class="reference download internal" href="_downloads/Vagrantfile-lab1" download=""><code class="xref download docutils literal"><span class="pre">Vagrantfile-lab1</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">openstack2</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">mkdir</span> <span class="n">openstack2</span>
+<span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">thaiopen</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">SipaLinuxCourse</span><span class="o">/</span><span class="n">_downloads</span><span class="o">/</span><span class="n">Vagrantfile</span><span class="o">-</span><span class="n">lab1</span>
+<span class="n">mv</span> <span class="n">Vagrantfile</span><span class="o">-</span><span class="n">lab1</span> <span class="n">Vagrantfile</span>
 </pre></div>
 </div>
 </div>
