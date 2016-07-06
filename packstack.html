@@ -264,28 +264,31 @@ end
 </pre></div>
 </div>
 <p>edit:</p>
-<p>vi ifcfg-eth1</p>
-<blockquote>
-<div><p>ONBOOT=yes
-DEVICE=eth1
-HWADDR=52:54:00:95:c4:b4
-TYPE=OVSPort
-DEVICETYPE=ovs
-OVS_BRIDGE=br-ex</p>
-<p>vi ifcfg-br-ex</p>
-<p>DEVICE=br-ex
-BOOTPROTO=static
-ONBOOT=yes
-TYPE=OVSBridge
-DEVICETYPE=ovs
-USERCTL=yes
-PEERDNS=yes
-IPV6INIT=no
-IPADDR=10.0.0.10
-NETMASK=255.255.255.0
-GATEWAY=192.168.121.1
-DNS1=8.8.8.8</p>
-</div></blockquote>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vi</span> <span class="n">ifcfg</span><span class="o">-</span><span class="n">eth1</span>
+
+    <span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
+    <span class="n">DEVICE</span><span class="o">=</span><span class="n">eth1</span>
+    <span class="n">HWADDR</span><span class="o">=</span><span class="mi">52</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">95</span><span class="p">:</span><span class="n">c4</span><span class="p">:</span><span class="n">b4</span>
+    <span class="n">TYPE</span><span class="o">=</span><span class="n">OVSPort</span>
+    <span class="n">DEVICETYPE</span><span class="o">=</span><span class="n">ovs</span>
+    <span class="n">OVS_BRIDGE</span><span class="o">=</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+
+    <span class="n">vi</span> <span class="n">ifcfg</span><span class="o">-</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+
+    <span class="n">DEVICE</span><span class="o">=</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+    <span class="n">BOOTPROTO</span><span class="o">=</span><span class="n">static</span>
+    <span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
+    <span class="n">TYPE</span><span class="o">=</span><span class="n">OVSBridge</span>
+    <span class="n">DEVICETYPE</span><span class="o">=</span><span class="n">ovs</span>
+    <span class="n">USERCTL</span><span class="o">=</span><span class="n">yes</span>
+    <span class="n">PEERDNS</span><span class="o">=</span><span class="n">yes</span>
+    <span class="n">IPV6INIT</span><span class="o">=</span><span class="n">no</span>
+    <span class="n">IPADDR</span><span class="o">=</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.10</span>
+    <span class="n">NETMASK</span><span class="o">=</span><span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span>
+    <span class="n">GATEWAY</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">121.1</span>
+    <span class="n">DNS1</span><span class="o">=</span><span class="mf">8.8</span><span class="o">.</span><span class="mf">8.8</span>
+</pre></div>
+</div>
 <p>restart:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">network</span>
 <span class="n">ovs</span><span class="o">-</span><span class="n">vsctl</span> <span class="n">show</span>
