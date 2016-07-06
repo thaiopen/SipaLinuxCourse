@@ -326,16 +326,12 @@ end
 </div>
 <div class="section" id="upload-image">
 <h3>upload image<a class="headerlink" href="#upload-image" title="Permalink to this headline">¶</a></h3>
-<dl class="docutils">
-<dt>::</dt>
-<dd><dl class="first last docutils">
-<dt>(packstack จะสร้าง ไฟล์ keystonerc_admin ใช้สำหรับการ login ทาง commandline)</dt>
-<dd>source keystonerc_admin</dd>
-<dt>curl <a class="reference external" href="http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img">http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img</a> | glance </dt>
-<dd>image-create &#8211;name=&#8217;cirros image&#8217; &#8211;visibility=public &#8211;container-format=bare &#8211;disk-format=qcow2</dd>
-</dl>
-</dd>
-</dl>
+<p>(packstack จะสร้าง ไฟล์ keystonerc_admin ใช้สำหรับการ login ทาง commandline)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">source</span> <span class="n">keystonerc_admin</span>
+<span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">cirros</span><span class="o">-</span><span class="n">cloud</span><span class="o">.</span><span class="n">net</span><span class="o">/</span><span class="mf">0.3</span><span class="o">.</span><span class="mi">4</span><span class="o">/</span><span class="n">cirros</span><span class="o">-</span><span class="mf">0.3</span><span class="o">.</span><span class="mi">4</span><span class="o">-</span><span class="n">x86_64</span><span class="o">-</span><span class="n">disk</span><span class="o">.</span><span class="n">img</span> <span class="o">|</span> <span class="n">glance</span> \
+     <span class="n">image</span><span class="o">-</span><span class="n">create</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cirros image&#39;</span> <span class="o">--</span><span class="n">visibility</span><span class="o">=</span><span class="n">public</span> <span class="o">--</span><span class="n">container</span><span class="o">-</span><span class="nb">format</span><span class="o">=</span><span class="n">bare</span> <span class="o">--</span><span class="n">disk</span><span class="o">-</span><span class="nb">format</span><span class="o">=</span><span class="n">qcow2</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
