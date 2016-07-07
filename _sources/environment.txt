@@ -183,7 +183,7 @@ On other node
     echo $node
     for n in $node; do vagrant ssh $n -c "sudo systemctl start chronyd; sudo systemctl enable chronyd"; done
     for n in $node; do vagrant ssh $n -c "sudo sed -i.bak '3,6d' /etc/chrony.conf"; done
-    for n in $node; do vagrant ssh $n -c "sudo sed -i.bak '3i server 10.0.0.21 iburst' /etc/chrony.conf"; done
+    for n in $node; do vagrant ssh $n -c "sudo sed -i.bak '3i server 10.0.0.11 iburst' /etc/chrony.conf"; done
     for n in $node; do vagrant ssh $n -c "sudo chronyc sources"; done
 
 
