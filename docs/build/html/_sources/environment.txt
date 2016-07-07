@@ -201,7 +201,7 @@ OpenStack packages
     for n in $node; do vagrant ssh $n -c "sudo yum install -y python-openstackclient "; done
 
     //automatically manage security policies for OpenStack services
-    for n in $node; do vagrant ssh $n -c "sudo yum install -y python-selinux"; done
+    for n in $node; do vagrant ssh $n -c "sudo yum install -y openstack-selinux"; done
 
 
 Mysql on Controller

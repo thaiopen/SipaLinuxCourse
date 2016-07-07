@@ -477,7 +477,7 @@ for n in $node; do vagrant ssh $n -c &quot;sudo yum upgrade -y&quot;; done
 for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y python-openstackclient &quot;; done
 
 //automatically manage security policies for OpenStack services
-for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y python-selinux&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y openstack-selinux&quot;; done
 </pre></div>
 </div>
 </div>
