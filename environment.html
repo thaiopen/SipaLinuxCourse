@@ -113,6 +113,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#no-sql-server">No SQL Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#message-queue">Message queue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memcached">Memcached</a></li>
 </ul>
 </li>
 </ul>
@@ -538,6 +539,7 @@ for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y openstack-selinux
 </div>
 <div class="section" id="message-queue">
 <h2>Message queue<a class="headerlink" href="#message-queue" title="Permalink to this headline">¶</a></h2>
+<p>ในการdeploy ต้องดูขนาดของ journalfileด้วย</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>yum install rabbitmq-server
 systemctl enable rabbitmq-server.service
 systemctl start rabbitmq-server.service
@@ -549,6 +551,17 @@ echo $RABBIT_PASS
 rabbitmqctl add_user openstack $RABBIT_PASS
 
 rabbitmqctl set_permissions openstack &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;
+(result)
+Setting permissions for user &quot;openstack&quot; in vhost &quot;/&quot; ...
+</pre></div>
+</div>
+</div>
+<div class="section" id="memcached">
+<h2>Memcached<a class="headerlink" href="#memcached" title="Permalink to this headline">¶</a></h2>
+<p>ในการ  deploy จริงต้องทำ security เพิ่ม</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">memcached</span> <span class="n">python</span><span class="o">-</span><span class="n">memcached</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">memcached</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">memcached</span><span class="o">.</span><span class="n">service</span>
 </pre></div>
 </div>
 </div>

@@ -263,6 +263,7 @@ No SQL Server
 
 Message queue
 *************
+ในการdeploy ต้องดูขนาดของ journalfileด้วย
 ::
 
     yum install rabbitmq-server
@@ -276,4 +277,18 @@ Message queue
     rabbitmqctl add_user openstack $RABBIT_PASS
 
     rabbitmqctl set_permissions openstack ".*" ".*" ".*"
+    (result)
+    Setting permissions for user "openstack" in vhost "/" ...
+
+
+Memcached
+*********
+ในการ  deploy จริงต้องทำ security เพิ่ม
+::
+
+    yum install memcached python-memcached
+    systemctl enable memcached.service
+    systemctl start memcached.service
+
+
 
