@@ -111,6 +111,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#install-mariadb-on-controller">install mariadb on controller</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#no-sql-server">No SQL Server</a></li>
 </ul>
 </li>
 </ul>
@@ -491,9 +492,9 @@ for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y openstack-selinux
 <p>#. install package</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
-<span class="n">yum</span> <span class="n">install</span> <span class="n">mariadb</span> <span class="n">mariadb</span><span class="o">-</span><span class="n">server</span> <span class="n">python2</span><span class="o">-</span><span class="n">PyMySQL</span>
-<span class="n">yum</span> <span class="n">install</span> <span class="n">crudini</span>
-<span class="n">yum</span> <span class="n">install</span> <span class="n">wget</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">mariadb</span> <span class="n">mariadb</span><span class="o">-</span><span class="n">server</span> <span class="n">python2</span><span class="o">-</span><span class="n">PyMySQL</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">crudini</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">wget</span>
 </pre></div>
 </div>
 <p>#. create and edit /etc/my.cnf.d/openstack.cnf</p>
@@ -518,6 +519,20 @@ for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y openstack-selinux
 <span class="n">mysql_secure_installation</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="no-sql-server">
+<h2>No SQL Server<a class="headerlink" href="#no-sql-server" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">mongodb</span><span class="o">-</span><span class="n">server</span> <span class="n">mongodb</span>
+
+<span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">mongod</span><span class="o">.</span><span class="n">conf</span>
+
+<span class="n">bind_ip</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.11</span>
+
+
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">mongod</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">mongod</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
 </div>
 </div>
 </div>

@@ -217,9 +217,9 @@ install mariadb on controller
     
     vagrant ssh controller
     sudo su -
-    yum install mariadb mariadb-server python2-PyMySQL
-    yum install crudini
-    yum install wget
+    yum install -y mariadb mariadb-server python2-PyMySQL
+    yum install -y crudini
+    yum install -y wget
 
 #. create and edit /etc/my.cnf.d/openstack.cnf
 ::
@@ -246,9 +246,19 @@ install mariadb on controller
     mysql_secure_installation
 
 
+No SQL Server
+*************
+::
+   
+    yum install -y mongodb-server mongodb
+
+    vi /etc/mongod.conf 
+
+    bind_ip = 10.0.0.11
 
 
-
+    systemctl enable mongod.service
+    systemctl start mongod.service
 
 
 
