@@ -270,6 +270,10 @@ Message queue
     systemctl start rabbitmq-server.service
 
     //source passwordlist to shell
+    wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/gen_pass.sh
     source passwordlist
+    echo $RABBIT_PASS
     rabbitmqctl add_user openstack $RABBIT_PASS
+
+    rabbitmqctl set_permissions openstack ".*" ".*" ".*"
 
