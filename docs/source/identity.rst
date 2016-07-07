@@ -2,7 +2,7 @@
 Identity Service 
 ================
 
-..image:: imaegs/general-operations-scheme-keystone-authentication-mechanisms.png
+..image:: images/general-operations-scheme-keystone-authentication-mechanisms.png
 
 Install identity service
 ************************
