@@ -228,10 +228,8 @@ install mariadb on controller
 
     [mysqld]
     ...
-    bind-address = 10.0.0.11
 
-    [mysqld]
-    ...
+    bind-address = 10.0.0.11
     default-storage-engine = innodb
     innodb_file_per_table
     max_connections = 4096
