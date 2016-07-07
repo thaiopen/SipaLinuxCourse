@@ -265,8 +265,11 @@ Message queue
 *************
 ::
 
-yum install rabbitmq-server
-systemctl enable rabbitmq-server.service
-systemctl start rabbitmq-server.service
-rabbitmqctl add_user openstack $RABBIT_PASS
+    yum install rabbitmq-server
+    systemctl enable rabbitmq-server.service
+    systemctl start rabbitmq-server.service
+
+    //source passwordlist to shell
+    source passwordlist
+    rabbitmqctl add_user openstack $RABBIT_PASS
 
