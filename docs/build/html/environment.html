@@ -603,6 +603,9 @@ Setting permissions for user &quot;openstack&quot; in vhost &quot;/&quot; ...
 <span class="n">ls</span> <span class="o">-</span><span class="n">l</span> <span class="n">passwordlist</span>
 </pre></div>
 </div>
+<p>dbs=&#8221;cinder glance heat keystone manila neutron nova nova_api trove&#8221;
+for db in $dbs; do  mysql -uroot -p$DB_PASS -Bse &#8220;drop database $db&#8221; ; done
+mysql -uroot -p$DB_PASS -Bse &#8220;show databases;&#8221;</p>
 </div>
 </div>
 
