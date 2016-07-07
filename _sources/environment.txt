@@ -224,6 +224,8 @@ install mariadb on controller
 #. create and edit /etc/my.cnf.d/openstack.cnf
 ::
 
+    mv /etc/my.cnf.d/mariadb-server.cnf /etc/my.cnf.d/openstack.cnf
+
     [mysqld]
     ...
     bind-address = 10.0.0.11
