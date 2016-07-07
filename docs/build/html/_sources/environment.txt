@@ -249,10 +249,27 @@ install mariadb on controller
     
     systemctl enable mariadb.service
     systemctl start mariadb.service
+ 
+    //don't forget อย่าลืม
+    source passwordlist
 
-    
+    //test ทดสอบค่า
+    echo $DB_PASS
+    b2d1a3116eb60718f3c4
+
+    //set root password ตั้งค่า password
+
     mysql_secure_installation
 
+    --or--
+
+    mysql -u root <<-EOF
+    UPDATE mysql.user SET Password=PASSWORD('$DB_PASS') WHERE User='root';
+    DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+    DELETE FROM mysql.user WHERE User='';
+    DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';
+    FLUSH PRIVILEGES;
+    EOF
 
 No SQL Server
 *************
@@ -306,4 +323,10 @@ user ที่จะต้องสร้าง ใน openstack
 
 Download complete file :download:`gen_database.sh <./gen_database.sh>`::
 
+    //how to use file gen_database.sh
+    wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/gen_database.sh
+    
+    //check file passwordlist
+    ls -l passwordlist
 
+    
