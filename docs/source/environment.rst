@@ -51,6 +51,7 @@ Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1>`::
     for n in $node; do vagrant scp isconnect.sh $n:/home/vagrant/;done 
 
     //test connectivity
+    for n in $node; do vagrant ssh $n -c "sudo mv /home/vagrant/hosts /etc/hosts"; done
     for n in $node; do vagrant ssh $n -c "bash /home/vagrant/isconnect.sh"; done
 
     // set time zone
