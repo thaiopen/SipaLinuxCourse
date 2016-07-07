@@ -119,6 +119,13 @@ script generate script
 
 Download complete file :download:`gen_pass.sh <./gen_pass.sh>`::
 
+    wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/gen_pass.sh
+    bash gen_pass.sh
+    cat passwordlist
+
+    //put password to shell environment
+    source passwordlist
+
 NTP Network Time Protocol
 *************************
 On Controller node
