@@ -461,7 +461,8 @@ echo $node
 for n in $node; do vagrant ssh $n -c &quot;sudo systemctl start chronyd; sudo systemctl enable chronyd&quot;; done
 for n in $node; do vagrant ssh $n -c &quot;sudo sed -i.bak &#39;3,6d&#39; /etc/chrony.conf&quot;; done
 for n in $node; do vagrant ssh $n -c &quot;sudo sed -i.bak &#39;3i server 10.0.0.11 iburst&#39; /etc/chrony.conf&quot;; done
-for n in $node; do vagrant ssh $n -c &quot;sudo chronyc sources&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl restart chronyd&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo chronyc tracking&quot;; done
 </pre></div>
 </div>
 </div>
