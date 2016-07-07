@@ -538,10 +538,15 @@ for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y openstack-selinux
 </div>
 <div class="section" id="message-queue">
 <h2>Message queue<a class="headerlink" href="#message-queue" title="Permalink to this headline">¶</a></h2>
-<p>yum install rabbitmq-server
+<div class="highlight-default"><div class="highlight"><pre><span></span>yum install rabbitmq-server
 systemctl enable rabbitmq-server.service
 systemctl start rabbitmq-server.service
-rabbitmqctl add_user openstack $RABBIT_PASS</p>
+
+//source passwordlist to shell
+source passwordlist
+rabbitmqctl add_user openstack $RABBIT_PASS
+</pre></div>
+</div>
 </div>
 </div>
 
