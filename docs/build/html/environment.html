@@ -115,6 +115,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#no-sql-server">No SQL Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#message-queue">Message queue</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#memcached">Memcached</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-user-in-data">Create User in Data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="identity.html">Identity Service</a></li>
@@ -408,7 +409,13 @@ for n in $node; do vagrant ssh $n -c &quot;sudo systemctl stop NetworkManager&qu
 <span class="n">bash</span> <span class="n">gen_pass</span><span class="o">.</span><span class="n">sh</span>
 <span class="n">cat</span> <span class="n">passwordlist</span>
 
-<span class="o">//</span><span class="n">put</span> <span class="n">password</span> <span class="n">to</span> <span class="n">shell</span> <span class="n">environment</span>
+<span class="o">//</span> <span class="nb">set</span> <span class="n">file</span> <span class="n">to</span> <span class="n">controller</span> <span class="n">node</span> <span class="n">at</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span>
+<span class="n">vagrant</span> <span class="n">scp</span> <span class="n">passwordlist</span> <span class="n">controller</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">vagrant</span>
+<span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;sudo mv /home/vagrant/passwordlist /root&quot;</span>
+<span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+
+<span class="o">//</span><span class="n">put</span> <span class="n">password</span> <span class="n">to</span> <span class="n">shell</span> <span class="n">environment</span> <span class="n">การใช้งานโดยการนำค่าตัวแปรใส่ไว้ใน</span> <span class="n">shell</span> <span class="n">environment</span>
 <span class="n">source</span> <span class="n">passwordlist</span>
 </pre></div>
 </div>
@@ -541,14 +548,13 @@ for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y openstack-selinux
 </div>
 <div class="section" id="message-queue">
 <h2>Message queue<a class="headerlink" href="#message-queue" title="Permalink to this headline">¶</a></h2>
-<p>ในการdeploy ต้องดูขนาดของ journalfileด้วย</p>
+<p>ในการdeploy ต้องดูขนาดของ journalfile ด้วย</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>yum install rabbitmq-server
 systemctl enable rabbitmq-server.service
 systemctl start rabbitmq-server.service
 
 //source passwordlist to shell
-wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/gen_pass.sh
-source passwordlist
+
 echo $RABBIT_PASS
 rabbitmqctl add_user openstack $RABBIT_PASS
 
@@ -566,6 +572,12 @@ Setting permissions for user &quot;openstack&quot; in vhost &quot;/&quot; ...
 <span class="n">systemctl</span> <span class="n">start</span> <span class="n">memcached</span><span class="o">.</span><span class="n">service</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="create-user-in-data">
+<h2>Create User in Data<a class="headerlink" href="#create-user-in-data" title="Permalink to this headline">¶</a></h2>
+<p>user ที่จะต้องสร้าง ใน openstack</p>
+<img alt="_images/databaseopenstack.png" src="_images/databaseopenstack.png" />
+<p>Download complete file <a class="reference download internal" href="_downloads/gen_database.sh" download=""><code class="xref download docutils literal"><span class="pre">gen_database.sh</span></code></a>:</p>
 </div>
 </div>
 

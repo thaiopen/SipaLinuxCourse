@@ -1,10 +1,11 @@
-#!/bin/bash
-##################################################
-# file: gen_pass.sh                              # 
-#   	generate password for openstack user     #
-# by:                                            #
-# sawangpong muadphet <sawangpong@itbakery.net>  #
-##################################################
+#!/bin/sh
+#
+# Populate openstack database password
+#
+
+# Mainly inspired by
+# sawangpong muadphet <sawangpong@itbakery.net>
+#
 
 file="passwordlist"
 if [ -f passwordlist ]; then
@@ -33,6 +34,8 @@ SERVICES=(
         NOVA_PASS
         RABBIT_PASS
         SWIFT_PASS
+	TROVE_PASS
+        TROVE_DBPASS
 )
 
 for i in ${SERVICES[@]}; do

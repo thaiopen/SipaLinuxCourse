@@ -124,8 +124,16 @@ Download complete file :download:`gen_pass.sh <./gen_pass.sh>`::
     bash gen_pass.sh
     cat passwordlist
 
-    //put password to shell environment
+    // set file to controller node at /root/
+    vagrant scp passwordlist controller:/home/vagrant 
+    vagrant ssh controller -c "sudo mv /home/vagrant/passwordlist /root"
+    vagrant ssh controller
+    sudo su -
+
+    //put password to shell environment การใช้งานโดยการนำค่าตัวแปรใส่ไว้ใน shell environment
     source passwordlist
+
+
 
 NTP Network Time Protocol
 *************************
@@ -263,7 +271,7 @@ No SQL Server
 
 Message queue
 *************
-ในการdeploy ต้องดูขนาดของ journalfileด้วย
+ในการdeploy ต้องดูขนาดของ journalfile ด้วย
 ::
 
     yum install rabbitmq-server
@@ -271,8 +279,7 @@ Message queue
     systemctl start rabbitmq-server.service
 
     //source passwordlist to shell
-    wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/gen_pass.sh
-    source passwordlist
+
     echo $RABBIT_PASS
     rabbitmqctl add_user openstack $RABBIT_PASS
 
@@ -290,5 +297,13 @@ Memcached
     systemctl enable memcached.service
     systemctl start memcached.service
 
+
+Create User in Data
+*******************
+user ที่จะต้องสร้าง ใน openstack 
+
+.. image:: images/databaseopenstack.png
+
+Download complete file :download:`gen_database.sh <./gen_database.sh>`::
 
 
