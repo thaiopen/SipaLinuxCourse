@@ -112,6 +112,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#no-sql-server">No SQL Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#message-queue">Message queue</a></li>
 </ul>
 </li>
 </ul>
@@ -527,13 +528,20 @@ for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y openstack-selinux
 
 <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">mongod</span><span class="o">.</span><span class="n">conf</span>
 
-<span class="n">bind_ip</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.11</span>
-
+<span class="mi">6</span> <span class="n">bind_ip</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.11</span>
+<span class="mi">113</span> <span class="n">smallfiles</span> <span class="o">=</span> <span class="n">true</span>
 
 <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">mongod</span><span class="o">.</span><span class="n">service</span>
 <span class="n">systemctl</span> <span class="n">start</span> <span class="n">mongod</span><span class="o">.</span><span class="n">service</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="message-queue">
+<h2>Message queue<a class="headerlink" href="#message-queue" title="Permalink to this headline">¶</a></h2>
+<p>yum install rabbitmq-server
+systemctl enable rabbitmq-server.service
+systemctl start rabbitmq-server.service
+rabbitmqctl add_user openstack $RABBIT_PASS</p>
 </div>
 </div>
 

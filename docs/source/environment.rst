@@ -254,14 +254,19 @@ No SQL Server
 
     vi /etc/mongod.conf 
 
-    bind_ip = 10.0.0.11
-
+    6 bind_ip = 10.0.0.11
+    113 smallfiles = true
 
     systemctl enable mongod.service
     systemctl start mongod.service
 
 
+Message queue
+*************
+::
 
-
-
+yum install rabbitmq-server
+systemctl enable rabbitmq-server.service
+systemctl start rabbitmq-server.service
+rabbitmqctl add_user openstack $RABBIT_PASS
 
