@@ -501,10 +501,8 @@ for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y openstack-selinux
 
 <span class="p">[</span><span class="n">mysqld</span><span class="p">]</span>
 <span class="o">...</span>
-<span class="n">bind</span><span class="o">-</span><span class="n">address</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.11</span>
 
-<span class="p">[</span><span class="n">mysqld</span><span class="p">]</span>
-<span class="o">...</span>
+<span class="n">bind</span><span class="o">-</span><span class="n">address</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.11</span>
 <span class="n">default</span><span class="o">-</span><span class="n">storage</span><span class="o">-</span><span class="n">engine</span> <span class="o">=</span> <span class="n">innodb</span>
 <span class="n">innodb_file_per_table</span>
 <span class="n">max_connections</span> <span class="o">=</span> <span class="mi">4096</span>
