@@ -34,7 +34,7 @@ Object สามารถ แทนค่าได้ตามตารางด
 
     cd ~
     mkdir bridge
-    cd ovs
+    cd bridge
     vagrant init centos/7
     vagrant up
     vagrant ssh

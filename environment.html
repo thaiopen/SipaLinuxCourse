@@ -304,6 +304,7 @@ for n in $node; do vagrant scp hosts $n:/home/vagrant/;done
 for n in $node; do vagrant scp isconnect.sh $n:/home/vagrant/;done
 
 //test connectivity
+for n in $node; do vagrant ssh $n -c &quot;sudo mv /home/vagrant/hosts /etc/hosts&quot;; done
 for n in $node; do vagrant ssh $n -c &quot;bash /home/vagrant/isconnect.sh&quot;; done
 
 // set time zone
