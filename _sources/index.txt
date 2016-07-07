@@ -22,6 +22,7 @@ Contents:
    team
    lvm
    iscsi
+   virtualdev
    packstack
    openstack-intro
    environment
