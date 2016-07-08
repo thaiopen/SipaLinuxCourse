@@ -224,6 +224,7 @@ install mariadb on controller
     vagrant ssh controller
     sudo su -
     yum install -y mariadb mariadb-server python2-PyMySQL
+    yum install -y openstack-utils
     yum install -y crudini
     yum install -y wget
 
