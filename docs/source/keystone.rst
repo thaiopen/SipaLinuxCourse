@@ -43,7 +43,7 @@ Initialize key
 
     keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
 
-Confit apache
+Config apache
 ::
 
     vi /etc/httpd/conf/httpd.conf
@@ -98,7 +98,8 @@ set environment variable
     export OS_IDENTITY_API_VERSION=3
 
 Create service Entry
-====================
+--------------------
+create
 ::
 
     setenforce 0
@@ -114,3 +115,25 @@ Create service Entry
     | type        | identity                         |
     +-------------+----------------------------------+
 
+delete
+::
+    openstack service list
+    +----------------------------------+----------+----------+
+    | ID                               | Name     | Type     |
+    +----------------------------------+----------+----------+
+    | fc434971e4e14cfc8a222cd32daf1880 | keystone | identity |
+    | fd5dc8b1b81c4bf780e0f3127ef03c61 | keystone | identity |
+    +----------------------------------+----------+----------+
+
+    openstack service delete fc434971e4e14cfc8a222cd32daf1880
+    openstack service delete fd5dc8b1b81c4bf780e0f3127ef03c61
+
+Loging
+::
+
+    cd /var/log/keystone
+    ls
+ 
+    cd /var/log/httpd/
+    ls
+    
