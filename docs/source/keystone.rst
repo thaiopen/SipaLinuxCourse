@@ -32,14 +32,6 @@ Install package
     openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
     openstack-config --set /etc/keystone/keystone.conf database connection mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
     openstack-config --set /etc/keystone/keystone.conf token provider fernet
-    su -s /bin/sh -c "keystone-manage db_sync" keystone
-
-set environment variable
-::
-
-    export OS_TOKEN=$ADMIN_TOKEN
-    export OS_URL=http://controller:35357/v3
-    export OS_IDENTITY_API_VERSION=3
 
 Create tables in keystone database
 ::
@@ -109,4 +101,4 @@ Create service Entry
 ====================
 ::
 
-openstack service create --name keystone --description "OpenStack Identity" identity
+    openstack service create --name keystone --description "OpenStack Identity" identity

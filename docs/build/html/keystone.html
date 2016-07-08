@@ -177,13 +177,6 @@ yum install openstack-keystone httpd mod_wsgi -y
 openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
 openstack-config --set /etc/keystone/keystone.conf database connection mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
 openstack-config --set /etc/keystone/keystone.conf token provider fernet
-su -s /bin/sh -c &quot;keystone-manage db_sync&quot; keystone
-</pre></div>
-</div>
-<p>set environment variable</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>export OS_TOKEN=$ADMIN_TOKEN
-export OS_URL=http://controller:35357/v3
-export OS_IDENTITY_API_VERSION=3
 </pre></div>
 </div>
 <p>Create tables in keystone database</p>
@@ -248,7 +241,9 @@ export OS_IDENTITY_API_VERSION=3
 </div>
 <div class="section" id="create-service-entry">
 <h2>Create service Entry<a class="headerlink" href="#create-service-entry" title="Permalink to this headline">¶</a></h2>
-<p>openstack service create &#8211;name keystone &#8211;description &#8220;OpenStack Identity&#8221; identity</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">service</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">keystone</span> <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;OpenStack Identity&quot;</span> <span class="n">identity</span>
+</pre></div>
+</div>
 </div>
 </div>
 
