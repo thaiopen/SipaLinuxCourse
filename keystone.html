@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Install keystone &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="prev" title="Lab Environment" href="environment.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Install keystone</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-process">Install Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-package">Install package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#create-service-entry">Create service Entry</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Install keystone</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/keystone.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="install-keystone">
+<h1>Install keystone<a class="headerlink" href="#install-keystone" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install-process">
+<h2>Install Process<a class="headerlink" href="#install-process" title="Permalink to this headline">¶</a></h2>
+<p>root password is $DB_PASS. please chech database (optional)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>echo $DB_PASS
+b2d1a3116eb60718f3c4
+mysql -uroot -p
+
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 7
+Server version: 10.1.12-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2016, Oracle, MariaDB Corporation Ab and others.
+
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
+
+MariaDB [(none)]&gt; FLUSH PRIVILEGES;
+MariaDB [(none)]&gt; SELECT User, Host, Password FROM mysql.user;
+</pre></div>
+</div>
+<div class="section" id="install-package">
+<h3>Install package<a class="headerlink" href="#install-package" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>source passwordlist
+yum install openstack-keystone httpd mod_wsgi -y
+openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
+openstack-config --set /etc/keystone/keystone.conf database connection mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
+openstack-config --set /etc/keystone/keystone.conf token provider fernet
+su -s /bin/sh -c &quot;keystone-manage db_sync&quot; keystone
+</pre></div>
+</div>
+<p>set environment variable</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>export OS_TOKEN=$ADMIN_TOKEN
+export OS_URL=http://controller:35357/v3
+export OS_IDENTITY_API_VERSION=3
+</pre></div>
+</div>
+<p>Create tables in keystone database</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">su</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;keystone-manage db_sync&quot;</span> <span class="n">keystone</span>
+</pre></div>
+</div>
+<p>Initialize key</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">keystone</span><span class="o">-</span><span class="n">manage</span> <span class="n">fernet_setup</span> <span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">user</span> <span class="n">keystone</span> <span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">group</span> <span class="n">keystone</span>
+</pre></div>
+</div>
+<p>Confit apache</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">httpd</span><span class="o">.</span><span class="n">conf</span>
+<span class="mi">96</span> <span class="n">ServerName</span> <span class="n">controller</span>
+</pre></div>
+</div>
+<p>vi /etc/httpd/conf.d/wsgi-keystone.conf</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Listen</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span><span class="p">:</span><span class="mi">5000</span>
+<span class="n">Listen</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span><span class="p">:</span><span class="mi">35357</span>
+
+<span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">5000</span><span class="o">&gt;</span>
+    <span class="n">WSGIDaemonProcess</span> <span class="n">keystone</span><span class="o">-</span><span class="n">public</span> <span class="n">processes</span><span class="o">=</span><span class="mi">5</span> <span class="n">threads</span><span class="o">=</span><span class="mi">1</span> <span class="n">user</span><span class="o">=</span><span class="n">keystone</span> <span class="n">group</span><span class="o">=</span><span class="n">keystone</span> <span class="n">display</span><span class="o">-</span><span class="n">name</span><span class="o">=%</span><span class="p">{</span><span class="n">GROUP</span><span class="p">}</span>
+    <span class="n">WSGIProcessGroup</span> <span class="n">keystone</span><span class="o">-</span><span class="n">public</span>
+    <span class="n">WSGIScriptAlias</span> <span class="o">/</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">keystone</span><span class="o">-</span><span class="n">wsgi</span><span class="o">-</span><span class="n">public</span>
+    <span class="n">WSGIApplicationGroup</span> <span class="o">%</span><span class="p">{</span><span class="n">GLOBAL</span><span class="p">}</span>
+    <span class="n">WSGIPassAuthorization</span> <span class="n">On</span>
+    <span class="n">ErrorLogFormat</span> <span class="s2">&quot;%</span><span class="si">{cu}</span><span class="s2">t %M&quot;</span>
+    <span class="n">ErrorLog</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">keystone</span><span class="o">-</span><span class="n">error</span><span class="o">.</span><span class="n">log</span>
+    <span class="n">CustomLog</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">keystone</span><span class="o">-</span><span class="n">access</span><span class="o">.</span><span class="n">log</span> <span class="n">combined</span>
+
+    <span class="o">&lt;</span><span class="n">Directory</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">&gt;</span>
+        <span class="n">Require</span> <span class="nb">all</span> <span class="n">granted</span>
+    <span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">35357</span><span class="o">&gt;</span>
+    <span class="n">WSGIDaemonProcess</span> <span class="n">keystone</span><span class="o">-</span><span class="n">admin</span> <span class="n">processes</span><span class="o">=</span><span class="mi">5</span> <span class="n">threads</span><span class="o">=</span><span class="mi">1</span> <span class="n">user</span><span class="o">=</span><span class="n">keystone</span> <span class="n">group</span><span class="o">=</span><span class="n">keystone</span> <span class="n">display</span><span class="o">-</span><span class="n">name</span><span class="o">=%</span><span class="p">{</span><span class="n">GROUP</span><span class="p">}</span>
+    <span class="n">WSGIProcessGroup</span> <span class="n">keystone</span><span class="o">-</span><span class="n">admin</span>
+    <span class="n">WSGIScriptAlias</span> <span class="o">/</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">keystone</span><span class="o">-</span><span class="n">wsgi</span><span class="o">-</span><span class="n">admin</span>
+    <span class="n">WSGIApplicationGroup</span> <span class="o">%</span><span class="p">{</span><span class="n">GLOBAL</span><span class="p">}</span>
+    <span class="n">WSGIPassAuthorization</span> <span class="n">On</span>
+    <span class="n">ErrorLogFormat</span> <span class="s2">&quot;%</span><span class="si">{cu}</span><span class="s2">t %M&quot;</span>
+    <span class="n">ErrorLog</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">keystone</span><span class="o">-</span><span class="n">error</span><span class="o">.</span><span class="n">log</span>
+    <span class="n">CustomLog</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">keystone</span><span class="o">-</span><span class="n">access</span><span class="o">.</span><span class="n">log</span> <span class="n">combined</span>
+
+    <span class="o">&lt;</span><span class="n">Directory</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">&gt;</span>
+        <span class="n">Require</span> <span class="nb">all</span> <span class="n">granted</span>
+    <span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">VirtualHost</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">enable</span> <span class="n">httpd</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">httpd</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>set environment variable</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>export OS_TOKEN=$ADMIN_TOKEN
+export OS_URL=http://controller:35357/v3
+export OS_IDENTITY_API_VERSION=3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="create-service-entry">
+<h2>Create service Entry<a class="headerlink" href="#create-service-entry" title="Permalink to this headline">¶</a></h2>
+<p>openstack service create &#8211;name keystone &#8211;description &#8220;OpenStack Identity&#8221; identity</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="environment.html" class="btn btn-neutral" title="Lab Environment" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
