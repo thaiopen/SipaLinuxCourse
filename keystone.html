@@ -195,8 +195,8 @@ openstack-config --set /etc/keystone/keystone.conf token provider fernet
 </pre></div>
 </div>
 <p>vi /etc/httpd/conf.d/wsgi-keystone.conf</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Listen</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span><span class="p">:</span><span class="mi">5000</span>
-<span class="n">Listen</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span><span class="p">:</span><span class="mi">35357</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Listen</span> <span class="mi">5000</span>
+<span class="n">Listen</span> <span class="mi">35357</span>
 
 <span class="o">&lt;</span><span class="n">VirtualHost</span> <span class="o">*</span><span class="p">:</span><span class="mi">5000</span><span class="o">&gt;</span>
     <span class="n">WSGIDaemonProcess</span> <span class="n">keystone</span><span class="o">-</span><span class="n">public</span> <span class="n">processes</span><span class="o">=</span><span class="mi">5</span> <span class="n">threads</span><span class="o">=</span><span class="mi">1</span> <span class="n">user</span><span class="o">=</span><span class="n">keystone</span> <span class="n">group</span><span class="o">=</span><span class="n">keystone</span> <span class="n">display</span><span class="o">-</span><span class="n">name</span><span class="o">=%</span><span class="p">{</span><span class="n">GROUP</span><span class="p">}</span>
@@ -242,8 +242,7 @@ export OS_IDENTITY_API_VERSION=3
 <div class="section" id="create-service-entry">
 <h4>Create service Entry<a class="headerlink" href="#create-service-entry" title="Permalink to this headline">¶</a></h4>
 <p>create</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setenforce</span> <span class="mi">0</span>
-<span class="n">openstack</span> <span class="n">service</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">keystone</span> <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;OpenStack Identity&quot;</span> <span class="n">identity</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">service</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">keystone</span> <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;OpenStack Identity&quot;</span> <span class="n">identity</span>
 
 <span class="o">+-------------+----------------------------------+</span>
 <span class="o">|</span> <span class="n">Field</span>       <span class="o">|</span> <span class="n">Value</span>                            <span class="o">|</span>
@@ -272,6 +271,7 @@ export OS_IDENTITY_API_VERSION=3
 <p>Loging</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">keystone</span>
 <span class="n">ls</span>
+<span class="n">tail</span> <span class="o">-</span><span class="n">f</span> <span class="n">keystone</span><span class="o">.</span><span class="n">log</span>
 
 <span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span>
 <span class="n">ls</span>
