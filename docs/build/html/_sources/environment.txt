@@ -13,12 +13,13 @@ Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1>`::
 
     mkdir openstack2
     vagrant plugin install vagrant-scp
+    vagrant plugin install vagrant-libvirt
     sudo systemctl start firewalld
 
     wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/Vagrantfile-lab1 
     
     mv Vagrantfile-lab1 Vagrantfile
-
+    vagrant up
 
     cat << HOST  > hosts
     127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
