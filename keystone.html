@@ -284,6 +284,23 @@ export OS_IDENTITY_API_VERSION=3
 <span class="n">openstack</span> <span class="n">endpoint</span> <span class="nb">list</span>
 </pre></div>
 </div>
+<p>Domain Project User</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">domain</span> <span class="n">create</span> <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;Default Domain&quot;</span> <span class="n">default</span>
+
+<span class="n">openstack</span> <span class="n">project</span> <span class="n">create</span> <span class="o">--</span><span class="n">domain</span> <span class="n">default</span> <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;Admin Project&quot;</span> <span class="n">admin</span>
+<span class="n">openstack</span> <span class="n">user</span> <span class="n">create</span> <span class="o">--</span><span class="n">domain</span> <span class="n">default</span> <span class="o">--</span><span class="n">password</span><span class="o">-</span><span class="n">prompt</span> <span class="n">admin</span>
+<span class="n">openstack</span> <span class="n">role</span> <span class="n">create</span> <span class="n">admin</span>
+<span class="n">openstack</span> <span class="n">role</span> <span class="n">add</span> <span class="o">--</span><span class="n">project</span> <span class="n">admin</span> <span class="o">--</span><span class="n">user</span> <span class="n">admin</span> <span class="n">admin</span>
+
+<span class="n">openstack</span> <span class="n">project</span> <span class="n">create</span> <span class="o">--</span><span class="n">domain</span> <span class="n">default</span> <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;Service Project&quot;</span> <span class="n">service</span>
+
+
+<span class="n">openstack</span> <span class="n">project</span> <span class="n">create</span> <span class="o">--</span><span class="n">domain</span> <span class="n">default</span> <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;Demo Project&quot;</span> <span class="n">demo</span>
+<span class="n">openstack</span> <span class="n">user</span> <span class="n">create</span> <span class="o">--</span><span class="n">domain</span> <span class="n">default</span> <span class="o">--</span><span class="n">password</span><span class="o">-</span><span class="n">prompt</span> <span class="n">demo</span>
+<span class="n">openstack</span> <span class="n">role</span> <span class="n">create</span> <span class="n">user</span>
+<span class="n">openstack</span> <span class="n">role</span> <span class="n">add</span> <span class="o">--</span><span class="n">project</span> <span class="n">demo</span> <span class="o">--</span><span class="n">user</span> <span class="n">demo</span> <span class="n">user</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
