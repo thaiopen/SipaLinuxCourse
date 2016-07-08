@@ -98,10 +98,12 @@
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Install keystone</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-process">Install Process</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#install-package">Install package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-package">Install package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-service-entry">Create service Entry</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#create-service-entry">Create service Entry</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -187,7 +189,7 @@ openstack-config --set /etc/keystone/keystone.conf token provider fernet
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">keystone</span><span class="o">-</span><span class="n">manage</span> <span class="n">fernet_setup</span> <span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">user</span> <span class="n">keystone</span> <span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">group</span> <span class="n">keystone</span>
 </pre></div>
 </div>
-<p>Confit apache</p>
+<p>Config apache</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">httpd</span><span class="o">.</span><span class="n">conf</span>
 <span class="mi">96</span> <span class="n">ServerName</span> <span class="n">controller</span>
 </pre></div>
@@ -237,10 +239,9 @@ export OS_URL=http://controller:35357/v3
 export OS_IDENTITY_API_VERSION=3
 </pre></div>
 </div>
-</div>
-</div>
 <div class="section" id="create-service-entry">
-<h2>Create service Entry<a class="headerlink" href="#create-service-entry" title="Permalink to this headline">¶</a></h2>
+<h4>Create service Entry<a class="headerlink" href="#create-service-entry" title="Permalink to this headline">¶</a></h4>
+<p>create</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setenforce</span> <span class="mi">0</span>
 <span class="n">openstack</span> <span class="n">service</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">keystone</span> <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;OpenStack Identity&quot;</span> <span class="n">identity</span>
 
@@ -254,6 +255,29 @@ export OS_IDENTITY_API_VERSION=3
 <span class="o">|</span> <span class="nb">type</span>        <span class="o">|</span> <span class="n">identity</span>                         <span class="o">|</span>
 <span class="o">+-------------+----------------------------------+</span>
 </pre></div>
+</div>
+<p>delete</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">service</span> <span class="nb">list</span>
+<span class="o">+----------------------------------+----------+----------+</span>
+<span class="o">|</span> <span class="n">ID</span>                               <span class="o">|</span> <span class="n">Name</span>     <span class="o">|</span> <span class="n">Type</span>     <span class="o">|</span>
+<span class="o">+----------------------------------+----------+----------+</span>
+<span class="o">|</span> <span class="n">fc434971e4e14cfc8a222cd32daf1880</span> <span class="o">|</span> <span class="n">keystone</span> <span class="o">|</span> <span class="n">identity</span> <span class="o">|</span>
+<span class="o">|</span> <span class="n">fd5dc8b1b81c4bf780e0f3127ef03c61</span> <span class="o">|</span> <span class="n">keystone</span> <span class="o">|</span> <span class="n">identity</span> <span class="o">|</span>
+<span class="o">+----------------------------------+----------+----------+</span>
+
+<span class="n">openstack</span> <span class="n">service</span> <span class="n">delete</span> <span class="n">fc434971e4e14cfc8a222cd32daf1880</span>
+<span class="n">openstack</span> <span class="n">service</span> <span class="n">delete</span> <span class="n">fd5dc8b1b81c4bf780e0f3127ef03c61</span>
+</pre></div>
+</div>
+<p>Loging</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">keystone</span>
+<span class="n">ls</span>
+
+<span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span>
+<span class="n">ls</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
