@@ -52,8 +52,8 @@ Config apache
 vi /etc/httpd/conf.d/wsgi-keystone.conf
 ::
 
-    Listen 0.0.0.0:5000
-    Listen 0.0.0.0:35357
+    Listen 5000
+    Listen 35357
 
     <VirtualHost *:5000>
         WSGIDaemonProcess keystone-public processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP}
@@ -102,7 +102,6 @@ Create service Entry
 create
 ::
 
-    setenforce 0
     openstack service create --name keystone --description "OpenStack Identity" identity
 
     +-------------+----------------------------------+
@@ -117,6 +116,7 @@ create
 
 delete
 ::
+
     openstack service list
     +----------------------------------+----------+----------+
     | ID                               | Name     | Type     |
@@ -133,6 +133,7 @@ Loging
 
     cd /var/log/keystone
     ls
+    tail -f keystone.log
  
     cd /var/log/httpd/
     ls
