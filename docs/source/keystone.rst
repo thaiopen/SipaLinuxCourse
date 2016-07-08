@@ -101,4 +101,16 @@ Create service Entry
 ====================
 ::
 
+    setenforce 0
     openstack service create --name keystone --description "OpenStack Identity" identity
+
+    +-------------+----------------------------------+
+    | Field       | Value                            |
+    +-------------+----------------------------------+
+    | description | OpenStack Identity               |
+    | enabled     | True                             |
+    | id          | fc434971e4e14cfc8a222cd32daf1880 |
+    | name        | keystone                         |
+    | type        | identity                         |
+    +-------------+----------------------------------+
+
