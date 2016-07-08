@@ -68,5 +68,4 @@ EOF
 echo "Success create database; Show database"
 mysql -uroot -p$DB_PASS -Bse "show databases;"
 
-fi
 

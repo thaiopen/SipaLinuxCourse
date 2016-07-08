@@ -328,8 +328,9 @@ Download complete file :download:`gen_database.sh <./gen_database.sh>`::
     //check file passwordlist
     ls -l passwordlist
 
-    
+undo  
+::
 
-dbs="cinder glance heat keystone manila neutron nova nova_api trove"
-for db in $dbs; do  mysql -uroot -p$DB_PASS -Bse "drop database $db" ; done
-mysql -uroot -p$DB_PASS -Bse "show databases;"
+    dbs="cinder glance heat keystone manila neutron nova nova_api trove"
+    for db in $dbs; do  mysql -uroot -p$DB_PASS -Bse "drop database $db" ; done
+    mysql -uroot -p$DB_PASS -Bse "show databases;"
