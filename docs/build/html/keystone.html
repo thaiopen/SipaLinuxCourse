@@ -277,6 +277,13 @@ export OS_IDENTITY_API_VERSION=3
 <span class="n">ls</span>
 </pre></div>
 </div>
+<p>Create Endpoint</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">openstack</span> <span class="n">endpoint</span> <span class="n">create</span> <span class="o">--</span><span class="n">region</span> <span class="n">RegionOne</span> <span class="n">identity</span> <span class="n">public</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">controller</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">v3</span>
+<span class="n">openstack</span> <span class="n">endpoint</span> <span class="n">create</span> <span class="o">--</span><span class="n">region</span> <span class="n">RegionOne</span> <span class="n">identity</span> <span class="n">internal</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">controller</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">v3</span>
+<span class="n">openstack</span> <span class="n">endpoint</span> <span class="n">create</span> <span class="o">--</span><span class="n">region</span> <span class="n">RegionOne</span> <span class="n">identity</span> <span class="n">admin</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">controller</span><span class="p">:</span><span class="mi">35357</span><span class="o">/</span><span class="n">v3</span>
+<span class="n">openstack</span> <span class="n">endpoint</span> <span class="nb">list</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
