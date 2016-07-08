@@ -26,7 +26,7 @@ Contents:
    packstack
    openstack-intro
    environment
-   identity
+   keystone
 
 
 Indices and tables
