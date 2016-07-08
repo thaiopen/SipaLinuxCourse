@@ -19,8 +19,6 @@ Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1>`::
     
     mv Vagrantfile-lab1 Vagrantfile
 
-    vagrant plugin install vagrant-scp
-    sudo systemctl start firewalld
 
     cat << HOST  > hosts
     127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
