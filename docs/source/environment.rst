@@ -9,7 +9,10 @@ Lab Environment
 
 Automate setup
 **************
-Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1>`::
+Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1>`
+
+Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.tar.gz`
+::
 
     mkdir openstack2
     vagrant plugin install vagrant-scp
