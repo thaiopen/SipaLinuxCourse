@@ -326,7 +326,7 @@ for n in $node; do vagrant ssh $n -c &quot;sudo systemctl stop NetworkManager&qu
 <p>method2 Download vagrant and bootstrap <a class="reference download internal" href="_downloads/openstack3.tar.gz" download=""><code class="xref download docutils literal"><span class="pre">Vagrant</span> <span class="pre">and</span> <span class="pre">Bootstrap</span></code></a></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>cd ~
 wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
-tar openstack3.tar.gz
+tar xvf openstack3.tar.gz
 cd openstack3
 vagrant up
 vagrant ssh controller
