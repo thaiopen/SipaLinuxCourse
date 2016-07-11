@@ -9,9 +9,8 @@ Lab Environment
 
 Automate setup
 **************
-Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1>`
+method 1. Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1>`
 
-Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.tar.gz`
 ::
 
     mkdir openstack2
@@ -65,6 +64,32 @@ Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.ta
     for n in $node; do vagrant ssh $n -c "sudo systemctl enable network"; done
     for n in $node; do vagrant ssh $n -c "sudo systemctl disable NetworkManager"; done
     for n in $node; do vagrant ssh $n -c "sudo systemctl stop NetworkManager"; done
+
+method2 Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.tar.gz>`
+::
+
+    cd ~    
+    wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
+    tar openstack3.tar.gz
+    cd openstack3
+    vagrant up
+    vagrant ssh controller
+    cd sync
+    ls
+    
+    bootstrap.sh     gen_pass.sh  isconnect.sh  passwordlist  Vagrantfile
+    gen_database.sh  hosts        mysql.sh      start.sh      virsh-manage.sh
+
+    $ bash isconnect.sh 
+    Success test ping from controller to controller 
+    Success test ping from controller to network 
+    Success test ping from controller to compute1 
+    Success test ping from controller to compute2 
+    Success test ping from controller to block1 
+    Success test ping from controller to object1 
+    Success test ping from controller to object2 
+    Success test ping from controller to share1 
+    Success test ping from controller to share2 
 
 Security
 ********
