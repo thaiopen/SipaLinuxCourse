@@ -328,7 +328,7 @@ for n in $node; do vagrant ssh $n -c &quot;sudo systemctl stop NetworkManager&qu
 wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
 tar xvf openstack3.tar.gz
 cd openstack3
-vagrant up
+bash start.sh
 vagrant ssh controller
 cd sync
 ls

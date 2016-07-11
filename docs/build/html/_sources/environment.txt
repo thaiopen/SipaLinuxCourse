@@ -72,7 +72,7 @@ method2 Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./opens
     wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
     tar xvf openstack3.tar.gz
     cd openstack3
-    vagrant up
+    bash start.sh
     vagrant ssh controller
     cd sync
     ls
