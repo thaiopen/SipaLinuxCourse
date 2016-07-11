@@ -269,8 +269,7 @@
 </div>
 <div class="section" id="automate-setup">
 <h2>Automate setup<a class="headerlink" href="#automate-setup" title="Permalink to this headline">¶</a></h2>
-<p>Download complete file <a class="reference download internal" href="_downloads/Vagrantfile-lab1" download=""><code class="xref download docutils literal"><span class="pre">Vagrantfile-lab1</span></code></a></p>
-<p>Download vagrant and bootstrap <code class="xref download docutils literal"><span class="pre">Vagrant</span> <span class="pre">and</span> <span class="pre">Bootstrap</span> <span class="pre">&lt;./openstack3.tar.gz</span></code></p>
+<p>method 1. Download complete file <a class="reference download internal" href="_downloads/Vagrantfile-lab1" download=""><code class="xref download docutils literal"><span class="pre">Vagrantfile-lab1</span></code></a></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>mkdir openstack2
 vagrant plugin install vagrant-scp
 vagrant plugin install vagrant-libvirt
@@ -322,6 +321,31 @@ for n in $node; do vagrant ssh $n -c &quot;sudo systemctl start network&quot;; d
 for n in $node; do vagrant ssh $n -c &quot;sudo systemctl enable network&quot;; done
 for n in $node; do vagrant ssh $n -c &quot;sudo systemctl disable NetworkManager&quot;; done
 for n in $node; do vagrant ssh $n -c &quot;sudo systemctl stop NetworkManager&quot;; done
+</pre></div>
+</div>
+<p>method2 Download vagrant and bootstrap <a class="reference download internal" href="_downloads/openstack3.tar.gz" download=""><code class="xref download docutils literal"><span class="pre">Vagrant</span> <span class="pre">and</span> <span class="pre">Bootstrap</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>cd ~
+wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
+tar openstack3.tar.gz
+cd openstack3
+vagrant up
+vagrant ssh controller
+cd sync
+ls
+
+bootstrap.sh     gen_pass.sh  isconnect.sh  passwordlist  Vagrantfile
+gen_database.sh  hosts        mysql.sh      start.sh      virsh-manage.sh
+
+$ bash isconnect.sh
+Success test ping from controller to controller
+Success test ping from controller to network
+Success test ping from controller to compute1
+Success test ping from controller to compute2
+Success test ping from controller to block1
+Success test ping from controller to object1
+Success test ping from controller to object2
+Success test ping from controller to share1
+Success test ping from controller to share2
 </pre></div>
 </div>
 </div>
