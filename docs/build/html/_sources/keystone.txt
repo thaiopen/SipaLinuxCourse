@@ -30,6 +30,8 @@ Install package
 
 	yum install openstack-keystone httpd mod_wsgi
 
+option1 edit manual 
+-------------------
 /etc/keystone/keystone.conf
 ::
 
@@ -47,12 +49,14 @@ Install package
     ...
     provider = fernet
 
-edit by openstack-config
-------------------------
+อย่าลืมแทนท่า ADMIN_TOKEN และ KEYSTONE_DBPASS ใน passwordlist
+
+option2 edit by openstack-config
+--------------------------------
 ::
 
     keystone="openstack-config --set /etc/keystone/keystone.conf"
-    $keystone DEFAULT admin_token  ADMIN_TOKEN
+    $keystone DEFAULT admin_token  $ADMIN_TOKEN
     $keystone database connection mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
     $keystone token provider fernet
 
