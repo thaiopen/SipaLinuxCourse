@@ -36,16 +36,16 @@ Display logs by date
     Jul 12 08:01:01 localhost.localdomain run-parts[26357]: (/etc/cron.hourly) finished 0anacron
 
 
-journalctl --since yesterday
-journalctl --since "2016-7-12" --until "1 hours ago"
+    journalctl --since yesterday
+    journalctl --since "2016-7-12" --until "1 hours ago"
 
 Displaying Logs by Unit or Service
 ----------------------------------
 ::
 
 
-journalctl -u sshd.service
-journalctl -u sshd.service  --since "2016-7-12 7:00:00"  --untill "2016-7-12 8:00:00"
+    journalctl -u sshd.service
+    journalctl -u sshd.service  --since "2016-7-12 7:00:00"  --untill "2016-7-12 8:00:00"
 
 Displaying Logs by User or Group
 --------------------------------
