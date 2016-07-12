@@ -30,14 +30,15 @@ Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.ta
     Success test ping from controller to object2 
     Success test ping from controller to share1 
     Success test ping from controller to share2 
+
 Install Process
 ===============
 root password is $DB_PASS. please chech database (optional)
 ::
 	
 	echo $DB_PASS
- 	b2d1a3116eb60718f3c4
-	mysql -uroot -p
+ 	
+	mysql -uroot -p$DB_PASS
 
 	Enter password: 
 	Welcome to the MariaDB monitor.  Commands end with ; or \g.
@@ -49,7 +50,45 @@ root password is $DB_PASS. please chech database (optional)
 	Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 	MariaDB [(none)]> FLUSH PRIVILEGES;
-	MariaDB [(none)]> SELECT User, Host, Password FROM mysql.user;
+	MariaDB [(none)]> exit
+
+    //show database
+    mysql -uroot -p$DB_PASS -e "show databases;"
+
+    //show user
+    mysql -uroot -p$DB_PASS -e "SELECT User,host from mysql.user;"
+
+
+Create Database
+***************
+::
+
+    source passwordlist
+    bash gen_database.sh
+    mysql -uroot -p$DB_PASS -e "show databases;"
+    mysql -uroot -p$DB_PASS -e "SELECT User,host from mysql.user;"
+
+    //if need to delete all user and database
+    //delete database
+    mysql -uroot -p$DB_PASS -e "show databases;"
+    dbs="keystone glance nova_api nova neutron cinder manila heat aodh trove"
+    for d in $dbs; do  mysql -uroot -p$DB_PASS -e "DROP DATABASE $d" ; done
+    mysql -uroot -p$DB_PASS -e "show databases;"
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | information_schema |
+    | mysql              |
+    | performance_schema |
+    +--------------------+
+
+    //show user
+    mysql -uroot -p$DB_PASS -e "SELECT User,host from mysql.user;"
+    //delete user
+    services="keystone glance nova neutron cinder manila heat aodh trove"
+    for s in $services; do  mysql -uroot -p$DB_PASS -e "DROP USER  '$s'@'%'" ; done
+    for s in $services; do  mysql -uroot -p$DB_PASS -e "DROP USER  '$s'@'localhost'" ; done
+    for s in $services; do  mysql -uroot -p$DB_PASS -e "DROP USER  '$s'@'controller.example.com'" ; done
 
 
 Install package

@@ -100,6 +100,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Install keystone</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#start-install">start install</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-process">Install Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-database">Create Database</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-package">Install package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#option1-edit-manual">option1 edit manual</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#option2-edit-by-openstack-config">option2 edit by openstack-config</a></li>
@@ -187,22 +188,59 @@ Success test ping from controller to share2
 <div class="section" id="install-process">
 <h2>Install Process<a class="headerlink" href="#install-process" title="Permalink to this headline">¶</a></h2>
 <p>root password is $DB_PASS. please chech database (optional)</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>echo $DB_PASS
-b2d1a3116eb60718f3c4
-mysql -uroot -p
+<div class="highlight-default"><div class="highlight"><pre><span></span>    echo $DB_PASS
 
-Enter password:
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 7
-Server version: 10.1.12-MariaDB MariaDB Server
+    mysql -uroot -p$DB_PASS
 
-Copyright (c) 2000, 2016, Oracle, MariaDB Corporation Ab and others.
+    Enter password:
+    Welcome to the MariaDB monitor.  Commands end with ; or \g.
+    Your MariaDB connection id is 7
+    Server version: 10.1.12-MariaDB MariaDB Server
 
-Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
+    Copyright (c) 2000, 2016, Oracle, MariaDB Corporation Ab and others.
 
-MariaDB [(none)]&gt; FLUSH PRIVILEGES;
-MariaDB [(none)]&gt; SELECT User, Host, Password FROM mysql.user;
+    Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
+
+    MariaDB [(none)]&gt; FLUSH PRIVILEGES;
+    MariaDB [(none)]&gt; exit
+
+//show database
+mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
+
+//show user
+mysql -uroot -p$DB_PASS -e &quot;SELECT User,host from mysql.user;&quot;
 </pre></div>
+</div>
+<div class="section" id="create-database">
+<h3>Create Database<a class="headerlink" href="#create-database" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>source passwordlist
+bash gen_database.sh
+mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
+mysql -uroot -p$DB_PASS -e &quot;SELECT User,host from mysql.user;&quot;
+
+//if need to delete all user and database
+//delete database
+mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
+dbs=&quot;keystone glance nova_api nova neutron cinder manila heat aodh trove&quot;
+for d in $dbs; do  mysql -uroot -p$DB_PASS -e &quot;DROP DATABASE $d&quot; ; done
+mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+
+//show user
+mysql -uroot -p$DB_PASS -e &quot;SELECT User,host from mysql.user;&quot;
+//delete user
+services=&quot;keystone glance nova neutron cinder manila heat aodh trove&quot;
+for s in $services; do  mysql -uroot -p$DB_PASS -e &quot;DROP USER  &#39;$s&#39;@&#39;%&#39;&quot; ; done
+for s in $services; do  mysql -uroot -p$DB_PASS -e &quot;DROP USER  &#39;$s&#39;@&#39;localhost&#39;&quot; ; done
+for s in $services; do  mysql -uroot -p$DB_PASS -e &quot;DROP USER  &#39;$s&#39;@&#39;controller.example.com&#39;&quot; ; done
+</pre></div>
+</div>
 </div>
 <div class="section" id="install-package">
 <h3>Install package<a class="headerlink" href="#install-package" title="Permalink to this headline">¶</a></h3>
