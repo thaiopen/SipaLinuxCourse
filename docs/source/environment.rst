@@ -346,16 +346,23 @@ undo ลบ database และ ลบ user ที่สร้างขึ้น�
     //show database
     mysql -uroot -p$DB_PASS -e "show databases;"
     dbs="keystone glance nova_api nova neutron cinder manila heat aodh trove"
-    for d in $dbs; do  mysql -uroot -p$DB_PASS -Bse "DROP DATABASE $dbs" ; done
+    for d in $dbs; do  mysql -uroot -p$DB_PASS -e "DROP DATABASE $d" ; done
     mysql -uroot -p$DB_PASS -e "show databases;"
-    
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | information_schema |
+    | mysql              |
+    | performance_schema |
+    +--------------------+
+
     //show user
     mysql -uroot -p$DB_PASS -e "SELECT User,host from mysql.user;"
 
-    dbs="keystone glance nova neutron cinder manila heat aodh trove"
-    for s in $services; do  mysql -uroot -p$DB_PASS -Bse "DROP USER  '$s'@'%'" ; done
-    for s in $services; do  mysql -uroot -p$DB_PASS -Bse "DROP USER  '$s'@'localhost'" ; done
-    for s in $services; do  mysql -uroot -p$DB_PASS -Bse "DROP USER  '$s'@'controller.example.com'" ; done
+    services="keystone glance nova neutron cinder manila heat aodh trove"
+    for s in $services; do  mysql -uroot -p$DB_PASS -e "DROP USER  '$s'@'%'" ; done
+    for s in $services; do  mysql -uroot -p$DB_PASS -e "DROP USER  '$s'@'localhost'" ; done
+    for s in $services; do  mysql -uroot -p$DB_PASS -e "DROP USER  '$s'@'controller.example.com'" ; done
 
 Reset Password Mariadb
 **********************
@@ -374,6 +381,10 @@ Step2
 ::
 
     mysqld_safe --skip-grant-tables &
+
+    [1] 3430
+    [root@controller ~]# 160712 13:12:02 mysqld_safe Logging to '/var/log/mariadb/mariadb.log'.
+    160712 13:12:02 mysqld_safe Starting mysqld daemon with databases from /var/lib/mysql
 
 Step3
 
@@ -395,9 +406,19 @@ Step5
 ::
 
     ps -ef | grep mysql
-    [pid]
-    kill -9 [pid]    
+    root      3430  3360  0 13:12 pts/0    00:00:00 /bin/sh /bin/mysqld_safe --skip-grant-tables
+    mysql     3538  3430  0 13:12 pts/0    00:00:00 /usr/libexec/mysqld --basedir=/usr
+    
+    //kill ทั้ง สอง process เครืองของท่านอาจมีหมายเลขไม่ตรง
+    kill -9 3430
+    [1]+  Killed                  mysqld_safe --skip-grant-tables
 
+    kill -9 3538   
+
+    //verify
+    ps -ef | grep mysql
+    root      3678  3360  0 13:16 pts/0    00:00:00 grep --color=auto mysql 
+ 
 Step6 
 เริ่มต้นการทำงานใหม่ พร้อมกับ passwordใหม่
 ::

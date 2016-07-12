@@ -454,8 +454,10 @@ SERVICES=(
         SWIFT_PASS
         AODH_DBPASS
         METADATA_SECRET
-	MANILA_DBPASS
-	MANILA_PASS
+	      MANILA_DBPASS
+	      MANILA_PASS
+        TROVE_DBPASS
+        TROVE_PASS
 )
 
 for i in ${SERVICES[@]}; do
@@ -668,16 +670,23 @@ Setting permissions for user &quot;openstack&quot; in vhost &quot;/&quot; ...
 //show database
 mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
 dbs=&quot;keystone glance nova_api nova neutron cinder manila heat aodh trove&quot;
-for d in $dbs; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP DATABASE $dbs&quot; ; done
+for d in $dbs; do  mysql -uroot -p$DB_PASS -e &quot;DROP DATABASE $d&quot; ; done
 mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
 
 //show user
 mysql -uroot -p$DB_PASS -e &quot;SELECT User,host from mysql.user;&quot;
 
-dbs=&quot;keystone glance nova neutron cinder manila heat aodh trove&quot;
-for s in $services; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP USER  &#39;$s&#39;@&#39;%&#39;&quot; ; done
-for s in $services; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP USER  &#39;$s&#39;@&#39;localhost&#39;&quot; ; done
-for s in $services; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP USER  &#39;$s&#39;@&#39;controller.example.com&#39;&quot; ; done
+services=&quot;keystone glance nova neutron cinder manila heat aodh trove&quot;
+for s in $services; do  mysql -uroot -p$DB_PASS -e &quot;DROP USER  &#39;$s&#39;@&#39;%&#39;&quot; ; done
+for s in $services; do  mysql -uroot -p$DB_PASS -e &quot;DROP USER  &#39;$s&#39;@&#39;localhost&#39;&quot; ; done
+for s in $services; do  mysql -uroot -p$DB_PASS -e &quot;DROP USER  &#39;$s&#39;@&#39;controller.example.com&#39;&quot; ; done
 </pre></div>
 </div>
 </div>
@@ -694,6 +703,10 @@ for s in $services; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP USER  &#39;$s&#3
 <p>Step2
 สั่งคำสั่ง start mysql โดยไม่ผ่าน grant-tables เพื่อให้สามารถใช้งาน database โดย root แบบไม่ต้องใช้ password</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span> <span class="o">&amp;</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">3430</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@controller</span> <span class="o">~</span><span class="p">]</span><span class="c1"># 160712 13:12:02 mysqld_safe Logging to &#39;/var/log/mariadb/mariadb.log&#39;.</span>
+<span class="mi">160712</span> <span class="mi">13</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mi">02</span> <span class="n">mysqld_safe</span> <span class="n">Starting</span> <span class="n">mysqld</span> <span class="n">daemon</span> <span class="k">with</span> <span class="n">databases</span> <span class="kn">from</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span>
 </pre></div>
 </div>
 <p>Step3</p>
@@ -711,8 +724,18 @@ for s in $services; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP USER  &#39;$s&#3
 <p>Step5
 หยุดการทำงาน โดยการตรวจสอบ process id (pid)</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
-<span class="p">[</span><span class="n">pid</span><span class="p">]</span>
-<span class="n">kill</span> <span class="o">-</span><span class="mi">9</span> <span class="p">[</span><span class="n">pid</span><span class="p">]</span>
+<span class="n">root</span>      <span class="mi">3430</span>  <span class="mi">3360</span>  <span class="mi">0</span> <span class="mi">13</span><span class="p">:</span><span class="mi">12</span> <span class="n">pts</span><span class="o">/</span><span class="mi">0</span>    <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span>
+<span class="n">mysql</span>     <span class="mi">3538</span>  <span class="mi">3430</span>  <span class="mi">0</span> <span class="mi">13</span><span class="p">:</span><span class="mi">12</span> <span class="n">pts</span><span class="o">/</span><span class="mi">0</span>    <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">libexec</span><span class="o">/</span><span class="n">mysqld</span> <span class="o">--</span><span class="n">basedir</span><span class="o">=/</span><span class="n">usr</span>
+
+<span class="o">//</span><span class="n">kill</span> <span class="n">ทั้ง</span> <span class="n">สอง</span> <span class="n">process</span> <span class="n">เครืองของท่านอาจมีหมายเลขไม่ตรง</span>
+<span class="n">kill</span> <span class="o">-</span><span class="mi">9</span> <span class="mi">3430</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span>  <span class="n">Killed</span>                  <span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span>
+
+<span class="n">kill</span> <span class="o">-</span><span class="mi">9</span> <span class="mi">3538</span>
+
+<span class="o">//</span><span class="n">verify</span>
+<span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
+<span class="n">root</span>      <span class="mi">3678</span>  <span class="mi">3360</span>  <span class="mi">0</span> <span class="mi">13</span><span class="p">:</span><span class="mi">16</span> <span class="n">pts</span><span class="o">/</span><span class="mi">0</span>    <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="n">grep</span> <span class="o">--</span><span class="n">color</span><span class="o">=</span><span class="n">auto</span> <span class="n">mysql</span>
 </pre></div>
 </div>
 <p>Step6

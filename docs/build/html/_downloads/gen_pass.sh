@@ -37,8 +37,10 @@ SERVICES=(
         SWIFT_PASS
         AODH_DBPASS
         METADATA_SECRET
-	MANILA_DBPASS
-	MANILA_PASS
+	      MANILA_DBPASS
+	      MANILA_PASS
+        TROVE_DBPASS
+        TROVE_PASS
 )
 
 for i in ${SERVICES[@]}; do
