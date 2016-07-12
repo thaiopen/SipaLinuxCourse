@@ -362,3 +362,49 @@ undo
     dbs="cinder glance heat keystone manila neutron nova nova_api trove"
     for db in $dbs; do  mysql -uroot -p$DB_PASS -Bse "drop database $db" ; done
     mysql -uroot -p$DB_PASS -Bse "show databases;"
+
+Reset Password Mariadb
+**********************
+ในบางครั้งอาจมีความจำเป็น ที่จะต้องเปลี่ยน root password  สามารถทำได้ดังนี้ 
+Step1
+-----
+หยุดการทำงานของ mariadb
+::
+
+    sudo systemctl stop mariadb
+    sudo ps -ef | grep mysql
+
+Step2
+::
+
+    mysqld_safe --skip-grant-tables &
+
+Step3
+
+::
+
+    mysql -u root
+
+Step4
+เปลี่ยน password
+::
+
+
+MariaDB [(none)]> use mysql;
+MariaDB [mysql]> UPDATE user SET password=PASSWORD("new_password") WHERE User='root';
+MariaDB [mysql]> FLUSH PRIVILEGES;
+MariaDB [mysql]> quit;
+
+Step5
+หยุดการทำงาน
+::
+
+    ps -ef | grep mysql
+    [pid]
+    kill -9 [pid]    
+
+Step6 
+เริ่มต้นการทำงานใหม่
+::
+
+    systemctl start mariadb

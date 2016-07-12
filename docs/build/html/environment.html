@@ -117,6 +117,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#message-queue">Message queue</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#memcached">Memcached</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#create-user-in-data">Create User in Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reset-password-mariadb">Reset Password Mariadb</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
@@ -632,6 +633,43 @@ Setting permissions for user &quot;openstack&quot; in vhost &quot;/&quot; ...
 <div class="highlight-default"><div class="highlight"><pre><span></span>dbs=&quot;cinder glance heat keystone manila neutron nova nova_api trove&quot;
 for db in $dbs; do  mysql -uroot -p$DB_PASS -Bse &quot;drop database $db&quot; ; done
 mysql -uroot -p$DB_PASS -Bse &quot;show databases;&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="reset-password-mariadb">
+<h2>Reset Password Mariadb<a class="headerlink" href="#reset-password-mariadb" title="Permalink to this headline">¶</a></h2>
+<p>ในบางครั้งอาจมีความจำเป็น ที่จะต้องเปลี่ยน root password  สามารถทำได้ดังนี้
+Step1
+&#8212;&#8211;
+หยุดการทำงานของ mariadb</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">stop</span> <span class="n">mariadb</span>
+<span class="n">sudo</span> <span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
+</pre></div>
+</div>
+<p>Step2</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span> <span class="o">&amp;</span>
+</pre></div>
+</div>
+<p>Step3</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mysql</span> <span class="o">-</span><span class="n">u</span> <span class="n">root</span>
+</pre></div>
+</div>
+<p>Step4
+เปลี่ยน password</p>
+<p>MariaDB [(none)]&gt; use mysql;
+MariaDB [mysql]&gt; UPDATE user SET password=PASSWORD(&#8220;new_password&#8221;) WHERE User=&#8217;root&#8217;;
+MariaDB [mysql]&gt; FLUSH PRIVILEGES;
+MariaDB [mysql]&gt; quit;</p>
+<p>Step5
+หยุดการทำงาน</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
+<span class="p">[</span><span class="n">pid</span><span class="p">]</span>
+<span class="n">kill</span> <span class="o">-</span><span class="mi">9</span> <span class="p">[</span><span class="n">pid</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Step6
+เริ่มต้นการทำงานใหม่</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">mariadb</span>
 </pre></div>
 </div>
 </div>
