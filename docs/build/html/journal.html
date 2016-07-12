@@ -185,15 +185,19 @@
 <span class="n">Jul</span> <span class="mi">12</span> <span class="mi">08</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">01</span> <span class="n">localhost</span><span class="o">.</span><span class="n">localdomain</span> <span class="n">CROND</span><span class="p">[</span><span class="mi">26348</span><span class="p">]:</span> <span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="n">CMD</span> <span class="p">(</span><span class="n">run</span><span class="o">-</span><span class="n">parts</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">cron</span><span class="o">.</span><span class="n">hourly</span><span class="p">)</span>
 <span class="n">Jul</span> <span class="mi">12</span> <span class="mi">08</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">01</span> <span class="n">localhost</span><span class="o">.</span><span class="n">localdomain</span> <span class="n">run</span><span class="o">-</span><span class="n">parts</span><span class="p">[</span><span class="mi">26351</span><span class="p">]:</span> <span class="p">(</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">cron</span><span class="o">.</span><span class="n">hourly</span><span class="p">)</span> <span class="n">starting</span> <span class="mi">0</span><span class="n">anacron</span>
 <span class="n">Jul</span> <span class="mi">12</span> <span class="mi">08</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">01</span> <span class="n">localhost</span><span class="o">.</span><span class="n">localdomain</span> <span class="n">run</span><span class="o">-</span><span class="n">parts</span><span class="p">[</span><span class="mi">26357</span><span class="p">]:</span> <span class="p">(</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">cron</span><span class="o">.</span><span class="n">hourly</span><span class="p">)</span> <span class="n">finished</span> <span class="mi">0</span><span class="n">anacron</span>
+
+
+<span class="n">journalctl</span> <span class="o">--</span><span class="n">since</span> <span class="n">yesterday</span>
+<span class="n">journalctl</span> <span class="o">--</span><span class="n">since</span> <span class="s2">&quot;2016-7-12&quot;</span> <span class="o">--</span><span class="n">until</span> <span class="s2">&quot;1 hours ago&quot;</span>
 </pre></div>
 </div>
-<p>journalctl &#8211;since yesterday
-journalctl &#8211;since &#8220;2016-7-12&#8221; &#8211;until &#8220;1 hours ago&#8221;</p>
 </div>
 <div class="section" id="displaying-logs-by-unit-or-service">
 <h2>Displaying Logs by Unit or Service<a class="headerlink" href="#displaying-logs-by-unit-or-service" title="Permalink to this headline">¶</a></h2>
-<p>journalctl -u sshd.service
-journalctl -u sshd.service  &#8211;since &#8220;2016-7-12 7:00:00&#8221;  &#8211;untill &#8220;2016-7-12 8:00:00&#8221;</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">journalctl</span> <span class="o">-</span><span class="n">u</span> <span class="n">sshd</span><span class="o">.</span><span class="n">service</span>
+<span class="n">journalctl</span> <span class="o">-</span><span class="n">u</span> <span class="n">sshd</span><span class="o">.</span><span class="n">service</span>  <span class="o">--</span><span class="n">since</span> <span class="s2">&quot;2016-7-12 7:00:00&quot;</span>  <span class="o">--</span><span class="n">untill</span> <span class="s2">&quot;2016-7-12 8:00:00&quot;</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="displaying-logs-by-user-or-group">
 <h2>Displaying Logs by User or Group<a class="headerlink" href="#displaying-logs-by-user-or-group" title="Permalink to this headline">¶</a></h2>
