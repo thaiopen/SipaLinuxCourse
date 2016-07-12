@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    systemd
+   journal
    configip
    firewall
    sshd
