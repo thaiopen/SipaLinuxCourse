@@ -15,6 +15,7 @@ fi
 
 SERVICES=(
         DB_PASS
+        ADMIN_TOKEN
         ADMIN_PASS
         CEILOMETER_DBPASS
         CEILOMETER_PASS
@@ -34,12 +35,13 @@ SERVICES=(
         NOVA_PASS
         RABBIT_PASS
         SWIFT_PASS
-	TROVE_PASS
-        TROVE_DBPASS
+        AODH_DBPASS
+        METADATA_SECRET
+	MANILA_DBPASS
+	MANILA_PASS
 )
 
 for i in ${SERVICES[@]}; do
         echo "export ${i}=$(openssl rand -hex 10)" >> passwordlist
 done
 exit 0
-

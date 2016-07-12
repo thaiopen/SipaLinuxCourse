@@ -100,7 +100,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Install keystone</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-process">Install Process</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#install-package">Install package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#edit-by-openstack-config">edit by openstack-config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#option1-edit-manual">option1 edit manual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#option2-edit-by-openstack-config">option2 edit by openstack-config</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#create-service-entry">Create service Entry</a></li>
 </ul>
 </li>
@@ -179,6 +180,8 @@ MariaDB [(none)]&gt; SELECT User, Host, Password FROM mysql.user;
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">openstack</span><span class="o">-</span><span class="n">keystone</span> <span class="n">httpd</span> <span class="n">mod_wsgi</span>
 </pre></div>
 </div>
+<div class="section" id="option1-edit-manual">
+<h4>option1 edit manual<a class="headerlink" href="#option1-edit-manual" title="Permalink to this headline">¶</a></h4>
 <p>/etc/keystone/keystone.conf</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">DEFAULT</span><span class="p">]</span>
 <span class="o">...</span>
@@ -195,10 +198,12 @@ MariaDB [(none)]&gt; SELECT User, Host, Password FROM mysql.user;
 <span class="n">provider</span> <span class="o">=</span> <span class="n">fernet</span>
 </pre></div>
 </div>
-<div class="section" id="edit-by-openstack-config">
-<h4>edit by openstack-config<a class="headerlink" href="#edit-by-openstack-config" title="Permalink to this headline">¶</a></h4>
+<p>อย่าลืมแทนท่า ADMIN_TOKEN และ KEYSTONE_DBPASS ใน passwordlist</p>
+</div>
+<div class="section" id="option2-edit-by-openstack-config">
+<h4>option2 edit by openstack-config<a class="headerlink" href="#option2-edit-by-openstack-config" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default"><div class="highlight"><pre><span></span>keystone=&quot;openstack-config --set /etc/keystone/keystone.conf&quot;
-$keystone DEFAULT admin_token  ADMIN_TOKEN
+$keystone DEFAULT admin_token  $ADMIN_TOKEN
 $keystone database connection mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
 $keystone token provider fernet
 </pre></div>
