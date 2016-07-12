@@ -1,16 +1,21 @@
 ===============
 Lab Environment 
 ===============
-การสร้าง lab environment จะใช้ vagrant ข้างล่างนี้
+การสร้าง lab environment จะสร้าง โครงสร้าง ของระบบ ด้านล่าง โดยการใช้งาน Vagrant เป็นเครื่องมือสำหรับสร้าง
 
 .. image:: images/installguidearch-neutron-networks.png
+
+ตัวอย่าง file vagrant สำหรับการสร้าง infrastructure
 
 .. literalinclude:: ./Vagrantfile-lab1
 
 Automate setup
 **************
-method 1. Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1>`
+Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1>`
 
+Test Lab
+********
+ต่อไปเป็นการทดสอบการใช้งาน Vagrantfile ให้สร้าง โครงสร้าง ด้านบน ส่วนการติดตั้งเป็นการติดตั้งแบบ manual
 ::
 
     mkdir openstack2
@@ -65,35 +70,10 @@ method 1. Download complete file :download:`Vagrantfile-lab1 <./Vagrantfile-lab1
     for n in $node; do vagrant ssh $n -c "sudo systemctl disable NetworkManager"; done
     for n in $node; do vagrant ssh $n -c "sudo systemctl stop NetworkManager"; done
 
-method2 Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.tar.gz>`
-::
-
-    cd ~    
-    wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
-    tar xvf openstack3.tar.gz
-    cd openstack3
-    bash start.sh
-    vagrant ssh controller
-    cd sync
-    ls
-    
-    bootstrap.sh     gen_pass.sh  isconnect.sh  passwordlist  Vagrantfile
-    gen_database.sh  hosts        mysql.sh      start.sh      virsh-manage.sh
-
-    $ bash isconnect.sh 
-    Success test ping from controller to controller 
-    Success test ping from controller to network 
-    Success test ping from controller to compute1 
-    Success test ping from controller to compute2 
-    Success test ping from controller to block1 
-    Success test ping from controller to object1 
-    Success test ping from controller to object2 
-    Success test ping from controller to share1 
-    Success test ping from controller to share2 
 
 Security
 ********
-สร้าง password ด้วยคำสั่ง ``openssl rand -hex 10``
+แต่ละ service ของ openstack จะมีสร้างฐานข้อมูลของตนเอง ดังนั้นจะมีการสร้างสร้าง password <SERVICE>_DBNAME และมี password สำหรับใช้ authentication กับ keystone <SERVICE>_PASS โดย การสร้างด้วยคำสั่ง ``openssl rand -hex 10`` เพื่อความสะดวกในการติดตั้ง ทำให้มีการสร้าง passwordlist ใช้สำหรับ database และ ใช้สำหรับ keystone
 
 .. list-table:: **Passwords**
    :widths: 50 60
@@ -144,14 +124,17 @@ Security
 
 script generate script
 ----------------------
+ในการสร้าง password จะใช้ script ชื่อ gen_pass.sh ด้านล่าง
 
-Download complete file :download:`gen_pass.sh <./gen_pass.sh>`::
+.. literalinclude:: ./gen_pass.sh
+
+ทดสอบ โดย Download complete file :download:`gen_pass.sh <./gen_pass.sh>`::
 
     wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/gen_pass.sh
     bash gen_pass.sh
     cat passwordlist
 
-    // set file to controller node at /root/
+    // copy file to controller node at /root/
     vagrant scp passwordlist controller:/home/vagrant 
     vagrant ssh controller -c "sudo mv /home/vagrant/passwordlist /root"
     vagrant ssh controller
@@ -356,25 +339,38 @@ Download complete file :download:`gen_database.sh <./gen_database.sh>`::
     //check file passwordlist
     ls -l passwordlist
 
-undo  
+undo ลบ database และ ลบ user ที่สร้างขึ้นจากคำสั่งด้านบน 
 ::
 
-    dbs="cinder glance heat keystone manila neutron nova nova_api trove"
-    for db in $dbs; do  mysql -uroot -p$DB_PASS -Bse "drop database $db" ; done
-    mysql -uroot -p$DB_PASS -Bse "show databases;"
+    source passwordlist
+    //show database
+    mysql -uroot -p$DB_PASS -e "show databases;"
+    dbs="keystone glance nova_api nova neutron cinder manila heat aodh trove"
+    for d in $dbs; do  mysql -uroot -p$DB_PASS -Bse "DROP DATABASE $dbs" ; done
+    mysql -uroot -p$DB_PASS -e "show databases;"
+    
+    //show user
+    mysql -uroot -p$DB_PASS -e "SELECT User,host from mysql.user;"
+
+    dbs="keystone glance nova neutron cinder manila heat aodh trove"
+    for s in $services; do  mysql -uroot -p$DB_PASS -Bse "DROP USER  '$s'@'%'" ; done
+    for s in $services; do  mysql -uroot -p$DB_PASS -Bse "DROP USER  '$s'@'localhost'" ; done
+    for s in $services; do  mysql -uroot -p$DB_PASS -Bse "DROP USER  '$s'@'controller.example.com'" ; done
 
 Reset Password Mariadb
 **********************
 ในบางครั้งอาจมีความจำเป็น ที่จะต้องเปลี่ยน root password  สามารถทำได้ดังนี้ 
+
 Step1
 -----
 หยุดการทำงานของ mariadb
 ::
 
-    sudo systemctl stop mariadb
     sudo ps -ef | grep mysql
+    sudo systemctl stop mariadb
 
 Step2
+สั่งคำสั่ง start mysql โดยไม่ผ่าน grant-tables เพื่อให้สามารถใช้งาน database โดย root แบบไม่ต้องใช้ password
 ::
 
     mysqld_safe --skip-grant-tables &
@@ -389,14 +385,13 @@ Step4
 เปลี่ยน password
 ::
 
-
-MariaDB [(none)]> use mysql;
-MariaDB [mysql]> UPDATE user SET password=PASSWORD("new_password") WHERE User='root';
-MariaDB [mysql]> FLUSH PRIVILEGES;
-MariaDB [mysql]> quit;
+    MariaDB [(none)]> use mysql;
+    MariaDB [mysql]> UPDATE user SET password=PASSWORD("new_password") WHERE User='root';
+    MariaDB [mysql]> FLUSH PRIVILEGES;
+    MariaDB [mysql]> quit;
 
 Step5
-หยุดการทำงาน
+หยุดการทำงาน โดยการตรวจสอบ process id (pid)
 ::
 
     ps -ef | grep mysql
@@ -404,7 +399,8 @@ Step5
     kill -9 [pid]    
 
 Step6 
-เริ่มต้นการทำงานใหม่
+เริ่มต้นการทำงานใหม่ พร้อมกับ passwordใหม่
 ::
 
     systemctl start mariadb
+    mysql -u root -p

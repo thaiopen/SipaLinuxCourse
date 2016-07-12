@@ -2,6 +2,34 @@
 Install keystone
 ================
 
+start install 
+=============
+
+Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.tar.gz>`
+::
+
+    cd ~    
+    wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
+    tar xvf openstack3.tar.gz
+    cd openstack3
+    bash start.sh
+    vagrant ssh controller
+    cd sync
+    ls
+    
+    bootstrap.sh     gen_pass.sh  isconnect.sh  passwordlist  Vagrantfile
+    gen_database.sh  hosts        mysql.sh      start.sh      virsh-manage.sh
+
+    $ bash isconnect.sh 
+    Success test ping from controller to controller 
+    Success test ping from controller to network 
+    Success test ping from controller to compute1 
+    Success test ping from controller to compute2 
+    Success test ping from controller to block1 
+    Success test ping from controller to object1 
+    Success test ping from controller to object2 
+    Success test ping from controller to share1 
+    Success test ping from controller to share2 
 Install Process
 ===============
 root password is $DB_PASS. please chech database (optional)

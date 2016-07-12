@@ -99,6 +99,7 @@
 <li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Lab Environment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#automate-setup">Automate setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-lab">Test Lab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#security">Security</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#script-generate-script">script generate script</a></li>
 </ul>
@@ -117,7 +118,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#message-queue">Message queue</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#memcached">Memcached</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#create-user-in-data">Create User in Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reset-password-mariadb">Reset Password Mariadb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reset-password-mariadb">Reset Password Mariadb</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step1">Step1</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
@@ -167,8 +171,9 @@
             
   <div class="section" id="lab-environment">
 <h1>Lab Environment<a class="headerlink" href="#lab-environment" title="Permalink to this headline">¶</a></h1>
-<p>การสร้าง lab environment จะใช้ vagrant ข้างล่างนี้</p>
+<p>การสร้าง lab environment จะสร้าง โครงสร้าง ของระบบ ด้านล่าง โดยการใช้งาน Vagrant เป็นเครื่องมือสำหรับสร้าง</p>
 <img alt="_images/installguidearch-neutron-networks.png" src="_images/installguidearch-neutron-networks.png" />
+<p>ตัวอย่าง file vagrant สำหรับการสร้าง infrastructure</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -x- mode: ruby -x-</span>
 <span class="c1"># vi: set ft=ruby :</span>
 
@@ -271,7 +276,11 @@
 </div>
 <div class="section" id="automate-setup">
 <h2>Automate setup<a class="headerlink" href="#automate-setup" title="Permalink to this headline">¶</a></h2>
-<p>method 1. Download complete file <a class="reference download internal" href="_downloads/Vagrantfile-lab1" download=""><code class="xref download docutils literal"><span class="pre">Vagrantfile-lab1</span></code></a></p>
+<p>Download complete file <a class="reference download internal" href="_downloads/Vagrantfile-lab1" download=""><code class="xref download docutils literal"><span class="pre">Vagrantfile-lab1</span></code></a></p>
+</div>
+<div class="section" id="test-lab">
+<h2>Test Lab<a class="headerlink" href="#test-lab" title="Permalink to this headline">¶</a></h2>
+<p>ต่อไปเป็นการทดสอบการใช้งาน Vagrantfile ให้สร้าง โครงสร้าง ด้านบน ส่วนการติดตั้งเป็นการติดตั้งแบบ manual</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>mkdir openstack2
 vagrant plugin install vagrant-scp
 vagrant plugin install vagrant-libvirt
@@ -325,35 +334,10 @@ for n in $node; do vagrant ssh $n -c &quot;sudo systemctl disable NetworkManager
 for n in $node; do vagrant ssh $n -c &quot;sudo systemctl stop NetworkManager&quot;; done
 </pre></div>
 </div>
-<p>method2 Download vagrant and bootstrap <a class="reference download internal" href="_downloads/openstack3.tar.gz" download=""><code class="xref download docutils literal"><span class="pre">Vagrant</span> <span class="pre">and</span> <span class="pre">Bootstrap</span></code></a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>cd ~
-wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
-tar xvf openstack3.tar.gz
-cd openstack3
-bash start.sh
-vagrant ssh controller
-cd sync
-ls
-
-bootstrap.sh     gen_pass.sh  isconnect.sh  passwordlist  Vagrantfile
-gen_database.sh  hosts        mysql.sh      start.sh      virsh-manage.sh
-
-$ bash isconnect.sh
-Success test ping from controller to controller
-Success test ping from controller to network
-Success test ping from controller to compute1
-Success test ping from controller to compute2
-Success test ping from controller to block1
-Success test ping from controller to object1
-Success test ping from controller to object2
-Success test ping from controller to share1
-Success test ping from controller to share2
-</pre></div>
-</div>
 </div>
 <div class="section" id="security">
 <h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
-<p>สร้าง password ด้วยคำสั่ง <code class="docutils literal"><span class="pre">openssl</span> <span class="pre">rand</span> <span class="pre">-hex</span> <span class="pre">10</span></code></p>
+<p>แต่ละ service ของ openstack จะมีสร้างฐานข้อมูลของตนเอง ดังนั้นจะมีการสร้างสร้าง password &lt;SERVICE&gt;_DBNAME และมี password สำหรับใช้ authentication กับ keystone &lt;SERVICE&gt;_PASS โดย การสร้างด้วยคำสั่ง <code class="docutils literal"><span class="pre">openssl</span> <span class="pre">rand</span> <span class="pre">-hex</span> <span class="pre">10</span></code> เพื่อความสะดวกในการติดตั้ง ทำให้มีการสร้าง passwordlist ใช้สำหรับ database และ ใช้สำหรับ keystone</p>
 <table border="1" class="docutils" id="id1">
 <caption><span class="caption-text"><strong>Passwords</strong></span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -430,12 +414,62 @@ Success test ping from controller to share2
 </table>
 <div class="section" id="script-generate-script">
 <h3>script generate script<a class="headerlink" href="#script-generate-script" title="Permalink to this headline">¶</a></h3>
-<p>Download complete file <a class="reference download internal" href="_downloads/gen_pass.sh" download=""><code class="xref download docutils literal"><span class="pre">gen_pass.sh</span></code></a>:</p>
+<p>ในการสร้าง password จะใช้ script ชื่อ gen_pass.sh ด้านล่าง</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/sh
+#
+# Populate openstack database password
+#
+
+# Mainly inspired by
+# sawangpong muadphet &lt;sawangpong@itbakery.net&gt;
+#
+
+file=&quot;passwordlist&quot;
+if [ -f passwordlist ]; then
+  echo &quot;Sorry, file exist&quot;
+  exit 1;
+fi
+
+SERVICES=(
+        DB_PASS
+        ADMIN_TOKEN
+        ADMIN_PASS
+        CEILOMETER_DBPASS
+        CEILOMETER_PASS
+        CINDER_DBPASS
+        CINDER_PASS
+        DASH_DBPASS
+        DEMO_PASS
+        GLANCE_DBPASS
+        GLANCE_PASS
+        HEAT_DBPASS
+        HEAT_DOMAIN_PASS
+        HEAT_PASS
+        KEYSTONE_DBPASS
+        NEUTRON_DBPASS
+        NEUTRON_PASS
+        NOVA_DBPASS
+        NOVA_PASS
+        RABBIT_PASS
+        SWIFT_PASS
+        AODH_DBPASS
+        METADATA_SECRET
+	MANILA_DBPASS
+	MANILA_PASS
+)
+
+for i in ${SERVICES[@]}; do
+        echo &quot;export ${i}=$(openssl rand -hex 10)&quot; &gt;&gt; passwordlist
+done
+exit 0
+</pre></div>
+</div>
+<p>ทดสอบ โดย Download complete file <a class="reference download internal" href="_downloads/gen_pass.sh" download=""><code class="xref download docutils literal"><span class="pre">gen_pass.sh</span></code></a>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">thaiopen</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">SipaLinuxCourse</span><span class="o">/</span><span class="n">_downloads</span><span class="o">/</span><span class="n">gen_pass</span><span class="o">.</span><span class="n">sh</span>
 <span class="n">bash</span> <span class="n">gen_pass</span><span class="o">.</span><span class="n">sh</span>
 <span class="n">cat</span> <span class="n">passwordlist</span>
 
-<span class="o">//</span> <span class="nb">set</span> <span class="n">file</span> <span class="n">to</span> <span class="n">controller</span> <span class="n">node</span> <span class="n">at</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span>
+<span class="o">//</span> <span class="n">copy</span> <span class="n">file</span> <span class="n">to</span> <span class="n">controller</span> <span class="n">node</span> <span class="n">at</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span>
 <span class="n">vagrant</span> <span class="n">scp</span> <span class="n">passwordlist</span> <span class="n">controller</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">vagrant</span>
 <span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;sudo mv /home/vagrant/passwordlist /root&quot;</span>
 <span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
@@ -629,24 +663,36 @@ Setting permissions for user &quot;openstack&quot; in vhost &quot;/&quot; ...
 <span class="n">ls</span> <span class="o">-</span><span class="n">l</span> <span class="n">passwordlist</span>
 </pre></div>
 </div>
-<p>undo</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>dbs=&quot;cinder glance heat keystone manila neutron nova nova_api trove&quot;
-for db in $dbs; do  mysql -uroot -p$DB_PASS -Bse &quot;drop database $db&quot; ; done
-mysql -uroot -p$DB_PASS -Bse &quot;show databases;&quot;
+<p>undo ลบ database และ ลบ user ที่สร้างขึ้นจากคำสั่งด้านบน</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>source passwordlist
+//show database
+mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
+dbs=&quot;keystone glance nova_api nova neutron cinder manila heat aodh trove&quot;
+for d in $dbs; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP DATABASE $dbs&quot; ; done
+mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
+
+//show user
+mysql -uroot -p$DB_PASS -e &quot;SELECT User,host from mysql.user;&quot;
+
+dbs=&quot;keystone glance nova neutron cinder manila heat aodh trove&quot;
+for s in $services; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP USER  &#39;$s&#39;@&#39;%&#39;&quot; ; done
+for s in $services; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP USER  &#39;$s&#39;@&#39;localhost&#39;&quot; ; done
+for s in $services; do  mysql -uroot -p$DB_PASS -Bse &quot;DROP USER  &#39;$s&#39;@&#39;controller.example.com&#39;&quot; ; done
 </pre></div>
 </div>
 </div>
 <div class="section" id="reset-password-mariadb">
 <h2>Reset Password Mariadb<a class="headerlink" href="#reset-password-mariadb" title="Permalink to this headline">¶</a></h2>
-<p>ในบางครั้งอาจมีความจำเป็น ที่จะต้องเปลี่ยน root password  สามารถทำได้ดังนี้
-Step1
-&#8212;&#8211;
-หยุดการทำงานของ mariadb</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">stop</span> <span class="n">mariadb</span>
-<span class="n">sudo</span> <span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
+<p>ในบางครั้งอาจมีความจำเป็น ที่จะต้องเปลี่ยน root password  สามารถทำได้ดังนี้</p>
+<div class="section" id="step1">
+<h3>Step1<a class="headerlink" href="#step1" title="Permalink to this headline">¶</a></h3>
+<p>หยุดการทำงานของ mariadb</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">stop</span> <span class="n">mariadb</span>
 </pre></div>
 </div>
-<p>Step2</p>
+<p>Step2
+สั่งคำสั่ง start mysql โดยไม่ผ่าน grant-tables เพื่อให้สามารถใช้งาน database โดย root แบบไม่ต้องใช้ password</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span> <span class="o">&amp;</span>
 </pre></div>
 </div>
@@ -656,21 +702,25 @@ Step1
 </div>
 <p>Step4
 เปลี่ยน password</p>
-<p>MariaDB [(none)]&gt; use mysql;
-MariaDB [mysql]&gt; UPDATE user SET password=PASSWORD(&#8220;new_password&#8221;) WHERE User=&#8217;root&#8217;;
-MariaDB [mysql]&gt; FLUSH PRIVILEGES;
-MariaDB [mysql]&gt; quit;</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">MariaDB</span> <span class="p">[(</span><span class="n">none</span><span class="p">)]</span><span class="o">&gt;</span> <span class="n">use</span> <span class="n">mysql</span><span class="p">;</span>
+<span class="n">MariaDB</span> <span class="p">[</span><span class="n">mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="n">UPDATE</span> <span class="n">user</span> <span class="n">SET</span> <span class="n">password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">(</span><span class="s2">&quot;new_password&quot;</span><span class="p">)</span> <span class="n">WHERE</span> <span class="n">User</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">;</span>
+<span class="n">MariaDB</span> <span class="p">[</span><span class="n">mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="n">PRIVILEGES</span><span class="p">;</span>
+<span class="n">MariaDB</span> <span class="p">[</span><span class="n">mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="n">quit</span><span class="p">;</span>
+</pre></div>
+</div>
 <p>Step5
-หยุดการทำงาน</p>
+หยุดการทำงาน โดยการตรวจสอบ process id (pid)</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
 <span class="p">[</span><span class="n">pid</span><span class="p">]</span>
 <span class="n">kill</span> <span class="o">-</span><span class="mi">9</span> <span class="p">[</span><span class="n">pid</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Step6
-เริ่มต้นการทำงานใหม่</p>
+เริ่มต้นการทำงานใหม่ พร้อมกับ passwordใหม่</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">mariadb</span>
+<span class="n">mysql</span> <span class="o">-</span><span class="n">u</span> <span class="n">root</span> <span class="o">-</span><span class="n">p</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>

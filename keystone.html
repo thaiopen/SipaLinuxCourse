@@ -98,6 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Install keystone</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#start-install">start install</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-process">Install Process</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#install-package">Install package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#option1-edit-manual">option1 edit manual</a></li>
@@ -155,6 +156,34 @@
             
   <div class="section" id="install-keystone">
 <h1>Install keystone<a class="headerlink" href="#install-keystone" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="start-install">
+<h2>start install<a class="headerlink" href="#start-install" title="Permalink to this headline">¶</a></h2>
+<p>Download vagrant and bootstrap <a class="reference download internal" href="_downloads/openstack3.tar.gz" download=""><code class="xref download docutils literal"><span class="pre">Vagrant</span> <span class="pre">and</span> <span class="pre">Bootstrap</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>cd ~
+wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
+tar xvf openstack3.tar.gz
+cd openstack3
+bash start.sh
+vagrant ssh controller
+cd sync
+ls
+
+bootstrap.sh     gen_pass.sh  isconnect.sh  passwordlist  Vagrantfile
+gen_database.sh  hosts        mysql.sh      start.sh      virsh-manage.sh
+
+$ bash isconnect.sh
+Success test ping from controller to controller
+Success test ping from controller to network
+Success test ping from controller to compute1
+Success test ping from controller to compute2
+Success test ping from controller to block1
+Success test ping from controller to object1
+Success test ping from controller to object2
+Success test ping from controller to share1
+Success test ping from controller to share2
+</pre></div>
+</div>
+</div>
 <div class="section" id="install-process">
 <h2>Install Process<a class="headerlink" href="#install-process" title="Permalink to this headline">¶</a></h2>
 <p>root password is $DB_PASS. please chech database (optional)</p>
