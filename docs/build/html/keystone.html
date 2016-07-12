@@ -100,6 +100,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Install keystone</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-process">Install Process</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#install-package">Install package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#edit-by-openstack-config">edit by openstack-config</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#create-service-entry">Create service Entry</a></li>
 </ul>
 </li>
@@ -175,11 +176,31 @@ MariaDB [(none)]&gt; SELECT User, Host, Password FROM mysql.user;
 </div>
 <div class="section" id="install-package">
 <h3>Install package<a class="headerlink" href="#install-package" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default"><div class="highlight"><pre><span></span>source passwordlist
-yum install openstack-keystone httpd mod_wsgi -y
-openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
-openstack-config --set /etc/keystone/keystone.conf database connection mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
-openstack-config --set /etc/keystone/keystone.conf token provider fernet
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">openstack</span><span class="o">-</span><span class="n">keystone</span> <span class="n">httpd</span> <span class="n">mod_wsgi</span>
+</pre></div>
+</div>
+<p>/etc/keystone/keystone.conf</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">DEFAULT</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">admin_token</span> <span class="o">=</span> <span class="n">ADMIN_TOKEN</span>
+
+
+<span class="p">[</span><span class="n">database</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">+</span><span class="n">pymysql</span><span class="p">:</span><span class="o">//</span><span class="n">keystone</span><span class="p">:</span><span class="n">KEYSTONE_DBPASS</span><span class="nd">@controller</span><span class="o">/</span><span class="n">keystone</span>
+
+
+<span class="p">[</span><span class="n">token</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">provider</span> <span class="o">=</span> <span class="n">fernet</span>
+</pre></div>
+</div>
+<div class="section" id="edit-by-openstack-config">
+<h4>edit by openstack-config<a class="headerlink" href="#edit-by-openstack-config" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span>keystone=&quot;openstack-config --set /etc/keystone/keystone.conf&quot;
+$keystone DEFAULT admin_token  ADMIN_TOKEN
+$keystone database connection mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
+$keystone token provider fernet
 </pre></div>
 </div>
 <p>Create tables in keystone database</p>
@@ -239,6 +260,7 @@ openstack-config --set /etc/keystone/keystone.conf token provider fernet
 export OS_URL=http://controller:35357/v3
 export OS_IDENTITY_API_VERSION=3
 </pre></div>
+</div>
 </div>
 <div class="section" id="create-service-entry">
 <h4>Create service Entry<a class="headerlink" href="#create-service-entry" title="Permalink to this headline">¶</a></h4>

@@ -23,15 +23,39 @@ root password is $DB_PASS. please chech database (optional)
 	MariaDB [(none)]> FLUSH PRIVILEGES;
 	MariaDB [(none)]> SELECT User, Host, Password FROM mysql.user;
 
+
 Install package
 ***************
 ::
 
-    source passwordlist
-    yum install openstack-keystone httpd mod_wsgi -y
-    openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
-    openstack-config --set /etc/keystone/keystone.conf database connection mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
-    openstack-config --set /etc/keystone/keystone.conf token provider fernet
+	yum install openstack-keystone httpd mod_wsgi
+
+/etc/keystone/keystone.conf
+::
+
+    [DEFAULT]
+    ...
+    admin_token = ADMIN_TOKEN
+
+
+    [database]
+    ...
+    connection = mysql+pymysql://keystone:KEYSTONE_DBPASS@controller/keystone
+
+        
+    [token]
+    ...
+    provider = fernet
+
+edit by openstack-config
+------------------------
+::
+
+    keystone="openstack-config --set /etc/keystone/keystone.conf"
+    $keystone DEFAULT admin_token  ADMIN_TOKEN
+    $keystone database connection mysql+pymysql://keystone:$KEYSTONE_DBPASS@controller/keystone
+    $keystone token provider fernet
+
 
 Create tables in keystone database
 ::
