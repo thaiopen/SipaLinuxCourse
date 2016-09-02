@@ -25,9 +25,22 @@ linux bridge module
 	vermagic:       4.6.7-300.fc24.x86_64 SMP mod_unload
 
 
+Linux Bridge (test on vm)
+*************************
+::
+mkdir bridge
+cd bridge
+vagrant init centos/7
+vagrant up --provider libvirt
+
+ตั้งค่า eth0 ให้เป็น static
+::
+vagrant ssh
+nmcli con mod
 
 Network Infrastructure
 **********************
+(on host)
 virsh command
 -------------
 libvirt command
@@ -112,7 +125,7 @@ Create Bridge network
 3. ลบ ip enp3s0
 ::
 
-	ip addr del  192.168.1.69/24 dev enp3s0
+	ip addr del  flush dev enp3s0
   ip addr add  192.168.1.69/24 dev mybridge
 
 	ip link set dev enp3s0 down

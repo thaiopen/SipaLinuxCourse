@@ -92,8 +92,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Bridge Networking KVM</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#setup-on-kvm">setup on KVM</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#linux-bridge-module">linux bridge module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-bridge-test-on-vm">Linux Bridge (test on vm)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#network-infrastructure">Network Infrastructure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#virsh-command">virsh command</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#brctl-command">brctl command</a></li>
 </ul>
 </li>
@@ -177,11 +177,24 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="linux-bridge-test-on-vm">
+<h3>Linux Bridge (test on vm)<a class="headerlink" href="#linux-bridge-test-on-vm" title="Permalink to this headline">¶</a></h3>
+<p>::
+mkdir bridge
+cd bridge
+vagrant init centos/7
+vagrant up &#8211;provider libvirt</p>
+<p>ตั้งค่า eth0 ให้เป็น static
+::
+vagrant ssh
+nmcli con mod</p>
+</div>
 <div class="section" id="network-infrastructure">
 <h3>Network Infrastructure<a class="headerlink" href="#network-infrastructure" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="virsh-command">
-<h4>virsh command<a class="headerlink" href="#virsh-command" title="Permalink to this headline">¶</a></h4>
-<p>libvirt command</p>
+<p>(on host)
+virsh command
+&#8212;&#8212;&#8212;&#8212;-
+libvirt command</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>     <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
      <span class="n">virsh</span> <span class="n">net</span><span class="o">-</span><span class="nb">list</span>
 
@@ -221,7 +234,6 @@
 <span class="n">bridge</span><span class="o">-</span><span class="n">utils</span><span class="o">-</span><span class="mf">1.5</span><span class="o">-</span><span class="mf">13.</span><span class="n">fc24</span><span class="o">.</span><span class="n">x86_64</span>
 </pre></div>
 </div>
-</div>
 <div class="section" id="brctl-command">
 <h4>brctl command<a class="headerlink" href="#brctl-command" title="Permalink to this headline">¶</a></h4>
 <p>linux bridge command</p>
@@ -255,7 +267,7 @@
 </pre></div>
 </div>
 <p>3. ลบ ip enp3s0</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>      <span class="n">ip</span> <span class="n">addr</span> <span class="k">del</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.69</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">enp3s0</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>      <span class="n">ip</span> <span class="n">addr</span> <span class="k">del</span>  <span class="n">flush</span> <span class="n">dev</span> <span class="n">enp3s0</span>
 <span class="n">ip</span> <span class="n">addr</span> <span class="n">add</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.69</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">mybridge</span>
 
       <span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">enp3s0</span> <span class="n">down</span>

@@ -22,7 +22,7 @@ Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.ta
     gen_database.sh  hosts        mysql.sh      start.sh      virsh-manage.sh
 
     cp hosts  /etc/hosts
-    
+
     $ bash isconnect.sh
     Success test ping from controller to controller
     Success test ping from controller to network
@@ -33,6 +33,27 @@ Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.ta
     Success test ping from controller to object2
     Success test ping from controller to share1
     Success test ping from controller to share2
+
+
+    // Enable password
+
+    # vi /etc/ssh/sshd_config +79
+        PasswordAuthentication yes
+
+    # systemctl restart sshd
+    // Gen key id_rsa.pub
+
+    # ssh-keygen -t rsa -b 4096 -C "openstack"
+    # ls ~/.ssh/
+    id_rsa  id_rsa.pub
+
+    //copy key ไปยัง ทุกโหนด
+    # ssh-copy-id compute1
+    //test
+
+    # ssh compute
+    # ssh-copy-id localhost
+    # ssh localhost
 
 Install Process
 ===============
