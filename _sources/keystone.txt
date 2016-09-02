@@ -2,45 +2,48 @@
 Install keystone
 ================
 
-start install 
+start install
 =============
 
 Download vagrant and bootstrap :download:`Vagrant and Bootstrap <./openstack3.tar.gz>`
 ::
 
-    cd ~    
+    cd ~
     wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/openstack3.tar.gz
     tar xvf openstack3.tar.gz
     cd openstack3
     bash start.sh
     vagrant ssh controller
-    cd sync
+    sudo su -
+    cd /vagrant
     ls
-    
+
     bootstrap.sh     gen_pass.sh  isconnect.sh  passwordlist  Vagrantfile
     gen_database.sh  hosts        mysql.sh      start.sh      virsh-manage.sh
 
-    $ bash isconnect.sh 
-    Success test ping from controller to controller 
-    Success test ping from controller to network 
-    Success test ping from controller to compute1 
-    Success test ping from controller to compute2 
-    Success test ping from controller to block1 
-    Success test ping from controller to object1 
-    Success test ping from controller to object2 
-    Success test ping from controller to share1 
-    Success test ping from controller to share2 
+    cp hosts  /etc/hosts
+    
+    $ bash isconnect.sh
+    Success test ping from controller to controller
+    Success test ping from controller to network
+    Success test ping from controller to compute1
+    Success test ping from controller to compute2
+    Success test ping from controller to block1
+    Success test ping from controller to object1
+    Success test ping from controller to object2
+    Success test ping from controller to share1
+    Success test ping from controller to share2
 
 Install Process
 ===============
 root password is $DB_PASS. please chech database (optional)
 ::
-	
+
 	echo $DB_PASS
- 	
+
 	mysql -uroot -p$DB_PASS
 
-	Enter password: 
+	Enter password:
 	Welcome to the MariaDB monitor.  Commands end with ; or \g.
 	Your MariaDB connection id is 7
 	Server version: 10.1.12-MariaDB MariaDB Server
@@ -97,7 +100,7 @@ Install package
 
 	yum install openstack-keystone httpd mod_wsgi
 
-option1 edit manual 
+option1 edit manual
 -------------------
 /etc/keystone/keystone.conf
 ::
@@ -111,7 +114,7 @@ option1 edit manual
     ...
     connection = mysql+pymysql://keystone:KEYSTONE_DBPASS@controller/keystone
 
-        
+
     [token]
     ...
     provider = fernet
@@ -180,7 +183,7 @@ vi /etc/httpd/conf.d/wsgi-keystone.conf
         </Directory>
     </VirtualHost>
 
-:: 
+::
 
     systemctl enable httpd.service
     systemctl start httpd.service
@@ -229,10 +232,10 @@ Loging
     cd /var/log/keystone
     ls
     tail -f keystone.log
- 
+
     cd /var/log/httpd/
     ls
-    
+
 Create Endpoint
 ::
 
@@ -243,7 +246,7 @@ Create Endpoint
 
 
 
-Domain Project User 
+Domain Project User
 ::
 
     openstack domain create --description "Default Domain" default
@@ -260,8 +263,3 @@ Domain Project User
     openstack user create --domain default --password-prompt demo
     openstack role create user
     openstack role add --project demo --user demo user
-
-
-
-
-

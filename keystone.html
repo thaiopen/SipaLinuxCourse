@@ -166,11 +166,14 @@ tar xvf openstack3.tar.gz
 cd openstack3
 bash start.sh
 vagrant ssh controller
-cd sync
+sudo su -
+cd /vagrant
 ls
 
 bootstrap.sh     gen_pass.sh  isconnect.sh  passwordlist  Vagrantfile
 gen_database.sh  hosts        mysql.sh      start.sh      virsh-manage.sh
+
+cp hosts  /etc/hosts
 
 $ bash isconnect.sh
 Success test ping from controller to controller

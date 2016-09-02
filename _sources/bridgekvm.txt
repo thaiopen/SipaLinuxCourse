@@ -8,6 +8,24 @@ setup on KVM
 
 .. image:: images/vm026.png
 
+linux bridge module
+*******************
+การใช้งาน linux bridge จะต้องมี module ดังนี้ (ทำบนเครื่อง host)
+::
+
+	sudo su -
+	modinfo bridge
+	filename:       /lib/modules/4.6.7-300.fc24.x86_64/kernel/net/bridge/bridge.ko.xz
+	alias:          rtnl-link-bridge
+	version:        2.3
+	license:        GPL
+	srcversion:     C24028014A70FF3D3627689
+	depends:        stp,llc
+	intree:         Y
+	vermagic:       4.6.7-300.fc24.x86_64 SMP mod_unload
+
+
+
 Network Infrastructure
 **********************
 virsh command
@@ -21,7 +39,10 @@ libvirt command
 	 Name                 State      Autostart     Persistent
 	----------------------------------------------------------
 	 default              active     yes           yes
+   vagrant-libvirt      active     yes           yes
 
+ตรวจค่าของxml ของ network ชื่อ default ด้วยคำสั่ง virsh
+::
 
 	virsh net-dumpxml default
 	<network>
@@ -41,146 +62,117 @@ libvirt command
 	  </ip>
 	</network>
 
+การแก้ไข ใช้คำสั่ง  virsh net-edit default จะส่งผลให้ เปิด xml ด้วย vi สามารถทำการแก้ไขค่า
+และเมื่อแก้ไขเสร็จแล้วก็ save เหมือน vi
+::
+
+	virsh net-edit default
+
+ตรวจสอบ package bridg-utils ว่าติดตั้งหรือไม่
+::
+
+ 	rpm -qa | grep bridge-utils
+	bridge-utils-1.5-13.fc24.x86_64
+
+
 brctl command
 -------------
 linux bridge command
 ::
 
-	# brctl show
+	brctl show
 	bridge name	bridge id		STP enabled	interfaces
-	virbr0		8000.000000000000	yes	
+	virbr0		8000.000000000000	yes
 
 
 Create Bridge network
 *********************
-method1
--------
-create bridge with virt-manager gui 
-ไปที่เมนู Edit > Connection Details เลือก เมนู Network Interfaces เมนู และกดเครื่องหมาย +
-
-.. image:: images/bridgekvm001.png
-
-.. image:: images/bridgekvm002.png
-
-เลือก interface type: ``Bridge`` และ กด ``Forward``
-
-.. image:: images/bridgekvm003.png
-
-ในหน้าจอนี้ให้ทำการตั้งชื่อ bridge เป็น br1 และทำการเลือก physical network ``enp3s0` ที่อยู่ใน list เมื่อเลือกแล้วให้กด  ``Finish`` เพื่อดำเนินสร้าง
-
-.. image:: images/bridgekvm004.png
-
-ให้ทำการกดปุ่มดังรูปเพื่อเริ่ม start
-
-.. image:: images/bridgekvm005.png
-
-verify
-------
+1 สร้าง  bridge network
 ::
 
-	# ip link
-	...
+	brctl addbr mybridge
+	brctl show
 
-	6: br1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default qlen 1000
-	    link/ether 5e:8c:6d:c0:9b:ed brd ff:ff:ff:ff:ff:ff
-
-
-	# brctl show
+	//ผลที่ได้
 	bridge name	bridge id		STP enabled	interfaces
-	br1		8000.54ee758a8609	yes		enp3s0
-	virbr0		8000.525400c19fed	yes		virbr0-nic
+  ...
+	mybridge		8000.000000000000	no
+	virbr0		8000.000000000000	yes
+	virbr1		8000.525400ef43c5	yes		virbr1-nic
 
-	# ip a s br1
-	7: br1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-	    link/ether 54:ee:75:8a:86:09 brd ff:ff:ff:ff:ff:ff
-	    inet 192.168.1.69/24 brd 192.168.1.255 scope global dynamic br1
-	       valid_lft 86357sec preferred_lft 86357sec
-	    inet6 fe80::56ee:75ff:fe8a:8609/64 scope link 
-	       valid_lft forever preferred_lft forever
-
-	# ip link show enp3s0 
-	2: enp3s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel master br1 state UP mode DEFAULT group default qlen 1000
-		link/ether 54:ee:75:8a:86:09 brd ff:ff:ff:ff:ff:ff
-
-	# brctl showmacs br1
-	port no	mac addr		is local?	ageing timer
-	  1	54:ee:75:8a:86:09	yes		   0.00
-	  1	54:ee:75:8a:86:09	yes		   0.00
-	  1	bc:ee:7b:ea:67:28	no		   0.00
-
-
-auto generate
--------------
-virt-manager จะทำหน้าสร้าง script ให้เองอัตโนมัติ
+2 เพิ่ม interface (ตรวจสอบด้วย ip link) enp3s0 ให้แก่ brige
 ::
 
-	# cd /etc/sysconfig/network-scripts/
+	brctl addif mybridge enp3s0
+	brctl show
+  ...
+	bridge name	bridge id		STP enabled	interfaces
+  mybridge		8000.54ee758a8609	no		enp3s0
 
-	# cat ifcfg-br1 
-	DEVICE="br1"
-	ONBOOT="no"
-	TYPE="Bridge"
-	BOOTPROTO="dhcp"
-	STP="on"
-	DELAY="0.0"
-
-    # cat ifcfg-enp3s0
-	DEVICE="enp3s0"
-	ONBOOT="no"
-	BRIDGE="br1"
-
-    # nmcli con show
-	NAME                      UUID                                  TYPE             DEVICE 
-	Bridge br1                2ee981ca-5ff4-4f9b-03fe-32879aa3dc85  bridge           br1   
- 
-
-virify by ``nm-connection-editor`` 
-------------------
+3. ลบ ip enp3s0
 ::
 
-nm-connection-editor
+	ip addr del  192.168.1.69/24 dev enp3s0
+  ip addr add  192.168.1.69/24 dev mybridge
 
-.. image:: images/bridgekvm016.png
+	ip link set dev enp3s0 down
+	ip link set dev enp3s0 up
 
-Kernel Parameter
-****************
-add kernel parameter
-:: 
+	ip link set dev mybridge up
 
-	# vi /etc/sysctl.conf
+  ping google.com
 
-	net.ipv4.ip_forward=1
-	net.bridge.bridge-nf-call-ip6tables = 0
-	net.bridge.bridge-nf-call-iptables = 0
-	net.bridge.bridge-nf-call-arptables = 0
-
-	//load parameter จะเกิด error
-	# sysctl -p
-	net.ipv4.ip_forward = 1
-	sysctl: cannot stat /proc/sys/net/bridge/bridge-nf-call-ip6tables: No such file or directory
-	sysctl: cannot stat /proc/sys/net/bridge/bridge-nf-call-iptables: No such file or directory
-	sysctl: cannot stat /proc/sys/net/bridge/bridge-nf-call-arptables: No such file or directory
-
-fix error
----------
-โหลด br_netfilter kernel module โดยการใช้ command
+4 verify gateway
 ::
 
-	# modprobe br_netfilter
-
-	# lsmod |grep  br_netfilter
-	br_netfilter           24576  0
-	bridge                126976  2 br_netfilter,ebtable_broute
+	ip r
+	default via 192.168.1.1 dev enp3s0  proto static  metric 100
 
 
-	# sysctl -p
-
-persistance load
-----------------
+การใช้งานคำสั่ง NetworkManager Command Line Tool (nmcli) เพื่อสร้าง bridge br0
 ::
 
-    //add module ตั้งชื่อเป็น netfilter.conf (เป็นอะไรก็ได้)
-	# vim /etc/modprobe.d/netfilter.conf
-	br_netfilter
+	nmcli con add type bridge ifname br0
+	Connection 'bridge-br0' (d50d5fc4-ca17-4e98-b9b3-b9fdcae2e248) successfully added.
+
+	NAME               UUID                                  TYPE             DEVICE
+	bridge-br0         d50d5fc4-ca17-4e98-b9b3-b9fdcae2e248  bridge           br0
+
+.. note:: nmcli con add type bridge ifname br0 con-name bridge-br0
+
+enable  Spanning tree protocol(STP) เปลี่ยนค่า defalut  priority จากค่า default
+32768 เป็น 28672
+::
+
+	nmcli con modify bridge-br0 bridge.stp yes
+	nmcli con modify bridge-br0 bridge.priority 28672
+
+ตรวจสอบค่าของ bridge
+::
+
+	nmcli -f bridge con show bridge-br0
+	//
+	bridge.mac-address:                     --
+	bridge.stp:                             yes
+	bridge.priority:                        28672
+	bridge.forward-delay:                   15
+	bridge.hello-time:                      2
+	bridge.max-age:                         20
+	bridge.ageing-time:                     300
+	bridge.multicast-snooping:              yes
 
 
+สร้าง port บน switch (type bridge-slave con-name br0-port1) ให้เชื่อมกับ ifname enp3s0
+::
+
+	nmcli connection add type bridge-slave con-name br0-port1 ifname enp3s0 master bridge-br0
+	Connection 'br0-port1' (702a354e-e641-4c06-b05f-61332cd1232b) successfully added.
+
+ตรวจสอบ
+::
+
+	cd /etc/sysconfig/network-scripts/
+	ls
+	..
+	ifcfg-br0-port1
+	ifcfg-bridge-br0
